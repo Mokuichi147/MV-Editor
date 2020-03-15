@@ -23,7 +23,8 @@ def load_movie(path):
     width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
     max_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    return cap, (width,height), max_count
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    return cap, (width,height), max_count, fps
 
 def pic_frame(cap, frame_count):
     cap.set(cv2.CAP_PROP_POS_FRAMES, frame_count)
@@ -48,9 +49,8 @@ class FrameWidget(FloatLayout):
 
     def __init__(self, **kwargs):
         super(FrameWidget, self).__init__(**kwargs)
-        self.cap, self.tex_size, self.frame_max = load_movie(dir_path+'/movies/test.mp4')
+        self.cap, self.tex_size, self.frame_max, self.fps = load_movie(dir_path+'/movies/test.mp4')
         self.ids['slider'].max = self.frame_max - 1
-        print(self.frame_max)
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
