@@ -3,12 +3,11 @@ import cv2
 import os
 
 from kivy.app import App
-from kivy.uix.widget import Widget
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.graphics.texture import Texture
-from kivy.graphics import Rectangle
-from kivy.uix.slider import Slider
+from kivy.clock import Clock
+from kivy.core.window import Window
 
 
 version = '0.0.1'
@@ -40,15 +39,19 @@ def frame2texture(frame, size):
     texture.blit_buffer(frame.tostring())
     return texture
 
+
 class FrameWidget(FloatLayout):
     image_texture = ObjectProperty(None)
     image_src = StringProperty('')
     frame_count = 0
     frame_max = 100
     tex_size = (0,0)
+    event = None
 
     def __init__(self, **kwargs):
         super(FrameWidget, self).__init__(**kwargs)
+        self._keyboard = Window.request_keyboard(self._key_closed, self)
+        self._keyboard.bind(on_key_down=self._on_key_down)
         self.cap, self.tex_size, self.frame_max, self.fps = load_movie(dir_path+'/movies/test.mp4')
         self.ids['slider'].max = self.frame_max - 1
         self.frame = pic_frame(self.cap, 0)
@@ -57,6 +60,25 @@ class FrameWidget(FloatLayout):
     def cursor_moved(self, value):
         self.frame = pic_frame(self.cap, int(value))
         self.image_texture = frame2texture(self.frame, self.tex_size)
+    
+    def update_frame(self, delta_time):
+        self.frame_count = self.ids['slider'].value + 1
+        if self.frame_count > self.frame_max - 1:
+            return
+        self.ids['slider'].value = self.frame_count
+        self.frame = pic_frame(self.cap, self.frame_count)
+        self.image_texture = frame2texture(self.frame, self.tex_size)
+
+    def _key_closed(self):
+        self._keyboard.unbind(on_key_down=self._on_key_down)
+        self._keyboard = None
+    
+    def _on_key_down(self, keyboard, keycode, text, modifiers):
+        if self.event == None and keycode[1] == 'spacebar':
+            self.event = Clock.schedule_interval(self.update_frame, 1/self.fps)
+        elif  keycode[1] == 'spacebar':
+            self.event.cancel()
+            self.event = None
 
 
 class MVEditorApp(App):
