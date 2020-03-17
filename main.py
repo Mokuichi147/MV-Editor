@@ -7,6 +7,13 @@ from simpleaudio import play_buffer
 from pydub import AudioSegment
 from pydub.utils import ratio_to_db
 
+from kivy.config import Config
+Config.set('graphics', 'width', 1920)
+Config.set('graphics', 'height', 1080)
+Config.set('graphics', 'minimum_width', 640)
+Config.set('graphics', 'minimum_height', 480)
+Config.set('modules', 'ShowBorder', '')
+
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import StringProperty, ObjectProperty

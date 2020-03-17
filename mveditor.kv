@@ -8,18 +8,30 @@
     BoxLayout:
         orientation: 'vertical'
         padding: [10, 10, 10, 10]
-        size_hint: 1,1
-        Image:
-            allow_stretch: True
-            texture: root.image_texture
-        Slider:
-            id: slider
-            min: 0
-            max: root.frame_max
-            value: 0
-            on_value: root.cursor_moved(self.value)
-            step: 1
-            cursor_image: 'Resources/cursor.png'
-            value_track: True
-            value_track_color: [0, 0.5, 0.7, 1]
-            size_hint: 1,.1
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: [10, 10, 10, 10]
+            Label:
+                text: 'File'
+                size_hint: 0.8,1
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1,1
+                Image:
+                    allow_stretch: True
+                    texture: root.image_texture
+                Slider:
+                    id: slider
+                    min: 0
+                    max: root.frame_max
+                    value: 0
+                    on_value: root.cursor_moved(self.value)
+                    step: 1
+                    cursor_image: 'Resources/cursor.png'
+                    value_track: True
+                    value_track_color: [0, 0.5, 0.7, 1]
+                    size_hint: 1,.1
+        BoxLayout:
+            size_hint: 1,.5
+            Label:
+                text: 'movie'
