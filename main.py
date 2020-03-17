@@ -96,6 +96,7 @@ class FrameWidget(FloatLayout):
         self.frame_count = self.ids['slider'].value + 1
         _play_frame = int((time()-self.play_start_time)*self.fps)
         if not _play_frame - 3 <= self.frame_count <= _play_frame + 3:
+            # 表示している画像と音声が±3フレームずれたとき
             self.frame_count = _play_frame
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
             self.play_start_time = time() - self.frame_count / self.fps
@@ -109,6 +110,7 @@ class FrameWidget(FloatLayout):
             self.sa = 0
             self.play_start_time = time() - self.ids['slider'].value/ self.fps
         if self.frame_count > self.frame_max - 1:
+            # 最後まで再生したとき
             self.event.cancel()
             self.event = None
             return
