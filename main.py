@@ -103,7 +103,7 @@ class FrameWidget(FloatLayout):
             self.sa = 0
         if self.pre_frame_count != self.ids['slider'].value:
             # スライダーのカーソル位置を移動したとき
-            self.frame_count = self.ids['slider'].value + 1
+            self.frame_count = self.ids['slider'].value
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
             self.sound_play.stop()
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
