@@ -75,6 +75,7 @@ class FrameWidget(FloatLayout):
     def cursor_moved(self, value):
         if self.event == None:
             self.frame = pic_frame(self.cap, int(value))
+            self.frame_count = int(value)
             self.pre_frame_count = int(value)
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
@@ -104,7 +105,7 @@ class FrameWidget(FloatLayout):
         if self.event == None and keycode[1] == 'spacebar':
             self.event = Clock.schedule_interval(self.update_frame, 1/self.fps)
             self.sa = 0
-            self.sound_play = play_sound(self.sound, self.pre_frame_count/self.fps)
+            self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
         elif  keycode[1] == 'spacebar':
             self.event.cancel()
             self.event = None
