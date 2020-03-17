@@ -1,11 +1,10 @@
-import numpy as np
 import cv2
 import os
 from time import sleep
-from simpleaudio import play_buffer
 
 from pydub import AudioSegment
 from pydub.utils import ratio_to_db
+from simpleaudio import play_buffer
 
 from kivy.config import Config
 Config.set('graphics', 'width', 1920)
@@ -15,12 +14,11 @@ Config.set('graphics', 'minimum_height', 480)
 Config.set('modules', 'ShowBorder', '')
 
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import StringProperty, ObjectProperty
-from kivy.graphics.texture import Texture
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.graphics import *
+from kivy.graphics.texture import Texture
+from kivy.properties import StringProperty, ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
 
 
 version = '0.0.1'
