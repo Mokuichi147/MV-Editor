@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import os
 from time import sleep
+from pydub import AudioSegment
+from simpleaudio import play_buffer
 
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
@@ -41,6 +43,14 @@ def frame2texture(frame, size):
     texture.blit_buffer(frame.tostring())
     return texture
 
+def play_sound(audio_segment, time):
+    return play_buffer(
+        audio_segment[time*1000:].raw_data,
+        num_channels = audio_segment.channels,
+        bytes_per_sample = audio_segment.sample_width,
+        sample_rate = audio_segment.frame_rate
+        )
+
 
 class FrameWidget(FloatLayout):
     image_texture = ObjectProperty(None)
@@ -57,6 +67,7 @@ class FrameWidget(FloatLayout):
         self._keyboard = Window.request_keyboard(self._key_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
         self.cap, self.tex_size, self.frame_max, self.fps = load_movie(dir_path+'/movies/test.mp4')
+        self.sound = AudioSegment.from_file(dir_path+'/movies/test.mp4', format='mp4')
         self.ids['slider'].max = self.frame_max - 1
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.tex_size)
@@ -73,7 +84,10 @@ class FrameWidget(FloatLayout):
             sleep(self.sa)
         self.frame_count = self.ids['slider'].value + 1
         if self.pre_frame_count != self.ids['slider'].value:
+            # スライダーのカーソル位置を移動したとき
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
+            self.sound_play.stop()
+            self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
         if self.frame_count > self.frame_max - 1:
             self.event.cancel()
             self.event = None
@@ -90,9 +104,11 @@ class FrameWidget(FloatLayout):
         if self.event == None and keycode[1] == 'spacebar':
             self.event = Clock.schedule_interval(self.update_frame, 1/self.fps)
             self.sa = 0
+            self.sound_play = play_sound(self.sound, self.pre_frame_count/self.fps)
         elif  keycode[1] == 'spacebar':
             self.event.cancel()
             self.event = None
+            self.sound_play.stop()
 
 
 class MVEditorApp(App):
