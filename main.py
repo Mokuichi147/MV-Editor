@@ -22,7 +22,6 @@ from kivy.uix.floatlayout import FloatLayout
 
 
 version = '0.0.1'
-
 dir_path = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -73,9 +72,12 @@ class FrameWidget(FloatLayout):
         super(FrameWidget, self).__init__(**kwargs)
         self._keyboard = Window.request_keyboard(self._key_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
+        Window.bind(on_dropfile=self._on_file_drop)
+
         self.cap, self.tex_size, self.frame_max, self.fps = load_movie(dir_path+'/movies/test.mp4')
         self.sound = AudioSegment.from_file(dir_path+'/movies/test.mp4', format='mp4')
         self.sound += ratio_to_db(0.05)
+
         self.ids['slider'].max = self.frame_max - 1
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.tex_size)
@@ -91,6 +93,7 @@ class FrameWidget(FloatLayout):
         self.sa += 1/self.fps - delta_time
         if self.sa > 0:
             sleep(self.sa)
+
         self.frame_count = self.ids['slider'].value + 1
         if self.pre_frame_count != self.ids['slider'].value:
             # スライダーのカーソル位置を移動したとき
@@ -118,6 +121,9 @@ class FrameWidget(FloatLayout):
             self.event.cancel()
             self.event = None
             self.sound_play.stop()
+    
+    def _on_file_drop(self, window, file_path):
+        print(window, file_path)
 
 
 class MVEditorApp(App):
