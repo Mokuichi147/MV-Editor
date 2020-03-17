@@ -45,6 +45,7 @@ class FrameWidget(FloatLayout):
     image_texture = ObjectProperty(None)
     image_src = StringProperty('')
     frame_count = 0
+    pre_frame_count = 0
     frame_max = 100
     tex_size = (0,0)
     event = None
@@ -61,15 +62,20 @@ class FrameWidget(FloatLayout):
     def cursor_moved(self, value):
         if self.event == None:
             self.frame = pic_frame(self.cap, int(value))
+            self.pre_frame_count = int(value)
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
     def update_frame(self, delta_time):
+        print(self.pre_frame_count, self.ids['slider'].value)
         self.frame_count = self.ids['slider'].value + 1
+        if self.pre_frame_count != self.ids['slider'].value:
+            self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
         if self.frame_count > self.frame_max - 1:
             self.event.cancel()
             self.event = None
             return
         self.ids['slider'].value = self.frame_count
+        self.pre_frame_count = self.frame_count
         _, self.frame = self.cap.read()
 
     def _key_closed(self):
