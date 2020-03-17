@@ -1,6 +1,6 @@
 import cv2
 import os
-from time import sleep
+from time import sleep, time
 
 from pydub import AudioSegment
 from pydub.utils import ratio_to_db
@@ -49,9 +49,9 @@ def frame2texture(frame, size):
     texture.blit_buffer(frame.tostring())
     return texture
 
-def play_sound(audio_segment, time):
+def play_sound(audio_segment, audio_time):
     return play_buffer(
-        audio_segment[time*1000:].raw_data,
+        audio_segment[audio_time*1000:].raw_data,
         num_channels = audio_segment.channels,
         bytes_per_sample = audio_segment.sample_width,
         sample_rate = audio_segment.frame_rate
@@ -93,13 +93,21 @@ class FrameWidget(FloatLayout):
         self.sa += 1/self.fps - delta_time
         if self.sa > 0:
             sleep(self.sa)
-
         self.frame_count = self.ids['slider'].value + 1
+        _play_frame = int((time()-self.play_start_time)*self.fps)
+        if not _play_frame - 3 <= self.frame_count <= _play_frame + 3:
+            self.frame_count = _play_frame
+            self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
+            self.play_start_time = time() - self.frame_count / self.fps
+            self.sa = 0
         if self.pre_frame_count != self.ids['slider'].value:
             # スライダーのカーソル位置を移動したとき
+            self.frame_count = self.ids['slider'].value + 1
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
             self.sound_play.stop()
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+            self.sa = 0
+            self.play_start_time = time() - self.ids['slider'].value/ self.fps
         if self.frame_count > self.frame_max - 1:
             self.event.cancel()
             self.event = None
@@ -114,6 +122,7 @@ class FrameWidget(FloatLayout):
     
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         if self.event == None and keycode[1] == 'spacebar':
+            self.play_start_time = time() - self.frame_count / self.fps
             self.event = Clock.schedule_interval(self.update_frame, 1/self.fps)
             self.sa = 0
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
