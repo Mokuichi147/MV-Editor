@@ -2,8 +2,10 @@ import numpy as np
 import cv2
 import os
 from time import sleep
-from pydub import AudioSegment
 from simpleaudio import play_buffer
+
+from pydub import AudioSegment
+from pydub.utils import ratio_to_db
 
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
@@ -68,6 +70,7 @@ class FrameWidget(FloatLayout):
         self._keyboard.bind(on_key_down=self._on_key_down)
         self.cap, self.tex_size, self.frame_max, self.fps = load_movie(dir_path+'/movies/test.mp4')
         self.sound = AudioSegment.from_file(dir_path+'/movies/test.mp4', format='mp4')
+        self.sound += ratio_to_db(0.05)
         self.ids['slider'].max = self.frame_max - 1
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.tex_size)
