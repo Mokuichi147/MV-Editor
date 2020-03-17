@@ -8,6 +8,7 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivy.graphics.texture import Texture
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.graphics import *
 
 
 version = '0.0.1'
@@ -30,11 +31,11 @@ def pic_frame(cap, frame_count):
     ret, frame = cap.read()
     if not ret:
         return
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    frame = cv2.flip(frame, 0)
     return frame
 
 def frame2texture(frame, size):
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame = cv2.flip(frame, 0)
     texture = Texture.create(size=size)
     texture.blit_buffer(frame.tostring())
     return texture
@@ -58,16 +59,18 @@ class FrameWidget(FloatLayout):
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
     def cursor_moved(self, value):
-        self.frame = pic_frame(self.cap, int(value))
+        if self.event == None:
+            self.frame = pic_frame(self.cap, int(value))
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
     def update_frame(self, delta_time):
         self.frame_count = self.ids['slider'].value + 1
         if self.frame_count > self.frame_max - 1:
+            self.event.cancel()
+            self.event = None
             return
         self.ids['slider'].value = self.frame_count
-        self.frame = pic_frame(self.cap, self.frame_count)
-        self.image_texture = frame2texture(self.frame, self.tex_size)
+        _, self.frame = self.cap.read()
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
