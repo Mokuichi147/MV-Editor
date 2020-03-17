@@ -66,7 +66,6 @@ class FrameWidget(FloatLayout):
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
     def update_frame(self, delta_time):
-        print(self.pre_frame_count, self.ids['slider'].value)
         self.frame_count = self.ids['slider'].value + 1
         if self.pre_frame_count != self.ids['slider'].value:
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
