@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import os
+from time import sleep
 
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
@@ -46,6 +47,7 @@ class FrameWidget(FloatLayout):
     image_src = StringProperty('')
     frame_count = 0
     pre_frame_count = 0
+    sa = 0
     frame_max = 100
     tex_size = (0,0)
     event = None
@@ -66,6 +68,9 @@ class FrameWidget(FloatLayout):
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
     def update_frame(self, delta_time):
+        self.sa += 1/self.fps - delta_time
+        if self.sa > 0:
+            sleep(self.sa)
         self.frame_count = self.ids['slider'].value + 1
         if self.pre_frame_count != self.ids['slider'].value:
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
@@ -84,6 +89,7 @@ class FrameWidget(FloatLayout):
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         if self.event == None and keycode[1] == 'spacebar':
             self.event = Clock.schedule_interval(self.update_frame, 1/self.fps)
+            self.sa = 0
         elif  keycode[1] == 'spacebar':
             self.event.cancel()
             self.event = None
