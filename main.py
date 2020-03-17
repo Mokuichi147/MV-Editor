@@ -123,7 +123,10 @@ class FrameWidget(FloatLayout):
             self.sound_play.stop()
     
     def _on_file_drop(self, window, file_path):
-        print(window, file_path)
+        if os.path.isdir(file_path.decode('utf-8')):
+            print('ディレクトリ')
+        else:
+            print('ファイル')
 
 
 class MVEditorApp(App):
