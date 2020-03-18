@@ -20,7 +20,7 @@
             step: 1
             cursor_image: 'Resources/cursor.png'
             value_track: True
-            value_track_color: 0, 0.5, 0.7, 1
+            value_track_color: 90/255, 90/255, 255/255, 1
             size_hint: 1, 0.1
 
 <FileSelectWidget>:
@@ -29,11 +29,11 @@
             rgba: 0.15, 0.15, 0.15, 1
         Rectangle:
             pos: self.pos
-            size: self.size[0]-10, self.size[1]
+            size: self.size[0]-5, self.size[1]
     BoxLayout:
         orientation: 'horizontal'
         pos: root.pos
-        padding: 0, 0, 10, 0
+        padding: 0, 0, 5, 0
         FileChooserListView:
             path: root.path
             size_hint: 0.5, 1
@@ -49,7 +49,7 @@
             size: self.size
     BoxLayout:
         orientation: 'vertical'
-        padding: 10
+        padding: 5
         BoxLayout:
             orientation: 'horizontal'
             FileSelectWidget:
