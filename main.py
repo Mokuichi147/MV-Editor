@@ -11,7 +11,7 @@ Config.set('graphics', 'width', 1920)
 Config.set('graphics', 'height', 1080)
 Config.set('graphics', 'minimum_width', 640)
 Config.set('graphics', 'minimum_height', 480)
-Config.set('modules', 'ShowBorder', '')
+#Config.set('modules', 'ShowBorder', '')
 
 from kivy.app import App
 from kivy.clock import Clock
@@ -137,6 +137,11 @@ class FrameWidget(FloatLayout):
             print('ディレクトリ')
         else:
             print('ファイル')
+
+class FileSelectWidget(FloatLayout):
+    def __init__(self, **kwargs):
+        super(FileSelectWidget, self).__init__(**kwargs)
+        self.path = dir_path+'/movies/'
 
 
 class RootWidget(FloatLayout):

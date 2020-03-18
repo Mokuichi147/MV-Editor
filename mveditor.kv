@@ -1,4 +1,10 @@
 <FrameWidget>:
+    canvas.before:
+        Color:
+            rgba: 0.15, 0.15, 0.15, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     BoxLayout:
         orientation: 'vertical'
         pos: root.pos
@@ -17,6 +23,23 @@
             value_track_color: 0, 0.5, 0.7, 1
             size_hint: 1, 0.1
 
+<FileSelectWidget>:
+    canvas.before:
+        Color:
+            rgba: 0.15, 0.15, 0.15, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size[0]-10, self.size[1]
+    BoxLayout:
+        orientation: 'horizontal'
+        pos: root.pos
+        padding: 0, 0, 10, 0
+        FileChooserListView:
+            path: root.path
+            size_hint: 0.5, 1
+        FileChooserIconView:
+            path: root.path
+
 <RootWidget>:
     canvas.before:
         Color:
@@ -29,8 +52,7 @@
         padding: 10
         BoxLayout:
             orientation: 'horizontal'
-            Label:
-                text: 'File'
+            FileSelectWidget:
             FrameWidget:
         BoxLayout:
             Label:
