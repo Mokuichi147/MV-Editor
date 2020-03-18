@@ -78,7 +78,6 @@ class FrameWidget(FloatLayout):
         self.sound = AudioSegment.from_file(dir_path+'/movies/test.mp4', format='mp4')
         self.sound += ratio_to_db(0.05)
 
-        self.ids['slider'].max = self.frame_max - 1
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
@@ -140,11 +139,15 @@ class FrameWidget(FloatLayout):
             print('ファイル')
 
 
+class RootWidget(FloatLayout):
+    def __init__(self, **kwargs):
+        super(RootWidget, self).__init__(**kwargs)
+
 class MVEditorApp(App):
     title = f'MV Editor v{version}'
 
     def build(self):
-        return FrameWidget()
+        return RootWidget()
     
 if __name__=='__main__':
     App = MVEditorApp()
