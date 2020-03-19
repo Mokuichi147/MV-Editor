@@ -35,9 +35,12 @@
         pos: root.pos
         padding: 0, 0, 5, 0
         FileChooserListView:
+            id: file_list_view
             path: root.path
+            on_selection: root.selected(self.selection)
             size_hint: 0.5, 1
         FileChooserIconView:
+            id: file_icon_view
             path: root.path
 
 <RootWidget>:

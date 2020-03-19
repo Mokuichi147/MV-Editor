@@ -142,6 +142,9 @@ class FileSelectWidget(FloatLayout):
     def __init__(self, **kwargs):
         super(FileSelectWidget, self).__init__(**kwargs)
         self.path = dir_path+'/movies/'
+    
+    def selected(self, path):
+        print(path)
 
 
 class RootWidget(FloatLayout):
