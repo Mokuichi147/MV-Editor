@@ -74,12 +74,21 @@ class FrameWidget(FloatLayout):
         self._keyboard.bind(on_key_down=self._on_key_down)
         Window.bind(on_dropfile=self._on_file_drop)
 
-        self.cap, self.tex_size, self.frame_max, self.fps = load_movie(dir_path+'/movies/test.mp4')
-        self.sound = AudioSegment.from_file(dir_path+'/movies/test.mp4', format='mp4')
+        self.load_movie_and_sound(dir_path+'/movies/test.mp4')
         self.sound += ratio_to_db(0.05)
 
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.tex_size)
+    
+    def load_movie_and_sound(self, movie_path):
+        self.cap, self.tex_size, self.frame_max, self.fps = load_movie(movie_path)
+        self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
+        if self.event != None:
+            self.event.cancel()
+            self.event = None
+            self.sound_play.stop()
+        self.sa = 0
+        self.frame_count = 0
     
     def cursor_moved(self, value):
         if self.event == None:
@@ -136,7 +145,7 @@ class FrameWidget(FloatLayout):
         if os.path.isdir(file_path.decode('utf-8')):
             print('ディレクトリ')
         else:
-            print('ファイル')
+            self.load_movie_and_sound(file_path.decode('utf-8'))
 
 class FileSelectWidget(FloatLayout):
     def __init__(self, **kwargs):
