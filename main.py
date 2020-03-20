@@ -58,8 +58,9 @@ def play_sound(audio_segment, audio_time):
         )
 
 
-class FrameWidget(FloatLayout):
+class RootWidget(FloatLayout):
     image_texture = ObjectProperty(None)
+    path = ''
     image_src = StringProperty('')
     frame_count = 0
     pre_frame_count = 0
@@ -69,20 +70,25 @@ class FrameWidget(FloatLayout):
     event = None
 
     def __init__(self, **kwargs):
-        super(FrameWidget, self).__init__(**kwargs)
+        super(RootWidget, self).__init__(**kwargs)
         self._keyboard = Window.request_keyboard(self._key_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down)
         Window.bind(on_dropfile=self._on_file_drop)
 
         self.load_movie_and_sound(dir_path+'/movies/test.mp4')
-        self.sound += ratio_to_db(0.05)
 
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.tex_size)
+
+        self.path = dir_path+'/movies/'
+        self.ids['file_list_view'].path = self.path
+        self.ids['file_icon_view'].path = self.path
     
     def load_movie_and_sound(self, movie_path):
         self.cap, self.tex_size, self.frame_max, self.fps = load_movie(movie_path)
+        self.ids['slider'].max = self.frame_max -1
         self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
+        self.sound += ratio_to_db(0.05)
         if self.event != None:
             self.event.cancel()
             self.event = None
@@ -125,6 +131,10 @@ class FrameWidget(FloatLayout):
         self.ids['slider'].value = self.frame_count
         self.pre_frame_count = self.frame_count
         _, self.frame = self.cap.read()
+    
+    def selected(self, file_path):
+        if len(file_path) == 1:
+            self.load_movie_and_sound(file_path[0])
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
@@ -147,18 +157,6 @@ class FrameWidget(FloatLayout):
         else:
             self.load_movie_and_sound(file_path.decode('utf-8'))
 
-class FileSelectWidget(FloatLayout):
-    def __init__(self, **kwargs):
-        super(FileSelectWidget, self).__init__(**kwargs)
-        self.path = dir_path+'/movies/'
-    
-    def selected(self, path):
-        print(path)
-
-
-class RootWidget(FloatLayout):
-    def __init__(self, **kwargs):
-        super(RootWidget, self).__init__(**kwargs)
 
 class MVEditorApp(App):
     title = f'MV Editor v{version}'

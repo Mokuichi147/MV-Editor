@@ -1,48 +1,3 @@
-<FrameWidget>:
-    canvas.before:
-        Color:
-            rgba: 0.15, 0.15, 0.15, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    BoxLayout:
-        orientation: 'vertical'
-        pos: root.pos
-        Image:
-            allow_stretch: True
-            texture: root.image_texture
-        Slider:
-            id: slider
-            min: 0
-            max: root.frame_max
-            value: 0
-            on_value: root.cursor_moved(self.value)
-            step: 1
-            cursor_image: 'Resources/cursor.png'
-            value_track: True
-            value_track_color: 90/255, 90/255, 255/255, 1
-            size_hint: 1, 0.1
-
-<FileSelectWidget>:
-    canvas.before:
-        Color:
-            rgba: 0.15, 0.15, 0.15, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size[0]-5, self.size[1]
-    BoxLayout:
-        orientation: 'horizontal'
-        pos: root.pos
-        padding: 0, 0, 5, 0
-        FileChooserListView:
-            id: file_list_view
-            path: root.path
-            on_selection: root.selected(self.selection)
-            size_hint: 0.5, 1
-        FileChooserIconView:
-            id: file_icon_view
-            path: root.path
-
 <RootWidget>:
     canvas.before:
         Color:
@@ -54,9 +9,51 @@
         orientation: 'vertical'
         padding: 5
         BoxLayout:
+            # upper half
             orientation: 'horizontal'
-            FileSelectWidget:
-            FrameWidget:
+            BoxLayout:
+                # file selection
+                orientation: 'horizontal'
+                padding: 0, 0, 5, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.15, 0.15, 0.15, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size[0]-5, self.size[1]
+                FileChooserListView:
+                    id: file_list_view
+                    path: root.path
+                    on_selection: root.selected(self.selection)
+                    size_hint: 0.5, 1
+                FileChooserIconView:
+                    id: file_icon_view
+                    path: root.path
+                    on_selection: root.selected(self.selection)
+            BoxLayout:
+                # video preview
+                orientation: 'vertical'
+                canvas.before:
+                    Color:
+                        rgba: 0.15, 0.15, 0.15, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                Image:
+                    allow_stretch: True
+                    texture: root.image_texture
+                Slider:
+                    id: slider
+                    min: 0
+                    max: root.frame_max
+                    value: 0
+                    on_value: root.cursor_moved(self.value)
+                    step: 1
+                    cursor_image: 'Resources/cursor.png'
+                    value_track: True
+                    value_track_color: 90/255, 90/255, 255/255, 1
+                    size_hint: 1, 0.1
         BoxLayout:
+            # lower half
             Label:
                 text: 'movie'
