@@ -158,7 +158,8 @@ class RootWidget(FloatLayout):
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
         if os.path.isdir(file_path):
-            print('ディレクトリ')
+            self.ids['file_list_view'].path = file_path
+            self.ids['file_icon_view'].path = file_path
         else:
             self.load_movie_and_sound(file_path)
 
