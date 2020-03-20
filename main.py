@@ -139,6 +139,17 @@ class RootWidget(FloatLayout):
     def selected(self, file_path):
         if len(file_path) == 1:
             self.load_movie_and_sound(file_path[0])
+    
+    def playback_start_or_stop(self):
+        if self.playback_event == None:
+            self.play_start_time = time() - self.frame_count / self.fps
+            self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
+            self.sa = 0
+            self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+        else:
+            self.playback_event.cancel()
+            self.playback_event = None
+            self.sound_play.stop()
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
