@@ -87,6 +87,9 @@ class RootWidget(FloatLayout):
     def load_movie_and_sound(self, movie_path):
         self.cap, self.tex_size, self.frame_max, self.fps = load_movie(movie_path)
         self.ids['slider'].max = self.frame_max -1
+        self.ids['slider'].value = 0
+        self.frame = pic_frame(self.cap, 0)
+        self.image_texture = frame2texture(self.frame, self.tex_size)
         self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
         self.sound += ratio_to_db(0.05)
         if self.event != None:
@@ -103,7 +106,7 @@ class RootWidget(FloatLayout):
             self.pre_frame_count = int(value)
         self.image_texture = frame2texture(self.frame, self.tex_size)
     
-    def update_frame(self, delta_time):
+    def update(self, delta_time):
         self.sa += 1/self.fps - delta_time
         if self.sa > 0:
             sleep(self.sa)
@@ -143,7 +146,7 @@ class RootWidget(FloatLayout):
     def _on_key_down(self, keyboard, keycode, text, modifiers):
         if self.event == None and keycode[1] == 'spacebar':
             self.play_start_time = time() - self.frame_count / self.fps
-            self.event = Clock.schedule_interval(self.update_frame, 1/self.fps)
+            self.event = Clock.schedule_interval(self.update, 1/self.fps)
             self.sa = 0
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
         elif  keycode[1] == 'spacebar':
@@ -152,10 +155,11 @@ class RootWidget(FloatLayout):
             self.sound_play.stop()
     
     def _on_file_drop(self, window, file_path):
-        if os.path.isdir(file_path.decode('utf-8')):
+        file_path = file_path.decode('utf-8')
+        if os.path.isdir(file_path):
             print('ディレクトリ')
         else:
-            self.load_movie_and_sound(file_path.decode('utf-8'))
+            self.load_movie_and_sound(file_path)
 
 
 class MVEditorApp(App):
