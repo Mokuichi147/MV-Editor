@@ -42,17 +42,23 @@
                 Image:
                     allow_stretch: True
                     texture: root.image_texture
-                Slider:
-                    id: slider
-                    min: 0
-                    max: root.frame_max
-                    value: 0
-                    on_value: root.cursor_moved(self.value)
-                    step: 1
-                    cursor_image: 'Resources/cursor.png'
-                    value_track: True
-                    value_track_color: 90/255, 90/255, 255/255, 1
+                BoxLayout:
                     size_hint: 1, 0.1
+                    Slider:
+                        id: video_time_slider
+                        min: 0
+                        max: root.frame_max
+                        value: 0
+                        on_value: root.cursor_moved(self.value)
+                        step: 1
+                        cursor_image: 'Resources/cursor.png'
+                        value_track: True
+                        value_track_color: 90/255, 90/255, 255/255, 1
+                        size_hint: 1, 1
+                    Label:
+                        id: video_time_label
+                        text: '0:00'
+                        size_hint: 0.05, 1
         BoxLayout:
             # lower half
             Label:
