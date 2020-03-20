@@ -83,6 +83,13 @@
                         size: 50, 30
                         size_hint: None, None
         BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: 0.15, 0.15, 0.15, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size[0], self.size[1]-5
+            padding: 0, 5, 0, 0
             # lower half
             Label:
                 text: 'movie'
