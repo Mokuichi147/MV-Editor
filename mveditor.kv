@@ -44,22 +44,28 @@
                     texture: root.image_texture
                 BoxLayout:
                     padding: 0, 5, 0, 0
-                    size_hint: 1, 0.07
+                    size_hint: 1, None
+                    height: 35
                     Button:
                         on_press: print('Button 1')
-                        size_hint: 0.045, 1
+                        size: 30, 30
+                        size_hint: None, None
                     Button:
                         on_press: print('Button 2')
-                        size_hint: 0.045, 1
+                        size: 30, 30
+                        size_hint: None, None
                     Button:
                         on_press: print('Button 3')
-                        size_hint: 0.045, 1
+                        size: 30, 30
+                        size_hint: None, None
                     Button:
                         on_press: print('Button 4')
-                        size_hint: 0.045, 1
+                        size: 30, 30
+                        size_hint: None, None
                     Button:
                         on_press: print('Button 5')
-                        size_hint: 0.045, 1
+                        size: 30, 30
+                        size_hint: None, None
                     Slider:
                         id: video_time_slider
                         min: 0
@@ -74,7 +80,8 @@
                     Label:
                         id: video_time_label
                         text: '0:00'
-                        size_hint: 0.07, 1
+                        size: 50, 30
+                        size_hint: None, None
         BoxLayout:
             # lower half
             Label:
