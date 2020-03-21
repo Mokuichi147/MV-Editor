@@ -150,6 +150,30 @@ class RootWidget(FloatLayout):
             self.playback_event.cancel()
             self.playback_event = None
             self.sound_play.stop()
+    
+    def set_zero_frame(self):
+        self.frame_count = 0
+        self.pre_frame_count = 0
+        self.ids['video_time_slider'].value = self.frame_count
+        self.frame = pic_frame(self.cap, self.frame_count)
+        
+    def previous_frame(self):
+        self.frame_count -= 1
+        if self.frame_count < 0:
+            self.frame_count += 1
+            return
+        self.ids['video_time_slider'].value = self.frame_count
+        self.pre_frame_count = self.frame_count
+        self.frame = pic_frame(self.cap, self.frame_count)
+    
+    def next_frame(self):
+        self.frame_count += 1
+        if self.frame_count > self.frame_max - 1:
+            self.frame_count -= 1
+            return
+        self.ids['video_time_slider'].value = self.frame_count
+        self.pre_frame_count = self.frame_count
+        _, self.frame = self.cap.read()
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
