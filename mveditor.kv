@@ -24,12 +24,12 @@
                 FileChooserListView:
                     id: file_list_view
                     path: root.path
-                    on_selection: root.selected(self.selection)
+                    on_selection: root.file_selected(self.selection)
                     size_hint: 0.5, 1
                 FileChooserIconView:
                     id: file_icon_view
                     path: root.path
-                    on_selection: root.selected(self.selection)
+                    on_selection: root.file_selected(self.selection)
             BoxLayout:
                 # video preview
                 orientation: 'vertical'

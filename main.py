@@ -73,12 +73,12 @@ class RootWidget(FloatLayout):
         self._keyboard.bind(on_key_down=self._on_key_down)
         Window.bind(on_dropfile=self._on_file_drop)
 
-        self.load_movie_and_sound(dir_path+'/movies/test.mp4')
+        self.load_movie_and_sound(dir_path+'/Movies/test.mp4')
 
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.texture_size)
 
-        self.path = dir_path+'/movies/'
+        self.path = dir_path+'/Movies/'
         self.ids['file_list_view'].path = self.path
         self.ids['file_icon_view'].path = self.path
     
@@ -136,7 +136,7 @@ class RootWidget(FloatLayout):
         self.pre_frame_count = self.frame_count
         _, self.frame = self.cap.read()
     
-    def selected(self, file_path):
+    def file_selected(self, file_path):
         if len(file_path) == 1:
             self.load_movie_and_sound(file_path[0])
     
