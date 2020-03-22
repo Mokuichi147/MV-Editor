@@ -131,6 +131,8 @@ class RootWidget(FloatLayout):
             # 最後まで再生したとき
             self.playback_event.cancel()
             self.playback_event = None
+            self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
+            self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
             return
         self.ids['video_time_slider'].value = self.frame_count
         self.pre_frame_count = self.frame_count
@@ -146,10 +148,14 @@ class RootWidget(FloatLayout):
             self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
             self.sa = 0
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+            self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
+            self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
         else:
             self.playback_event.cancel()
             self.playback_event = None
             self.sound_play.stop()
+            self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
+            self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
     
     def set_zero_frame(self):
         self.frame_count = 0
@@ -185,10 +191,14 @@ class RootWidget(FloatLayout):
             self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
             self.sa = 0
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+            self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
+            self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
         elif  keycode[1] == 'spacebar':
             self.playback_event.cancel()
             self.playback_event = None
             self.sound_play.stop()
+            self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
+            self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
     
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')

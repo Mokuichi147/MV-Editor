@@ -31,3 +31,10 @@ draw.polygon((((size-triangle_width)/2,quarter), ((size-triangle_width)/2,quarte
 img.save(resources_path + separator + 'playback_button.png')
 draw.polygon((((size-triangle_width)/2,quarter), ((size-triangle_width)/2,quarter*3), ((triangle_width)+quarter,half)), fill=sub_color)
 img.save(resources_path + separator + 'playback_button_down.png')
+
+img = Image.new('RGBA', (size,size), (0,0,0,0))
+draw = ImageDraw.Draw(img)
+draw.rectangle(((quarter,quarter), (quarter*3,quarter*3)), fill=main_color)
+img.save(resources_path + separator + 'playback_stop_button.png')
+draw.rectangle(((quarter,quarter), (quarter*3,quarter*3)), fill=sub_color)
+img.save(resources_path + separator + 'playback_stop_button_down.png')
