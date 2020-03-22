@@ -92,9 +92,7 @@ class RootWidget(FloatLayout):
         self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
         self.sound += ratio_to_db(0.05)
         if self.playback_event != None:
-            self.playback_event.cancel()
-            self.playback_event = None
-            self.sound_play.stop()
+            self.playback_stop()
         self.sa = 0
         self.frame_count = 0
     
@@ -129,10 +127,7 @@ class RootWidget(FloatLayout):
             self.play_start_time = time() - self.ids['video_time_slider'].value/ self.fps
         if self.frame_count > self.frame_max - 1:
             # 最後まで再生したとき
-            self.playback_event.cancel()
-            self.playback_event = None
-            self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
-            self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
+            self.playback_stop()
             return
         self.ids['video_time_slider'].value = self.frame_count
         self.pre_frame_count = self.frame_count
@@ -141,21 +136,6 @@ class RootWidget(FloatLayout):
     def file_selected(self, file_path):
         if len(file_path) == 1:
             self.load_movie_and_sound(file_path[0])
-    
-    def playback_start_or_stop(self):
-        if self.playback_event == None:
-            self.play_start_time = time() - self.frame_count / self.fps
-            self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
-            self.sa = 0
-            self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
-            self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
-            self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
-        else:
-            self.playback_event.cancel()
-            self.playback_event = None
-            self.sound_play.stop()
-            self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
-            self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
     
     def set_zero_frame(self):
         self.frame_count = 0
@@ -180,25 +160,39 @@ class RootWidget(FloatLayout):
         self.ids['video_time_slider'].value = self.frame_count
         self.pre_frame_count = self.frame_count
         _, self.frame = self.cap.read()
+    
+    def playback_start_or_stop(self):
+        if self.playback_event == None:
+            self.playback_start()
+        else:
+            self.playback_stop()
+    
+    def playback_start(self, video=True, sound=True):
+        self.play_start_time = time() - self.frame_count / self.fps
+        if video:
+            self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
+            self.sa = 0
+        if sound:
+            self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+        self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
+        self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
+    
+    def playback_stop(self, video=True, sound=True):
+        if video:
+            self.playback_event.cancel()
+            self.playback_event = None
+        if sound:
+            self.sound_play.stop()
+        self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
+        self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
         self._keyboard = None
     
     def _on_key_down(self, keyboard, keycode, text, modifiers):
-        if self.playback_event == None and keycode[1] == 'spacebar':
-            self.play_start_time = time() - self.frame_count / self.fps
-            self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
-            self.sa = 0
-            self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
-            self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
-            self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
-        elif  keycode[1] == 'spacebar':
-            self.playback_event.cancel()
-            self.playback_event = None
-            self.sound_play.stop()
-            self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
-            self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
+        if keycode[1] == 'spacebar':
+            self.playback_start_or_stop()
     
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
