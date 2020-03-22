@@ -175,7 +175,7 @@ class RootWidget(FloatLayout):
         if sound:
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
         self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
-        self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
+        self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
     
     def playback_stop(self, video=True, sound=True):
         if video:
@@ -184,7 +184,7 @@ class RootWidget(FloatLayout):
         if sound:
             self.sound_play.stop()
         self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
-        self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
+        self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down)
