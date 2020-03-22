@@ -138,6 +138,8 @@ class RootWidget(FloatLayout):
             self.load_movie_and_sound(file_path[0])
     
     def set_zero_frame(self):
+        if self.playback_event != None:
+            self.playback_stop()
         self.frame_count = 0
         self.pre_frame_count = 0
         self.ids['video_time_slider'].value = self.frame_count
