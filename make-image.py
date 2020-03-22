@@ -126,3 +126,30 @@ draw.polygon([
     triangle_width+quarter, half
     ], fill=sub_color)
 img.save(resources_path + separator + 'next_frame_button_down.png')
+
+
+img = Image.new('RGBA', (size,size), (0,0,0,0))
+img_color = Image.new('RGBA', (size,size), main_color)
+img_mask = Image.new('L', img.size, 255)
+draw = ImageDraw.Draw(img_mask)
+draw.rectangle([
+    quarter, quarter,
+    quarter*3, quarter*3
+    ], fill=0)
+draw.rectangle([
+    quarter+size/10, quarter+size/10,
+    quarter*3-size/10, quarter*3-size/10
+    ], fill=255)
+draw.rectangle([
+    0, half-size/20,
+    size, half+size/20
+    ], fill=255)
+draw.rectangle([
+    half-size/20, 0,
+    half+size/20, size
+    ], fill=255)
+img = Image.composite(img, img_color, img_mask)
+img.save(resources_path + separator + 'fullscreen_preview_button.png')
+img_color = Image.new('RGBA', (size,size), sub_color)
+img = Image.composite(img, img_color, img_mask)
+img.save(resources_path + separator + 'fullscreen_preview_down.png')
