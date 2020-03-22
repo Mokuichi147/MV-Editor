@@ -203,6 +203,10 @@ class RootWidget(FloatLayout):
     def _on_key_up(self, keyboard, keycode):
         if keycode[1] == 'spacebar':
             self.spacebar_down = False
+        elif keycode[1] == 'left' and self.playback_event == None:
+            self.previous_frame()
+        elif keycode[1] == 'right' and self.playback_event == None:
+            self.next_frame()
     
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
