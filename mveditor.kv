@@ -8,11 +8,11 @@
     BoxLayout:
         orientation: 'vertical'
         padding: 5
+        # upper half
         BoxLayout:
-            # upper half
             orientation: 'horizontal'
+            # file selection
             BoxLayout:
-                # file selection
                 orientation: 'horizontal'
                 padding: 0, 0, 5, 0
                 canvas.before:
@@ -30,8 +30,8 @@
                     id: file_icon_view
                     path: root.path
                     on_selection: root.file_selected(self.selection)
+            # video preview
             BoxLayout:
-                # video preview
                 orientation: 'vertical'
                 canvas.before:
                     Color:
@@ -98,6 +98,7 @@
                         text: '0:00'
                         size: 50, 32
                         size_hint: None, None
+        # lower half
         BoxLayout:
             canvas.before:
                 Color:
@@ -106,6 +107,5 @@
                     pos: self.pos
                     size: self.size[0], self.size[1]-5
             padding: 0, 5, 0, 0
-            # lower half
             Label:
                 text: 'movie'
