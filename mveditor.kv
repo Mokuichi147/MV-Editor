@@ -45,20 +45,20 @@
                 BoxLayout:
                     padding: 5, 5, 0, 4
                     size_hint: 1, None
-                    height: 40
+                    height: 42
                     Button:
                         on_press: root.set_zero_frame()
                         background_normal: 'Resources/set_zero_frame_button.png'
                         background_down: 'Resources/set_zero_frame_button_down.png'
                         border: 0, 0, 0, 0
-                        size: 30, 30
+                        size: 32, 32
                         size_hint: None, None
                     Button:
                         on_press: root.previous_frame()
                         background_normal: 'Resources/previous_frame_button.png'
                         background_down: 'Resources/previous_frame_button_down.png'
                         border: 0, 0, 0, 0
-                        size: 30, 30
+                        size: 32, 32
                         size_hint: None, None
                     Button:
                         id: playback_button
@@ -66,21 +66,21 @@
                         background_normal: 'Resources/playback_button.png'
                         background_down: 'Resources/playback_stop_button_down.png'
                         border: 0, 0, 0, 0
-                        size: 30, 30
+                        size: 32, 32
                         size_hint: None, None
                     Button:
                         on_press: root.next_frame()
                         background_normal: 'Resources/next_frame_button.png'
                         background_down: 'Resources/next_frame_button_down.png'
                         border: 0, 0, 0, 0
-                        size: 30, 30
+                        size: 32, 32
                         size_hint: None, None
                     Button:
                         on_press: print('fullscreen preview')
                         background_normal: 'Resources/fullscreen_preview_button.png'
                         background_down: 'Resources/fullscreen_preview_button_down.png'
                         border: 0, 0, 0, 0
-                        size: 30, 30
+                        size: 32, 32
                         size_hint: None, None
                     Slider:
                         id: video_time_slider
@@ -96,7 +96,7 @@
                     Label:
                         id: video_time_label
                         text: '0:00'
-                        size: 50, 30
+                        size: 50, 32
                         size_hint: None, None
         BoxLayout:
             canvas.before:
