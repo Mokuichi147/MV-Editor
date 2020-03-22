@@ -68,11 +68,12 @@ class RootWidget(FloatLayout):
     frame_max = 100
     texture_size = (0,0)
     playback_event = None
+    spacebar_down = False
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
         self._keyboard = Window.request_keyboard(self._key_closed, self)
-        self._keyboard.bind(on_key_down=self._on_key_down)
+        self._keyboard.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         Window.bind(on_dropfile=self._on_file_drop)
 
         self.load_movie_and_sound(dir_path+'/Movies/test.mp4')
@@ -191,12 +192,17 @@ class RootWidget(FloatLayout):
         self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
 
     def _key_closed(self):
-        self._keyboard.unbind(on_key_down=self._on_key_down)
+        self._keyboard.unbind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         self._keyboard = None
     
     def _on_key_down(self, keyboard, keycode, text, modifiers):
-        if keycode[1] == 'spacebar':
+        if keycode[1] == 'spacebar' and not self.spacebar_down:
             self.playback_start_or_stop()
+            self.spacebar_down = True
+    
+    def _on_key_up(self, keyboard, keycode):
+        if keycode[1] == 'spacebar':
+            self.spacebar_down = False
     
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
