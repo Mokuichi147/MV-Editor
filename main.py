@@ -14,6 +14,7 @@ Config.set('graphics', 'minimum_height', 480)
 #Config.set('modules', 'ShowBorder', '')
 from kivy.app import App
 from kivy.clock import Clock
+from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
 from kivy.properties import StringProperty, ObjectProperty
@@ -21,6 +22,7 @@ from kivy.uix.floatlayout import FloatLayout
 
 
 version = '0.0.1'
+LabelBase.register(DEFAULT_FONT, 'Fonts/NotoSansJP-Medium.otf')
 dir_path = os.path.abspath(os.path.dirname(__file__))
 
 
