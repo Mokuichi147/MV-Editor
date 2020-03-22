@@ -104,3 +104,25 @@ draw.polygon([
     triangle_width+quarter, quarter
     ], fill=sub_color)
 img.save(resources_path + separator + 'previous_frame_button_down.png')
+
+
+img = Image.new('RGBA', (size,size), (0,0,0,0))
+draw = ImageDraw.Draw(img)
+draw.polygon([
+    (size-triangle_width)/2, quarter,
+    (size-triangle_width)/2, quarter+size/10,
+    triangle_width+quarter-size/7, half,
+    (size-triangle_width)/2, quarter*3-size/10,
+    (size-triangle_width)/2, quarter*3,
+    triangle_width+quarter, half
+    ], fill=main_color)
+img.save(resources_path + separator + 'next_frame_button.png')
+draw.polygon([
+    (size-triangle_width)/2, quarter,
+    (size-triangle_width)/2, quarter+size/10,
+    triangle_width+quarter-size/7, half,
+    (size-triangle_width)/2, quarter*3-size/10,
+    (size-triangle_width)/2, quarter*3,
+    triangle_width+quarter, half
+    ], fill=sub_color)
+img.save(resources_path + separator + 'next_frame_button_down.png')
