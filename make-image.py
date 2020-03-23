@@ -158,5 +158,5 @@ img = Image.composite(img, img_color, img_mask)
 img.save(resources_path + separator + 'fullscreen_preview_button_down.png')
 
 
-img = Image.new('RGBA', (size,size), background_sub_color)
+img = Image.new('RGBA', (size,size), background_main_color)
 img.save(resources_path + separator + 'splitter.png')

@@ -9,111 +9,123 @@
         orientation: 'vertical'
         padding: 5
         # upper half
-        Splitter:
-            sizable_from: 'bottom'
-            min_size: 230
-            max_size: root.size[1]/2+root.size[1]/3
+        BoxLayout:
+            id: vertical_splitter_upper
+            orientation: 'horizontal'
+            # file selection
             BoxLayout:
+                id: horizontal_splitter_left
                 orientation: 'horizontal'
-                # file selection
+                padding: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.15, 0.15, 0.15, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size[0], self.size[1]
+                FileChooserListView:
+                    id: file_list_view
+                    path: root.path
+                    on_selection: root.file_selected(self.selection)
+                    size_hint: 0.5, 1
+                FileChooserIconView:
+                    id: file_icon_view
+                    path: root.path
+                    on_selection: root.file_selected(self.selection)
+            # video preview
+            Button:
+                id: horizontal_splitter
+                on_press: root.button_moved('horizontal_splitter')
+                background_normal: 'Resources/splitter.png'
+                background_down: 'Resources/splitter.png'
+                border: 10, 0, 10, 0
+                size: 10, root.size[1]-10
+                size_hint: None, None
+            BoxLayout:
+                id: horizontal_splitter_right
+                orientation: 'vertical'
+                canvas.before:
+                    Color:
+                        rgba: 0.15, 0.15, 0.15, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                Image:
+                    allow_stretch: True
+                    texture: root.image_texture
                 BoxLayout:
-                    orientation: 'horizontal'
-                    padding: 0, 0, 5, 0
-                    canvas.before:
-                        Color:
-                            rgba: 0.15, 0.15, 0.15, 1
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size[0]-5, self.size[1]
-                    FileChooserListView:
-                        id: file_list_view
-                        path: root.path
-                        on_selection: root.file_selected(self.selection)
-                        size_hint: 0.5, 1
-                    FileChooserIconView:
-                        id: file_icon_view
-                        path: root.path
-                        on_selection: root.file_selected(self.selection)
-                # video preview
-                Splitter:
-                    sizable_from: 'left'
-                    min_size: 0 if self.size[0] > 300 else 300
-                    max_size: root.size[0] - 5
-                    BoxLayout:
-                        orientation: 'vertical'
-                        canvas.before:
-                            Color:
-                                rgba: 0.15, 0.15, 0.15, 1
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
-                        Image:
-                            allow_stretch: True
-                            texture: root.image_texture
-                        BoxLayout:
-                            padding: 5, 5, 0, 4
-                            size_hint: 1, None
-                            height: 42
-                            Button:
-                                on_press: root.set_zero_frame()
-                                background_normal: 'Resources/set_zero_frame_button.png'
-                                background_down: 'Resources/set_zero_frame_button_down.png'
-                                border: 0, 0, 0, 0
-                                size: 32, 32
-                                size_hint: None, None
-                            Button:
-                                on_press: root.previous_frame()
-                                background_normal: 'Resources/previous_frame_button.png'
-                                background_down: 'Resources/previous_frame_button_down.png'
-                                border: 0, 0, 0, 0
-                                size: 32, 32
-                                size_hint: None, None
-                            Button:
-                                id: playback_button
-                                on_press: root.playback_start_or_stop()
-                                background_normal: 'Resources/playback_button.png'
-                                background_down: 'Resources/playback_stop_button_down.png'
-                                border: 0, 0, 0, 0
-                                size: 32, 32
-                                size_hint: None, None
-                            Button:
-                                on_press: root.next_frame()
-                                background_normal: 'Resources/next_frame_button.png'
-                                background_down: 'Resources/next_frame_button_down.png'
-                                border: 0, 0, 0, 0
-                                size: 32, 32
-                                size_hint: None, None
-                            Button:
-                                on_press: print('fullscreen preview')
-                                background_normal: 'Resources/fullscreen_preview_button.png'
-                                background_down: 'Resources/fullscreen_preview_button_down.png'
-                                border: 0, 0, 0, 0
-                                size: 32, 32
-                                size_hint: None, None
-                            Slider:
-                                id: video_time_slider
-                                min: 0
-                                max: root.frame_max
-                                value: 0
-                                on_value: root.cursor_moved(self.value)
-                                step: 1
-                                cursor_image: 'Resources/cursor.png'
-                                value_track: True
-                                value_track_color: 90/255, 90/255, 255/255, 1
-                                size_hint: 1, 1
-                            Label:
-                                id: video_time_label
-                                text: '0:00'
-                                size: 50, 32
-                                size_hint: None, None
+                    padding: 5, 5, 0, 4
+                    size_hint: 1, None
+                    height: 42
+                    Button:
+                        on_press: root.set_zero_frame()
+                        background_normal: 'Resources/set_zero_frame_button.png'
+                        background_down: 'Resources/set_zero_frame_button_down.png'
+                        border: 0, 0, 0, 0
+                        size: 32, 32
+                        size_hint: None, None
+                    Button:
+                        on_press: root.previous_frame()
+                        background_normal: 'Resources/previous_frame_button.png'
+                        background_down: 'Resources/previous_frame_button_down.png'
+                        border: 0, 0, 0, 0
+                        size: 32, 32
+                        size_hint: None, None
+                    Button:
+                        id: playback_button
+                        on_press: root.playback_start_or_stop()
+                        background_normal: 'Resources/playback_button.png'
+                        background_down: 'Resources/playback_stop_button_down.png'
+                        border: 0, 0, 0, 0
+                        size: 32, 32
+                        size_hint: None, None
+                    Button:
+                        on_press: root.next_frame()
+                        background_normal: 'Resources/next_frame_button.png'
+                        background_down: 'Resources/next_frame_button_down.png'
+                        border: 0, 0, 0, 0
+                        size: 32, 32
+                        size_hint: None, None
+                    Button:
+                        on_press: print('fullscreen preview')
+                        background_normal: 'Resources/fullscreen_preview_button.png'
+                        background_down: 'Resources/fullscreen_preview_button_down.png'
+                        border: 0, 0, 0, 0
+                        size: 32, 32
+                        size_hint: None, None
+                    Slider:
+                        id: video_time_slider
+                        min: 0
+                        max: root.frame_max
+                        value: 0
+                        on_value: root.cursor_moved(self.value)
+                        step: 1
+                        cursor_image: 'Resources/cursor.png'
+                        value_track: True
+                        value_track_color: 90/255, 90/255, 255/255, 1
+                        size_hint: 1, 1
+                    Label:
+                        id: video_time_label
+                        text: '0:00'
+                        size: 50, 32
+                        size_hint: None, None
+        Button:
+            id: vertical_splitter
+            on_press: root.button_moved('vertical_splitter')
+            background_normal: 'Resources/splitter.png'
+            background_down: 'Resources/splitter.png'
+            border: 0, 10, 0, 10
+            size: root.size[0]-10, 10
+            size_hint: None, None
         # lower half
         BoxLayout:
+            id: vertical_splitter_lower
             canvas.before:
                 Color:
                     rgba: 0.15, 0.15, 0.15, 1
                 Rectangle:
                     pos: self.pos
-                    size: self.size[0], self.size[1]-5
-            padding: 0, 5, 0, 0
+                    size: self.size[0], self.size[1]
+            padding: 0, 0, 0, 0
             Label:
                 text: 'movie'

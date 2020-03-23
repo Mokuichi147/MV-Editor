@@ -69,6 +69,7 @@ class RootWidget(FloatLayout):
     texture_size = (0,0)
     playback_event = None
     spacebar_down = False
+    button_move = None
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
@@ -190,6 +191,35 @@ class RootWidget(FloatLayout):
             self.sound_play.stop()
         self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
         self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
+    
+    def button_moved(self, button_id):
+        self.button_move = button_id
+    
+    def on_touch_move(self, touch):
+        if not 'pos' in touch.profile:
+            return
+        elif self.button_move == 'vertical_splitter':
+            height = self.ids['vertical_splitter_lower'].size[1] + self.ids['vertical_splitter_upper'].size[1] + self.ids[self.button_move].size[1]
+            if height - touch.pos[1] < 205 or touch.pos[1] < 100:
+                return
+            width = self.ids['vertical_splitter_upper'].size[0]
+            pos_height = height - touch.pos[1]
+            self.ids[self.button_move].pos[1] = pos_height
+            self.ids['vertical_splitter_upper'].size = [width, pos_height]
+            self.ids['vertical_splitter_upper'].size_hint = [1, None]
+        elif self.button_move == 'horizontal_splitter':
+            width = self.ids['horizontal_splitter_left'].size[0] + self.ids['horizontal_splitter_right'].size[0] + self.ids[self.button_move].size[0]
+            if width - touch.pos[0] < 300 or touch.pos[0] < 10:
+                return
+            height = self.ids['horizontal_splitter_right'].size[1]
+            pos_width = width - touch.pos[0]
+            self.ids[self.button_move].pos[0] = pos_width
+            self.ids['horizontal_splitter_right'].size = [pos_width, height]
+            self.ids['horizontal_splitter_right'].size_hint = [None, 1]
+    
+    def on_touch_up(self, touch):
+        if self.button_move != None:
+            self.button_move = None
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
@@ -215,7 +245,6 @@ class RootWidget(FloatLayout):
             self.ids['file_icon_view'].path = file_path
         else:
             self.load_movie_and_sound(file_path)
-
 
 class MVEditorApp(App):
     title = f'MV Editor v{version}'
