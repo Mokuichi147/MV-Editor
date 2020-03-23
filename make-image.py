@@ -15,6 +15,8 @@ if not os.path.isdir(resources_path):
 size = 256
 main_color = (145,140,255, 255)
 sub_color  = ( 90, 90,255, 255)
+background_main_color = ( 28, 28, 28, 255)
+background_sub_color  = ( 38, 38, 38, 255)
 
 half = size / 2
 quarter = size / 4
@@ -154,3 +156,7 @@ img.save(resources_path + separator + 'fullscreen_preview_button.png')
 img_color = Image.new('RGBA', (size,size), sub_color)
 img = Image.composite(img, img_color, img_mask)
 img.save(resources_path + separator + 'fullscreen_preview_button_down.png')
+
+
+img = Image.new('RGBA', (size,size), background_sub_color)
+img.save(resources_path + separator + 'splitter.png')
