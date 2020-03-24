@@ -51,7 +51,8 @@
                         size_hint: 1, 1
                 FileChooserIconView:
                     id: file_icon_view
-                    path: root.path
+                    rootpath: root.path
+                    filters: ['*.mp4']
                     on_selection: root.file_selected(self.selection)
             # video preview
             Button:

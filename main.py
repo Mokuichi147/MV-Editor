@@ -83,7 +83,7 @@ class RootWidget(FloatLayout):
         self.image_texture = frame2texture(self.frame, self.texture_size)
 
         self.path = dir_path+'/Movies/'
-        self.ids['file_icon_view'].path = self.path
+        self.ids['file_icon_view'].rootpath = self.path
     
     def load_movie_and_sound(self, movie_path):
         self.cap, self.texture_size, self.frame_max, self.fps = load_movie(movie_path)
@@ -240,7 +240,7 @@ class RootWidget(FloatLayout):
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
         if os.path.isdir(file_path):
-            self.ids['file_icon_view'].path = file_path
+            self.ids['file_icon_view'].rootpath = file_path
         else:
             self.load_movie_and_sound(file_path)
 
