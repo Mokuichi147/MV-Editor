@@ -209,7 +209,7 @@ class RootWidget(FloatLayout):
             self.ids['vertical_splitter_upper'].size_hint = [1, None]
         elif self.button_move == 'horizontal_splitter':
             width = self.ids['horizontal_splitter_left'].size[0] + self.ids['horizontal_splitter_right'].size[0] + self.ids[self.button_move].size[0]
-            if width - touch.pos[0] < 300 or touch.pos[0] < 10:
+            if width - touch.pos[0] < 300 or touch.pos[0] < 5:
                 return
             height = self.ids['horizontal_splitter_right'].size[1]
             pos_width = width - touch.pos[0]
