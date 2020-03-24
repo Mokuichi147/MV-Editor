@@ -149,5 +149,67 @@
                     pos: self.pos
                     size: self.size[0], self.size[1]
             padding: 0, 0, 0, 0
+            orientation: 'vertical'
             Label:
-                text: 'movie'
+                text: 'time'
+                size_hint: 1, None
+                height: 50
+            ScrollView:
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, None
+                        height: 100
+                        Label:
+                            text: 'video 1'
+                            size_hint: None, 1
+                            width: 100
+                        Image:
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, None
+                        height: 100
+                        Label:
+                            text: 'video 2'
+                            size_hint: None, 1
+                            width: 100
+                        Image:
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, None
+                        height: 100
+                        Label:
+                            text: 'video 3'
+                            size_hint: None, 1
+                            width: 100
+                        Image:
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, None
+                        height: 100
+                        Label:
+                            text: 'video 4'
+                            size_hint: None, 1
+                            width: 100
+                        Image:
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, None
+                        height: 100
+                        Label:
+                            text: 'video 5'
+                            size_hint: None, 1
+                            width: 100
+                        Image:
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, None
+                        height: 100
+                        Label:
+                            text: 'video 6'
+                            size_hint: None, 1
+                            width: 100
+                        Image:
