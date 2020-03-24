@@ -23,11 +23,32 @@
                     Rectangle:
                         pos: self.pos
                         size: self.size[0], self.size[1]
-                FileChooserListView:
-                    id: file_list_view
-                    path: root.path
-                    on_selection: root.file_selected(self.selection)
-                    size_hint: 0.5, 1
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: 0, 0, 0, 0
+                    size_hint: None, 1
+                    width: 48
+                    ToggleButton:
+                        group: 'mode'
+                        state: 'down'
+                        on_press: print('Project')
+                        border: 0, 0, 0, 0
+                        size: 48, 48
+                        size_hint: None, None
+                    ToggleButton:
+                        group: 'mode'
+                        on_press: print('Setting')
+                        border: 0, 0, 0, 0
+                        size: 48, 48
+                        size_hint: None, None
+                    ToggleButton:
+                        group: 'mode'
+                        on_press: print('Output')
+                        border: 0, 0, 0, 0
+                        size: 48, 48
+                        size_hint: None, None
+                    Label:
+                        size_hint: 1, 1
                 FileChooserIconView:
                     id: file_icon_view
                     path: root.path
@@ -54,6 +75,7 @@
                     allow_stretch: True
                     texture: root.image_texture
                 BoxLayout:
+                    orientation: 'horizontal'
                     padding: 5, 5, 0, 4
                     size_hint: 1, None
                     height: 42
