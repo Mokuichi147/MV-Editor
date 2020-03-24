@@ -18,6 +18,7 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
 from kivy.properties import StringProperty, ObjectProperty
+from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 
 
@@ -70,6 +71,8 @@ class RootWidget(FloatLayout):
     playback_event = None
     spacebar_down = False
     button_move = None
+    project_path = ''
+    project_path_listdir = []
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
@@ -220,6 +223,10 @@ class RootWidget(FloatLayout):
         if self.button_move != None:
             self.button_move = None
 
+    def dir_selected(self, text):
+        _num = self.project_path_listdir.index(text)
+        self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[_num]
+
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         self._keyboard = None
@@ -240,7 +247,25 @@ class RootWidget(FloatLayout):
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
         if os.path.isdir(file_path):
-            self.ids['file_icon_view'].rootpath = file_path
+            self.project_path = file_path
+            _files = os.listdir(self.project_path)
+            self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
+            self.ids['project_dirs'].clear_widgets()
+            for dir_name in self.project_path_listdir:
+                btn = Button(
+                    text = dir_name,
+                    height = 30,
+                    size_hint = (1,None),
+                    halign = 'left',
+                    text_size = (220, 20),
+                    on_press = lambda x: self.dir_selected(x.text))
+                self.ids['project_dirs'].add_widget(btn)
+            if len(self.project_path_listdir) > 0:
+                self.ids['project_dirs'].parent.width = 250
+                self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
+            else:
+                self.ids['file_icon_view'].rootpath = self.project_path
+                self.ids['project_dirs'].parent.width = 0
         else:
             self.load_movie_and_sound(file_path)
 

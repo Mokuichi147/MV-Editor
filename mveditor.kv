@@ -49,6 +49,15 @@
                         size_hint: None, None
                     Label:
                         size_hint: 1, 1
+                ScrollView:
+                    size_hint: None, None
+                    width: 250
+                    height: file_icon_view.height
+                    BoxLayout:
+                        id: project_dirs
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
                 FileChooserIconView:
                     id: file_icon_view
                     rootpath: root.path
