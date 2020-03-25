@@ -85,6 +85,7 @@ class RootWidget(FloatLayout):
 
         self.project_path = dir_path + '/Movies/'
         self.ids['file_icon_view'].rootpath = self.project_path
+        self.ids['project_dirs'].parent.width = 0
         self.load_movie_and_sound(self.project_path+'test.mp4')
     
     def load_movie_and_sound(self, movie_path):
