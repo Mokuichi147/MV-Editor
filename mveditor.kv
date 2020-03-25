@@ -12,10 +12,10 @@
         BoxLayout:
             id: vertical_splitter_upper
             orientation: 'horizontal'
+            size_hint: 1, 2.3
             BoxLayout:
                 id: horizontal_splitter_left
                 orientation: 'vertical'
-                padding: 0, 0, 0, 0
                 canvas.before:
                     Color:
                         rgba: 0.15, 0.15, 0.15, 1
@@ -102,6 +102,7 @@
             BoxLayout:
                 id: horizontal_splitter_right
                 orientation: 'vertical'
+                size_hint: 1.9, 1
                 canvas.before:
                     Color:
                         rgba: 0.15, 0.15, 0.15, 1
