@@ -89,7 +89,6 @@ class RootWidget(FloatLayout):
     def load_movie_and_sound(self, movie_path):
         if self.playback_event != None:
             self.playback_stop()
-        print(movie_path)
         self.cap, self.texture_size, self.frame_max, self.fps = load_movie(movie_path)
         self.ids['video_time_slider'].max = self.frame_max -1
         self.ids['video_time_slider'].value = 0
