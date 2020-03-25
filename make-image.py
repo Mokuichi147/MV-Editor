@@ -114,7 +114,7 @@ draw = ImageDraw.Draw(img)
 draw.polygon([
     triangle_width_space, quarter,
     triangle_width_space, quarter+size/10,
-    quarter+size/20*3*math.sqrt(3), half,
+    triangle_width_space+size/20*3*math.sqrt(3), half,
     triangle_width_space, quarter*3-size/10,
     triangle_width_space, quarter*3,
     triangle_width_space+triangle_width, half
@@ -123,7 +123,7 @@ img.save(resources_path + separator + 'next_frame_button.png')
 draw.polygon([
     triangle_width_space, quarter,
     triangle_width_space, quarter+size/10,
-    quarter+size/20*3*math.sqrt(3), half,
+    triangle_width_space+size/20*3*math.sqrt(3), half,
     triangle_width_space, quarter*3-size/10,
     triangle_width_space, quarter*3,
     triangle_width_space+triangle_width, half
