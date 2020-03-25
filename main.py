@@ -72,6 +72,7 @@ class RootWidget(FloatLayout):
     frame_max = 100
     texture_size = (0,0)
     playback_event = None
+    sound = None
     spacebar_down = False
     # Splitter関連
     button_move = None
@@ -87,16 +88,19 @@ class RootWidget(FloatLayout):
         self.load_movie_and_sound(self.project_path+'test.mp4')
     
     def load_movie_and_sound(self, movie_path):
+        if self.playback_event != None:
+            self.playback_stop()
         self.cap, self.texture_size, self.frame_max, self.fps = load_movie(movie_path)
         self.ids['video_time_slider'].max = self.frame_max -1
         self.ids['video_time_slider'].value = 0
         self.ids['video_time_label'].text = '0:00'
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.texture_size)
-        self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
-        self.sound += ratio_to_db(0.05)
-        if self.playback_event != None:
-            self.playback_stop()
+        try:
+            self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
+            self.sound += ratio_to_db(0.05)
+        except:
+            self.sound = None
         self.sa = 0
         self.frame_count = 0
     
@@ -125,8 +129,9 @@ class RootWidget(FloatLayout):
             # スライダーのカーソル位置を移動したとき
             self.frame_count = self.ids['video_time_slider'].value
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
-            self.sound_play.stop()
-            self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+            if self.sound != None:
+                self.sound_play.stop()
+                self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
             self.sa = 0
             self.play_start_time = time() - self.ids['video_time_slider'].value/ self.fps
         if self.frame_count > self.frame_max - 1:
@@ -175,21 +180,21 @@ class RootWidget(FloatLayout):
         else:
             self.playback_stop()
     
-    def playback_start(self, video=True, sound=True):
+    def playback_start(self, video=True):
         self.play_start_time = time() - self.frame_count / self.fps
         if video:
             self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
             self.sa = 0
-        if sound:
+        if self.sound != None:
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
         self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
         self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
     
-    def playback_stop(self, video=True, sound=True):
+    def playback_stop(self, video=True):
         if video:
             self.playback_event.cancel()
             self.playback_event = None
-        if sound:
+        if self.sound != None:
             self.sound_play.stop()
         self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
         self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
