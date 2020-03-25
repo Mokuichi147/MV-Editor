@@ -13,8 +13,9 @@ if not os.path.isdir(resources_path):
     os.mkdir(resources_path)
 
 size = 256
-main_color = (145,140,255, 255)
-sub_color  = ( 90, 90,255, 255)
+main_color   = (145,140,255, 255)
+sub_color    = ( 90, 90,255, 255)
+accent_color = ( 51, 51, 63, 255)
 background_main_color = ( 28, 28, 28, 255)
 background_sub_color  = ( 38, 38, 38, 255)
 
@@ -162,17 +163,25 @@ img = Image.new('RGBA', (size,size), background_main_color)
 img.save(resources_path + separator + 'splitter.png')
 
 
-img = Image.new('RGBA', (size,size), background_sub_color)
+img = Image.new('RGBA', (size,size), accent_color)
 draw = ImageDraw.Draw(img)
 draw.line([
     0, size,
     size, size
     ], fill=main_color, width=5)
+draw.line([
+    0, 2,
+    0, size
+    ], fill=main_color, width=11)
 img.save(resources_path + separator + 'listdir.png')
 draw.line([
     0, size,
     size, size
-    ], fill=sub_color, width=5)
+    ], fill=sub_color, width=11)
+draw.line([
+    0, 2,
+    0, size
+    ], fill=sub_color, width=11)
 img.save(resources_path + separator + 'listdir_down.png')
 
 
