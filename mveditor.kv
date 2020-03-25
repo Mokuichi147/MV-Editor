@@ -12,10 +12,9 @@
         BoxLayout:
             id: vertical_splitter_upper
             orientation: 'horizontal'
-            # file selection
             BoxLayout:
                 id: horizontal_splitter_left
-                orientation: 'horizontal'
+                orientation: 'vertical'
                 padding: 0, 0, 0, 0
                 canvas.before:
                     Color:
@@ -24,45 +23,58 @@
                         pos: self.pos
                         size: self.size[0], self.size[1]
                 BoxLayout:
-                    orientation: 'vertical'
+                    orientation: 'horizontal'
                     padding: 0, 0, 0, 0
-                    size_hint: None, 1
-                    width: 48
+                    size_hint: 1, None
+                    height: 32
                     ToggleButton:
                         group: 'mode'
                         state: 'down'
+                        text: 'Project'
                         on_press: print('Project')
+                        background_normal: 'Resources/listdir.png'
+                        background_down: 'Resources/listdir_down.png'
                         border: 0, 0, 0, 0
-                        size: 48, 48
+                        size: 128, 32
                         size_hint: None, None
                     ToggleButton:
                         group: 'mode'
+                        text: 'Setting'
                         on_press: print('Setting')
+                        background_normal: 'Resources/listdir.png'
+                        background_down: 'Resources/listdir_down.png'
                         border: 0, 0, 0, 0
-                        size: 48, 48
+                        size: 128, 32
                         size_hint: None, None
                     ToggleButton:
                         group: 'mode'
+                        text: 'Output'
                         on_press: print('Output')
+                        background_normal: 'Resources/listdir.png'
+                        background_down: 'Resources/listdir_down.png'
                         border: 0, 0, 0, 0
-                        size: 48, 48
+                        size: 128, 32
                         size_hint: None, None
                     Label:
                         size_hint: 1, 1
-                ScrollView:
-                    size_hint: None, None
-                    width: 250
-                    height: file_icon_view.height
-                    BoxLayout:
-                        id: project_dirs
-                        orientation: 'vertical'
-                        size_hint_y: None
-                        height: self.minimum_height
-                FileChooserIconView:
-                    id: file_icon_view
-                    rootpath: ''
-                    filters: ['*.wav', '*.mp3', '*.mp4', '*.mov', '*.jpg', '*.png', '*.ttf', '*.otf']
-                    on_selection: root.file_selected(self.selection)
+                # file selection
+                BoxLayout:
+                    orientation: 'horizontal'
+                    padding: 0, 0, 0, 0
+                    ScrollView:
+                        size_hint: None, None
+                        width: 200
+                        height: file_icon_view.height
+                        BoxLayout:
+                            id: project_dirs
+                            orientation: 'vertical'
+                            size_hint_y: None
+                            height: self.minimum_height
+                    FileChooserIconView:
+                        id: file_icon_view
+                        rootpath: ''
+                        filters: ['*.wav', '*.mp3', '*.mp4', '*.mov', '*.jpg', '*.png', '*.ttf', '*.otf']
+                        on_selection: root.file_selected(self.selection)
             # video preview
             Button:
                 id: horizontal_splitter

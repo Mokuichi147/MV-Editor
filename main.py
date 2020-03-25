@@ -18,7 +18,7 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
 from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.button import Button
+from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.floatlayout import FloatLayout
 
 
@@ -257,16 +257,19 @@ class RootWidget(FloatLayout):
             self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
             self.ids['project_dirs'].clear_widgets()
             for dir_name in self.project_path_listdir:
-                btn = Button(
+                btn = ToggleButton(
                     text = dir_name,
+                    group = 'listdir',
+                    background_normal = 'Resources/listdir.png',
+                    background_down = 'Resources/listdir_down.png',
                     height = 30,
                     size_hint = (1,None),
                     halign = 'left',
-                    text_size = (220, 20),
+                    text_size = (180, 20),
                     on_press = lambda x: self.dir_selected(x.text))
                 self.ids['project_dirs'].add_widget(btn)
             if len(self.project_path_listdir) > 0:
-                self.ids['project_dirs'].parent.width = 250
+                self.ids['project_dirs'].parent.width = 200
                 self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
             else:
                 self.ids['file_icon_view'].rootpath = self.project_path

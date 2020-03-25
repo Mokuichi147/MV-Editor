@@ -160,3 +160,17 @@ img.save(resources_path + separator + 'fullscreen_preview_button_down.png')
 
 img = Image.new('RGBA', (size,size), background_main_color)
 img.save(resources_path + separator + 'splitter.png')
+
+
+img = Image.new('RGBA', (size,size), background_sub_color)
+draw = ImageDraw.Draw(img)
+draw.line([
+    0, size-1,
+    size, size-1
+    ], fill=main_color, width=3)
+img.save(resources_path + separator + 'listdir.png')
+draw.line([
+    0, size-1,
+    size, size-1
+    ], fill=sub_color, width=3)
+img.save(resources_path + separator + 'listdir_down.png')
