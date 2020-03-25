@@ -28,6 +28,12 @@
                     padding: 0, 0, 0, 0
                     size_hint: 1, None
                     height: 32
+                    canvas.before:
+                        Color:
+                            rgba: 0.30, 0.30, 0.40, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size[0], self.size[1]
                     ToggleButton:
                         group: 'mode'
                         state: 'down'
