@@ -165,12 +165,28 @@ img.save(resources_path + separator + 'splitter.png')
 img = Image.new('RGBA', (size,size), background_sub_color)
 draw = ImageDraw.Draw(img)
 draw.line([
-    0, size-1,
-    size, size-1
-    ], fill=main_color, width=3)
+    0, size,
+    size, size
+    ], fill=main_color, width=5)
 img.save(resources_path + separator + 'listdir.png')
 draw.line([
-    0, size-1,
-    size, size-1
-    ], fill=sub_color, width=3)
+    0, size,
+    size, size
+    ], fill=sub_color, width=5)
 img.save(resources_path + separator + 'listdir_down.png')
+
+
+img = Image.new('RGBA', (size,size), main_color)
+draw = ImageDraw.Draw(img)
+draw.line([
+    size, 0,
+    size, size
+    ], fill=background_sub_color, width=5)
+img.save(resources_path + separator + 'mode.png')
+img = Image.new('RGBA', (size,size), sub_color)
+draw = ImageDraw.Draw(img)
+draw.line([
+    size, 0,
+    size, size
+    ], fill=background_sub_color, width=5)
+img.save(resources_path + separator + 'mode_down.png')

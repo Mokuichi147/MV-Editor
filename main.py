@@ -256,9 +256,9 @@ class RootWidget(FloatLayout):
             _files = os.listdir(self.project_path)
             self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
             self.ids['project_dirs'].clear_widgets()
-            for dir_name in self.project_path_listdir:
+            for dir_count in range(len(self.project_path_listdir)):
                 btn = ToggleButton(
-                    text = dir_name,
+                    text = self.project_path_listdir[dir_count],
                     group = 'listdir',
                     background_normal = 'Resources/listdir.png',
                     background_down = 'Resources/listdir_down.png',
@@ -267,6 +267,8 @@ class RootWidget(FloatLayout):
                     halign = 'left',
                     text_size = (180, 20),
                     on_press = lambda x: self.dir_selected(x.text))
+                if dir_count == 0:
+                    btn.state = 'down'
                 self.ids['project_dirs'].add_widget(btn)
             if len(self.project_path_listdir) > 0:
                 self.ids['project_dirs'].parent.width = 200
