@@ -83,14 +83,13 @@ class RootWidget(FloatLayout):
         self._keyboard.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         Window.bind(on_dropfile=self._on_file_drop)
 
-        self.project_path = dir_path + '/Movies/'
-        self.ids['file_icon_view'].rootpath = self.project_path
-        self.ids['project_dirs'].parent.width = 0
-        self.load_movie_and_sound(self.project_path+'test.mp4')
+        self.load_file(dir_path + '/TestProject')
+        self.load_movie_and_sound(self.project_path+'/Video/test.mp4')
     
     def load_movie_and_sound(self, movie_path):
         if self.playback_event != None:
             self.playback_stop()
+        print(movie_path)
         self.cap, self.texture_size, self.frame_max, self.fps = load_movie(movie_path)
         self.ids['video_time_slider'].max = self.frame_max -1
         self.ids['video_time_slider'].value = 0
@@ -104,6 +103,35 @@ class RootWidget(FloatLayout):
             self.sound = None
         self.sa = 0
         self.frame_count = 0
+    
+    def load_file(self, file_path):
+        if not os.path.isdir(file_path):
+            self.load_movie_and_sound(file_path)
+            return
+        self.project_path = file_path
+        _files = os.listdir(self.project_path)
+        self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
+        self.ids['project_dirs'].clear_widgets()
+        for dir_count in range(len(self.project_path_listdir)):
+            btn = ToggleButton(
+                text = self.project_path_listdir[dir_count],
+                group = 'listdir',
+                background_normal = 'Resources/listdir.png',
+                background_down = 'Resources/listdir_down.png',
+                height = 30,
+                size_hint = (1,None),
+                halign = 'left',
+                text_size = (180, 20),
+                on_press = lambda x: self.dir_selected(x.text))
+            if dir_count == 0:
+                btn.state = 'down'
+            self.ids['project_dirs'].add_widget(btn)
+        if len(self.project_path_listdir) > 0:
+            self.ids['project_dirs'].parent.width = 200
+            self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
+        else:
+            self.ids['file_icon_view'].rootpath = self.project_path
+            self.ids['project_dirs'].parent.width = 0
     
     def cursor_moved(self, value):
         if self.playback_event == None:
@@ -252,33 +280,7 @@ class RootWidget(FloatLayout):
     
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
-        if os.path.isdir(file_path):
-            self.project_path = file_path
-            _files = os.listdir(self.project_path)
-            self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
-            self.ids['project_dirs'].clear_widgets()
-            for dir_count in range(len(self.project_path_listdir)):
-                btn = ToggleButton(
-                    text = self.project_path_listdir[dir_count],
-                    group = 'listdir',
-                    background_normal = 'Resources/listdir.png',
-                    background_down = 'Resources/listdir_down.png',
-                    height = 30,
-                    size_hint = (1,None),
-                    halign = 'left',
-                    text_size = (180, 20),
-                    on_press = lambda x: self.dir_selected(x.text))
-                if dir_count == 0:
-                    btn.state = 'down'
-                self.ids['project_dirs'].add_widget(btn)
-            if len(self.project_path_listdir) > 0:
-                self.ids['project_dirs'].parent.width = 200
-                self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
-            else:
-                self.ids['file_icon_view'].rootpath = self.project_path
-                self.ids['project_dirs'].parent.width = 0
-        else:
-            self.load_movie_and_sound(file_path)
+        self.load_file(file_path)
 
 class MVEditorApp(App):
     title = f'MV Editor v{version}'
