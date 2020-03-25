@@ -142,7 +142,7 @@ class RootWidget(FloatLayout):
     def file_selected(self, file_path):
         if len(file_path) != 1:
             return
-        if file_path[0].split('.')[-1] in ['mp4']:
+        if file_path[0].split('.')[-1].lower() in ['mp4', 'mov']:
             self.load_movie_and_sound(file_path[0])
     
     def set_zero_frame(self):
