@@ -61,8 +61,11 @@ def play_sound(audio_segment, audio_time):
 
 
 class RootWidget(FloatLayout):
+    # Project関連
+    project_path = ''
+    project_path_listdir = []
+    # Video Preview関連
     image_texture = ObjectProperty(None)
-    path = ''
     frame_count = 0
     pre_frame_count = 0
     sa = 0
@@ -70,9 +73,8 @@ class RootWidget(FloatLayout):
     texture_size = (0,0)
     playback_event = None
     spacebar_down = False
+    # Splitter関連
     button_move = None
-    project_path = ''
-    project_path_listdir = []
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
@@ -80,13 +82,9 @@ class RootWidget(FloatLayout):
         self._keyboard.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         Window.bind(on_dropfile=self._on_file_drop)
 
-        self.load_movie_and_sound(dir_path+'/Movies/test.mp4')
-
-        self.frame = pic_frame(self.cap, 0)
-        self.image_texture = frame2texture(self.frame, self.texture_size)
-
-        self.path = dir_path+'/Movies/'
-        self.ids['file_icon_view'].rootpath = self.path
+        self.project_path = dir_path + '/Movies/'
+        self.ids['file_icon_view'].rootpath = self.project_path
+        self.load_movie_and_sound(self.project_path+'test.mp4')
     
     def load_movie_and_sound(self, movie_path):
         self.cap, self.texture_size, self.frame_max, self.fps = load_movie(movie_path)
