@@ -1,2 +1,3 @@
-/TestProject/*
-/Fonts/*
+TestProject/*
+utils/__pycache__/*
+Fonts/*
