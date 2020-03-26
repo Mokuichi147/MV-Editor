@@ -23,6 +23,15 @@ def pic_frame(cap, frame_count):
         return
     return frame
 
+def pil_image2image(pil_image):
+    np_array = np.array(pil_image, dtype=np.uint8)
+    if np_array.ndim == 2:
+        return np_array
+    elif np_array.shape[2] == 3:
+        return np_array[:, :, ::-1]
+    elif np_array.shape[2] == 4:
+        return np_array[:, :, [2,1,0,3]]
+
 def frame2pil_image(frame):
     # time: 0.001s
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
