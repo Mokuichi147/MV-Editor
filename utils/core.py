@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 from PIL import Image
 from time import time
 from simpleaudio import play_buffer
@@ -22,18 +23,18 @@ def pic_frame(cap, frame_count):
         return
     return frame
 
-def frame2image(frame):
+def frame2pil_image(frame):
     # time: 0.001s
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     # time: 0.003s
-    image = Image.fromarray(frame)
-    return image
+    pil_image = Image.fromarray(frame)
+    return pil_image
 
-def image2texture(image):
+def pil_image2texture(pil_image):
     # time: 0s
-    texture = Texture.create(size=image.size)
+    texture = Texture.create(size=pil_image.size)
     # time: 0.004s
-    byte_data = image.tobytes()
+    byte_data = pil_image.tobytes()
     # time: 0.004~0.009s
     texture.blit_buffer(byte_data)
     # time: 0s
@@ -42,8 +43,8 @@ def image2texture(image):
 
 ''' time: 0.012~0.017s '''
 def frame2texture_pil(frame):
-    image = frame2image(frame)
-    return image2texture(image)
+    pil_image = frame2pil_image(frame)
+    return pil_image2texture(pil_image)
 
 ''' time: 0.007~0.013s '''
 def frame2texture(frame, size):
