@@ -39,7 +39,7 @@
                         group: 'mode'
                         state: 'down'
                         text: 'Project'
-                        on_press: print('Project')
+                        on_press: root.project_button(self.state)
                         background_normal: 'resources/mode.png'
                         background_down: 'resources/mode_down.png'
                         border: 0, 0, 0, 0
@@ -78,7 +78,7 @@
                         Button:
                             id: project_select
                             on_press: root.project_selected()
-                            text: '> TestProject' if project_dirs.width != 0 else ''
+                            text: ''
                             background_normal: 'resources/project_select.png' if project_dirs.width != 0 else 'resources/project_select_clear.png'
                             background_down: 'resources/project_select.png' if project_dirs.width != 0 else 'resources/project_select_clear.png'
                             size_hint: None, None
@@ -88,6 +88,7 @@
                             valign: 'top'
                             text_size: project_dirs.width-20, self.height/2
                         ScrollView:
+                            id: project_scrollview
                             canvas.before:
                                 Color:
                                     rgba: 0.20, 0.20, 0.25, 1
