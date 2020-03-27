@@ -40,8 +40,8 @@
                         state: 'down'
                         text: 'Project'
                         on_press: print('Project')
-                        background_normal: 'Resources/mode.png'
-                        background_down: 'Resources/mode_down.png'
+                        background_normal: 'resources/mode.png'
+                        background_down: 'resources/mode_down.png'
                         border: 0, 0, 0, 0
                         size: 150, 32
                         size_hint: None, None
@@ -49,8 +49,8 @@
                         group: 'mode'
                         text: 'Setting'
                         on_press: print('Setting')
-                        background_normal: 'Resources/mode.png'
-                        background_down: 'Resources/mode_down.png'
+                        background_normal: 'resources/mode.png'
+                        background_down: 'resources/mode_down.png'
                         border: 0, 0, 0, 0
                         size: 150, 32
                         size_hint: None, None
@@ -58,8 +58,8 @@
                         group: 'mode'
                         text: 'Output'
                         on_press: print('Output')
-                        background_normal: 'Resources/mode.png'
-                        background_down: 'Resources/mode_down.png'
+                        background_normal: 'resources/mode.png'
+                        background_down: 'resources/mode_down.png'
                         border: 0, 0, 0, 0
                         size: 150, 32
                         size_hint: None, None
@@ -78,7 +78,9 @@
                         Button:
                             id: project_select
                             on_press: root.project_selected()
-                            text: '> TestProject'
+                            text: '> TestProject' if project_dirs.width != 0 else ''
+                            background_normal: 'resources/project_select.png' if project_dirs.width != 0 else 'resources/project_select_clear.png'
+                            background_down: 'resources/project_select.png' if project_dirs.width != 0 else 'resources/project_select_clear.png'
                             size_hint: None, None
                             height: 50
                             width: project_dirs.width
@@ -110,8 +112,8 @@
             Button:
                 id: horizontal_splitter
                 on_press: root.button_moved('horizontal_splitter')
-                background_normal: 'Resources/splitter.png'
-                background_down: 'Resources/splitter.png'
+                background_normal: 'resources/splitter.png'
+                background_down: 'resources/splitter.png'
                 border: 10, 0, 10, 0
                 size: 5, root.size[1]-10
                 size_hint: None, None
@@ -135,37 +137,37 @@
                     height: 42
                     Button:
                         on_press: root.set_zero_frame()
-                        background_normal: 'Resources/set_zero_frame_button.png'
-                        background_down: 'Resources/set_zero_frame_button_down.png'
+                        background_normal: 'resources/set_zero_frame_button.png'
+                        background_down: 'resources/set_zero_frame_button_down.png'
                         border: 0, 0, 0, 0
                         size: 32, 32
                         size_hint: None, None
                     Button:
                         on_press: root.previous_frame()
-                        background_normal: 'Resources/previous_frame_button.png'
-                        background_down: 'Resources/previous_frame_button_down.png'
+                        background_normal: 'resources/previous_frame_button.png'
+                        background_down: 'resources/previous_frame_button_down.png'
                         border: 0, 0, 0, 0
                         size: 32, 32
                         size_hint: None, None
                     Button:
                         id: playback_button
                         on_press: root.playback_start_or_stop()
-                        background_normal: 'Resources/playback_button.png'
-                        background_down: 'Resources/playback_stop_button_down.png'
+                        background_normal: 'resources/playback_button.png'
+                        background_down: 'resources/playback_stop_button_down.png'
                         border: 0, 0, 0, 0
                         size: 32, 32
                         size_hint: None, None
                     Button:
                         on_press: root.next_frame()
-                        background_normal: 'Resources/next_frame_button.png'
-                        background_down: 'Resources/next_frame_button_down.png'
+                        background_normal: 'resources/next_frame_button.png'
+                        background_down: 'resources/next_frame_button_down.png'
                         border: 0, 0, 0, 0
                         size: 32, 32
                         size_hint: None, None
                     Button:
                         on_press: print('fullscreen preview')
-                        background_normal: 'Resources/fullscreen_preview_button.png'
-                        background_down: 'Resources/fullscreen_preview_button_down.png'
+                        background_normal: 'resources/fullscreen_preview_button.png'
+                        background_down: 'resources/fullscreen_preview_button_down.png'
                         border: 0, 0, 0, 0
                         size: 32, 32
                         size_hint: None, None
@@ -176,7 +178,7 @@
                         value: 0
                         on_value: root.cursor_moved(self.value)
                         step: 1
-                        cursor_image: 'Resources/cursor.png'
+                        cursor_image: 'resources/cursor.png'
                         value_track: True
                         value_track_color: 90/255, 90/255, 255/255, 1
                         size_hint: 1, 1
@@ -188,8 +190,8 @@
         Button:
             id: vertical_splitter
             on_press: root.button_moved('vertical_splitter')
-            background_normal: 'Resources/splitter.png'
-            background_down: 'Resources/splitter.png'
+            background_normal: 'resources/splitter.png'
+            background_down: 'resources/splitter.png'
             border: 0, 10, 0, 10
             size: root.size[0]-10, 5
             size_hint: None, None

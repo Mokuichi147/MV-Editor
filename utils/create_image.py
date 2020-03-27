@@ -174,6 +174,20 @@ def mode(size2d=(size,size), color=main_color, bg_color=background_sub_color, li
         ], fill = bg_color, width = 5)
     img.save(path + name)
 
+def project_button(size2d=(size,size), color=main_color, bg_color=background_main_color, path=resources_path, name='project_select.png'):
+    size = size2d[0]
+    img = Image.new('RGBA', size2d, color)
+    draw = ImageDraw.Draw(img)
+    draw.line([
+        0, size,
+        size, size
+        ], fill = bg_color, width = 3)
+    img.save(path + name)
+
+def project_button_clear(size2d=(size,size), color=(0,0,0,0), path=resources_path, name='project_select_clear.png'):
+    img = Image.new('RGBA', size2d, color)
+    img.save(path + name)
+
 
 if __name__=='__main__':
     cursor()
@@ -203,3 +217,6 @@ if __name__=='__main__':
 
     mode()
     mode(color=sub_color, line_width=100, name='mode_down.png')
+
+    project_button()
+    project_button_clear()
