@@ -39,7 +39,7 @@
                         group: 'mode'
                         state: 'down'
                         text: 'Project'
-                        on_press: root.project_button(self.state)
+                        on_press: print('Project')
                         background_normal: 'Resources/mode.png'
                         background_down: 'Resources/mode_down.png'
                         border: 0, 0, 0, 0
@@ -69,22 +69,36 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 0, 2, 0, 0
-                    # directories
-                    ScrollView:
-                        canvas.before:
-                            Color:
-                                rgba: 0.20, 0.20, 0.25, 1
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size[0], self.size[1]
-                        size_hint: None, None
-                        width: 150
-                        height: file_icon_view.height
-                        BoxLayout:
-                            id: project_dirs
-                            orientation: 'vertical'
-                            size_hint_y: None
-                            height: self.minimum_height
+                    BoxLayout:
+                        orientation: 'vertical'
+                        padding: 0, 0, 0, 0
+                        size_hint: None, 1
+                        width: project_dirs.width
+                        # directories
+                        Button:
+                            id: project_select
+                            on_press: root.project_selected()
+                            text: '> TestProject'
+                            size_hint: None, None
+                            height: 50
+                            width: project_dirs.width
+                            halign: 'left'
+                            text_size: project_dirs.width-20, self.height/2.5
+                        ScrollView:
+                            canvas.before:
+                                Color:
+                                    rgba: 0.20, 0.20, 0.25, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size[0], self.size[1]
+                            size_hint: None, None
+                            width: 150
+                            height: file_icon_view.height - project_select.height
+                            BoxLayout:
+                                id: project_dirs
+                                orientation: 'vertical'
+                                size_hint_y: None
+                                height: self.minimum_height
                     # files
                     FileChooserIconView:
                         id: file_icon_view

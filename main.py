@@ -78,6 +78,13 @@ class RootWidget(FloatLayout):
             self.load_movie_and_sound(file_path)
             return
         self.project_path = file_path
+        # title等の変更
+        _project_name = self.project_path.split('/')[-1]
+        if _project_name == '':
+            _project_name = self.project_path
+        self.ids['project_select'].text = '> ' + _project_name
+        Window.set_title(f'MV Editor v{version} - {_project_name}')
+
         _files = os.listdir(self.project_path)
         self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
         self.ids['project_dirs'].clear_widgets()
@@ -140,10 +147,7 @@ class RootWidget(FloatLayout):
         self.pre_frame_count = self.frame_count
         _, self.frame = self.cap.read()
     
-    def project_button(self, button_state):
-        if button_state == 'down':
-            return
-        self.ids['project_button'].state = 'down'
+    def project_selected(self):
         _root = Tk()
         _root.withdraw()
         _project_path = askdirectory()
