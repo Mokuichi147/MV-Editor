@@ -100,7 +100,7 @@ class RootWidget(FloatLayout):
                 halign = 'left',
                 valign = 'top',
                 text_size = (130, 30-5),
-                on_press = lambda x: self.dir_selected(x.text))
+                on_press = lambda x: self.dir_selected(x, x.text, x.state))
             if dir_count == 0:
                 btn.state = 'down'
             self.ids['project_dirs'].add_widget(btn)
@@ -253,7 +253,10 @@ class RootWidget(FloatLayout):
         if self.button_move != None:
             self.button_move = None
 
-    def dir_selected(self, text):
+    def dir_selected(self, button, text, state):
+        if state == 'normal':
+            button.state = 'down'
+            return
         _num = self.project_path_listdir.index(text)
         self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[_num]
 
