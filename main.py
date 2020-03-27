@@ -97,7 +97,8 @@ class RootWidget(FloatLayout):
                 height = 30,
                 size_hint = (1,None),
                 halign = 'left',
-                text_size = (130, 20),
+                valign = 'top',
+                text_size = (130, 30-5),
                 on_press = lambda x: self.dir_selected(x.text))
             if dir_count == 0:
                 btn.state = 'down'
