@@ -12,11 +12,11 @@ MacOSでの動作も確認済み
 
 必要なライブラリ
 
+* numpy
 * pydub
 * simpleaudio
 * kivy
 * opencv-python
-* numpy
 * pillow
 
 
@@ -27,11 +27,11 @@ FFmpegは[公式ページ](https://ffmpeg.org/)から
 Python 3.6 以上推奨
 
 ```bash
+pip install numpy
 pip install pydub
 pip install simpleaudio
 pip install kivy
 pip install opencv-python
-pip install numpy
 pip install pillow
 ```
 
