@@ -83,8 +83,8 @@ class RootWidget(FloatLayout):
             btn = ToggleButton(
                 text = self.project_path_listdir[dir_count],
                 group = 'listdir',
-                background_normal = 'Resources/listdir.png',
-                background_down = 'Resources/listdir_down.png',
+                background_normal = 'resources/listdir.png',
+                background_down = 'resources/listdir_down.png',
                 height = 30,
                 size_hint = (1,None),
                 halign = 'left',
@@ -183,8 +183,8 @@ class RootWidget(FloatLayout):
             self.sa = 0
         if self.sound != None:
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
-        self.ids['playback_button'].background_normal = 'Resources/playback_stop_button.png'
-        self.ids['playback_button'].background_down = 'Resources/playback_button_down.png'
+        self.ids['playback_button'].background_normal = 'resources/playback_stop_button.png'
+        self.ids['playback_button'].background_down = 'resources/playback_button_down.png'
     
     def playback_stop(self, video=True):
         if video:
@@ -192,8 +192,8 @@ class RootWidget(FloatLayout):
             self.playback_event = None
         if self.sound != None:
             self.sound_play.stop()
-        self.ids['playback_button'].background_normal = 'Resources/playback_button.png'
-        self.ids['playback_button'].background_down = 'Resources/playback_stop_button_down.png'
+        self.ids['playback_button'].background_normal = 'resources/playback_button.png'
+        self.ids['playback_button'].background_down = 'resources/playback_stop_button_down.png'
     
     def button_moved(self, button_id):
         self.button_move = button_id

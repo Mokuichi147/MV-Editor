@@ -8,7 +8,7 @@ if sys.platform == 'win32':
     separator = '\\'
 
 dir_path = os.path.abspath(os.path.dirname(__file__))
-resources_path = dir_path + separator + 'Resources'
+resources_path = dir_path + separator + 'resources'
 if not os.path.isdir(resources_path):
     os.mkdir(resources_path)
 resources_path += separator
