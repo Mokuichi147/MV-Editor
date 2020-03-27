@@ -35,14 +35,15 @@
                             pos: self.pos
                             size: self.size[0], self.size[1]
                     ToggleButton:
+                        id: project_button
                         group: 'mode'
                         state: 'down'
                         text: 'Project'
-                        on_press: print('Project')
+                        on_press: root.project_button(self.state)
                         background_normal: 'Resources/mode.png'
                         background_down: 'Resources/mode_down.png'
                         border: 0, 0, 0, 0
-                        size: 128, 32
+                        size: 150, 32
                         size_hint: None, None
                     ToggleButton:
                         group: 'mode'
@@ -51,7 +52,7 @@
                         background_normal: 'Resources/mode.png'
                         background_down: 'Resources/mode_down.png'
                         border: 0, 0, 0, 0
-                        size: 128, 32
+                        size: 150, 32
                         size_hint: None, None
                     ToggleButton:
                         group: 'mode'
@@ -60,7 +61,7 @@
                         background_normal: 'Resources/mode.png'
                         background_down: 'Resources/mode_down.png'
                         border: 0, 0, 0, 0
-                        size: 128, 32
+                        size: 150, 32
                         size_hint: None, None
                     Label:
                         size_hint: 1, 1
@@ -77,7 +78,7 @@
                                 pos: self.pos
                                 size: self.size[0], self.size[1]
                         size_hint: None, None
-                        width: 200
+                        width: 150
                         height: file_icon_view.height
                         BoxLayout:
                             id: project_dirs

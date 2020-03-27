@@ -1,6 +1,8 @@
 import cv2
 import os
 from time import sleep, time
+from tkinter import Tk
+from tkinter.filedialog import askdirectory
 
 from pydub import AudioSegment
 from pydub.utils import ratio_to_db
@@ -88,13 +90,13 @@ class RootWidget(FloatLayout):
                 height = 30,
                 size_hint = (1,None),
                 halign = 'left',
-                text_size = (180, 20),
+                text_size = (130, 20),
                 on_press = lambda x: self.dir_selected(x.text))
             if dir_count == 0:
                 btn.state = 'down'
             self.ids['project_dirs'].add_widget(btn)
         if len(self.project_path_listdir) > 0:
-            self.ids['project_dirs'].parent.width = 200
+            self.ids['project_dirs'].parent.width = 150
             self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
         else:
             self.ids['file_icon_view'].rootpath = self.project_path
@@ -137,6 +139,18 @@ class RootWidget(FloatLayout):
         self.ids['video_time_slider'].value = self.frame_count
         self.pre_frame_count = self.frame_count
         _, self.frame = self.cap.read()
+    
+    def project_button(self, button_state):
+        if button_state == 'down':
+            return
+        self.ids['project_button'].state = 'down'
+        _root = Tk()
+        _root.withdraw()
+        _project_path = askdirectory()
+        _root.destroy()
+        if _project_path == '':
+            return
+        self.load_file(_project_path)
     
     def file_selected(self, file_path):
         if len(file_path) != 1:
