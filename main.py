@@ -1,5 +1,6 @@
 import cv2
 import os
+import sys
 from time import sleep, time
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
@@ -26,11 +27,13 @@ from kivy.uix.floatlayout import FloatLayout
 from utils.core import *
 
 version = '0.0.1'
-LabelBase.register(DEFAULT_FONT, 'Fonts/NotoSansJP-Medium.otf')
 dir_path = os.path.abspath(os.path.dirname(__file__))
+LabelBase.register(DEFAULT_FONT, dir_path+'/Fonts/NotoSansJP-Medium.otf')
 
 
 class RootWidget(FloatLayout):
+    # Path関連
+    app_dir_path = dir_path
     # Project関連
     project_name = ''
     project_path = ''
@@ -55,7 +58,7 @@ class RootWidget(FloatLayout):
         self._keyboard.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         Window.bind(on_dropfile=self._on_file_drop)
 
-        self.load_file(dir_path + '/TestProject')
+        self.load_file(self.app_dir_path + '/TestProject')
         async_func(self.load_movie_and_sound, self.project_path+'/Video/test.mp4')
     
     def load_movie_and_sound(self, movie_path):
@@ -287,7 +290,10 @@ class RootWidget(FloatLayout):
         self.load_file(file_path)
 
 class MVEditorApp(App):
-    title = f'MV Editor v{version}'
+    #title = f'MV Editor v{version}'
+    title = f'__file__: {dir_path}, sys.args: {sys.argv}'
+    app_dir_path = dir_path
+    resources_path = app_dir_path + '/resources/'
 
     def build(self):
         return RootWidget()
