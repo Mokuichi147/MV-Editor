@@ -2,9 +2,15 @@ import cv2
 import numpy as np
 from PIL import Image
 from time import time
+from threading import Thread
 from simpleaudio import play_buffer
 from kivy.graphics.texture import Texture
 
+
+def async_func(function, *args):
+    _th = Thread(target=function, args=args)
+    _th.daemon = True
+    _th.start()
 
 def load_movie(path):
     cap = cv2.VideoCapture(path)

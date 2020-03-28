@@ -44,6 +44,7 @@ class RootWidget(FloatLayout):
     texture_size = (0,0)
     playback_event = None
     sound = None
+    sound_event = False
     spacebar_down = False
     # Splitter関連
     button_move = None
@@ -55,24 +56,28 @@ class RootWidget(FloatLayout):
         Window.bind(on_dropfile=self._on_file_drop)
 
         self.load_file(dir_path + '/TestProject')
-        self.load_movie_and_sound(self.project_path+'/Video/test.mp4')
+        async_func(self.load_movie_and_sound, self.project_path+'/Video/test.mp4')
     
     def load_movie_and_sound(self, movie_path):
         if self.playback_event != None:
             self.playback_stop()
+            self.sound_event = False
+        self.sound = None
         self.cap, self.texture_size, self.frame_max, self.fps = load_movie(movie_path)
         self.ids['video_time_slider'].max = self.frame_max -1
         self.ids['video_time_slider'].value = 0
         self.ids['video_time_label'].text = '0:00'
         self.frame = pic_frame(self.cap, 0)
         self.image_texture = frame2texture(self.frame, self.texture_size)
+        self.sa = 0
+        self.frame_count = 0
+        print('video loaded')
         try:
             self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
             self.sound += ratio_to_db(0.05)
         except:
             self.sound = None
-        self.sa = 0
-        self.frame_count = 0
+        print('sound loaded')
     
     def load_file(self, file_path):
         if not os.path.isdir(file_path):
@@ -137,7 +142,7 @@ class RootWidget(FloatLayout):
             # スライダーのカーソル位置を移動したとき
             self.frame_count = self.ids['video_time_slider'].value
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
-            if self.sound != None:
+            if self.sound != None and self.sound_event:
                 self.sound_play.stop()
                 self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
             self.sa = 0
@@ -171,7 +176,7 @@ class RootWidget(FloatLayout):
         if len(file_path) != 1:
             return
         if file_path[0].split('.')[-1].lower() in ['mp4', 'mov']:
-            self.load_movie_and_sound(file_path[0])
+            async_func(self.load_movie_and_sound, file_path[0])
     
     def set_zero_frame(self):
         if self.playback_event != None:
@@ -210,8 +215,9 @@ class RootWidget(FloatLayout):
         if video:
             self.playback_event = Clock.schedule_interval(self.update, 1/self.fps)
             self.sa = 0
-        if self.sound != None:
+        if self.sound != None and not self.sound_event:
             self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+            self.sound_event = True
         self.ids['playback_button'].background_normal = 'resources/playback_stop_button.png'
         self.ids['playback_button'].background_down = 'resources/playback_button_down.png'
     
@@ -219,8 +225,9 @@ class RootWidget(FloatLayout):
         if video:
             self.playback_event.cancel()
             self.playback_event = None
-        if self.sound != None:
+        if self.sound != None and self.sound_event:
             self.sound_play.stop()
+            self.sound_event = False
         self.ids['playback_button'].background_normal = 'resources/playback_button.png'
         self.ids['playback_button'].background_down = 'resources/playback_stop_button_down.png'
     
