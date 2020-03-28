@@ -1,6 +1,5 @@
 import cv2
 import os
-import sys
 from time import sleep, time
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
@@ -290,8 +289,7 @@ class RootWidget(FloatLayout):
         self.load_file(file_path)
 
 class MVEditorApp(App):
-    #title = f'MV Editor v{version}'
-    title = f'__file__: {dir_path}, sys.args: {sys.argv}'
+    title = f'MV Editor v{version}'
     app_dir_path = dir_path
     resources_path = app_dir_path + '/resources/'
 
