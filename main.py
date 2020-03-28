@@ -71,13 +71,11 @@ class RootWidget(FloatLayout):
         self.image_texture = frame2texture(self.frame, self.texture_size)
         self.sa = 0
         self.frame_count = 0
-        print('video loaded')
         try:
             self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
             self.sound += ratio_to_db(0.05)
         except:
             self.sound = None
-        print('sound loaded')
     
     def load_file(self, file_path):
         if not os.path.isdir(file_path):
