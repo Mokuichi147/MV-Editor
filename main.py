@@ -8,11 +8,15 @@ from pydub import AudioSegment
 from pydub.utils import ratio_to_db
 from simpleaudio import play_buffer
 
+from utils.core import *
+dir_path = os.path.abspath(os.path.dirname(__file__))
+settings = load_json(dir_path+'/resources/settings.json')
+
 from kivy.config import Config
-Config.set('graphics', 'width', 1920)
-Config.set('graphics', 'height', 1080)
-Config.set('graphics', 'minimum_width', 640)
-Config.set('graphics', 'minimum_height', 480)
+Config.set('graphics', 'width', settings['config']['width'])
+Config.set('graphics', 'height', settings['config']['height'])
+Config.set('graphics', 'minimum_width', settings['config']['minimum_width'])
+Config.set('graphics', 'minimum_height', settings['config']['minimum_height'])
 #Config.set('modules', 'ShowBorder', '')
 from kivy.app import App
 from kivy.clock import Clock
@@ -23,10 +27,7 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.floatlayout import FloatLayout
 
-from utils.core import *
-
 version = '0.0.1'
-dir_path = os.path.abspath(os.path.dirname(__file__))
 LabelBase.register(DEFAULT_FONT, dir_path+'/Fonts/NotoSansJP-Medium.otf')
 
 
@@ -75,7 +76,7 @@ class RootWidget(FloatLayout):
         self.frame_count = 0
         try:
             self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
-            self.sound += ratio_to_db(0.05)
+            self.sound += ratio_to_db(settings['play_preview']['sound_ratio'])
         except:
             self.sound = None
     

@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from time import time
+import json
 from threading import Thread
 from simpleaudio import play_buffer
 from kivy.graphics.texture import Texture
@@ -11,6 +12,10 @@ def async_func(function, *args):
     _th = Thread(target=function, args=args)
     _th.daemon = True
     _th.start()
+
+def load_json(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
 def load_movie(path):
     cap = cv2.VideoCapture(path)
