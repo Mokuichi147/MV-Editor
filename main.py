@@ -12,6 +12,9 @@ from utils.core import *
 dir_path = os.path.abspath(os.path.dirname(__file__))
 settings = load_json(dir_path+'/resources/settings.json')
 
+_root = Tk()
+_root.withdraw()
+
 from kivy.config import Config
 Config.set('graphics', 'width', settings['config']['width'])
 Config.set('graphics', 'height', settings['config']['height'])
@@ -168,10 +171,7 @@ class RootWidget(FloatLayout):
         self.ids['project_select'].text = '> ' + self.project_name if _width == 0 else ''
     
     def project_selected(self):
-        _root = Tk()
-        _root.withdraw()
         _project_path = askdirectory()
-        _root.destroy()
         if _project_path == '':
             return
         self.load_file(_project_path)
