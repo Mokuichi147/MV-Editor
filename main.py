@@ -59,7 +59,7 @@ class RootWidget(FloatLayout):
         Window.bind(on_dropfile=self._on_file_drop)
 
         self.load_file(self.app_dir_path + '/TestProject')
-        async_func(self.load_movie_and_sound, self.project_path+'/Video/test.mp4')
+        self.load_movie_and_sound(self.project_path+'/Video/test.mp4')
     
     def load_movie_and_sound(self, movie_path):
         if self.playback_event != None:
@@ -74,8 +74,11 @@ class RootWidget(FloatLayout):
         self.image_texture = frame2texture(self.frame, self.texture_size)
         self.sa = 0
         self.frame_count = 0
+        async_func(self.load_sound, movie_path)
+
+    def load_sound(path):
         try:
-            self.sound = AudioSegment.from_file(movie_path, format=movie_path.split('.')[-1])
+            self.sound = AudioSegment.from_file(path, format=path.split('.')[-1])
             self.sound += ratio_to_db(settings['play_preview']['sound_ratio'])
         except:
             self.sound = None
@@ -177,7 +180,7 @@ class RootWidget(FloatLayout):
         if len(file_path) != 1:
             return
         if file_path[0].split('.')[-1].lower() in ['mp4', 'mov']:
-            async_func(self.load_movie_and_sound, file_path[0])
+            self.load_movie_and_sound(file_path[0])
     
     def set_zero_frame(self):
         if self.playback_event != None:
