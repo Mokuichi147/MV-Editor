@@ -79,7 +79,7 @@ class RootWidget(FloatLayout):
         self.frame_count = 0
         async_func(self.load_sound, movie_path)
 
-    def load_sound(path):
+    def load_sound(self, path):
         try:
             self.sound = AudioSegment.from_file(path, format=path.split('.')[-1])
             self.sound += ratio_to_db(settings['play_preview']['sound_ratio'])
