@@ -164,11 +164,20 @@ class RootWidget(FloatLayout):
     
     def project_button(self, button_state):
         if button_state == 'down':
+            self.visible_view('file_selection_view')
+            self.hidden_view('setting_view')
             return
         self.ids['project_button'].state = 'down'
         _width = self.ids['project_scrollview'].width
         self.ids['project_scrollview'].width = 150 if _width == 0 else 0
         self.ids['project_select'].text = '> ' + self.project_name if _width == 0 else ''
+    
+    def setting_button(self, button_state):
+        if button_state == 'down':
+            self.visible_view('setting_view')
+            self.hidden_view('file_selection_view')
+            return
+        self.ids['setting_button'].state = 'down'
     
     def project_selected(self):
         _project_path = askdirectory()
@@ -270,6 +279,13 @@ class RootWidget(FloatLayout):
             return
         _num = self.project_path_listdir.index(text)
         self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[_num]
+    
+    def hidden_view(self, view_id):
+        self.ids[view_id].size_hint = (None, None)
+        self.ids[view_id].size = (0, 0)
+    
+    def visible_view(self, view_id):
+        self.ids[view_id].size_hint = (1, 1)
 
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)

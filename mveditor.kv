@@ -46,9 +46,10 @@
                         size: 150, 32
                         size_hint: None, None
                     ToggleButton:
+                        id: setting_button
                         group: 'mode'
                         text: 'Setting'
-                        on_press: print('Setting')
+                        on_press: root.setting_button(self.state)
                         background_normal: app.resources_path+'mode.png'
                         background_down: app.resources_path+'mode_down.png'
                         border: 0, 0, 0, 0
@@ -65,50 +66,60 @@
                         size_hint: None, None
                     Label:
                         size_hint: 1, 1
-                # file selection
+                # mode sub view
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 0, 2, 0, 0
+                    # file selection
                     BoxLayout:
-                        orientation: 'vertical'
+                        id: file_selection_view
+                        orientation: 'horizontal'
                         padding: 0, 0, 0, 0
-                        size_hint: None, 1
-                        width: project_dirs.width
-                        # directories
-                        Button:
-                            id: project_select
-                            on_press: root.project_selected()
-                            text: ''
-                            background_normal: app.resources_path+'project_select.png' if project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
-                            background_down: app.resources_path+'project_select.png' if project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
-                            size_hint: None, None
-                            height: 50
+                        BoxLayout:
+                            orientation: 'vertical'
+                            padding: 0, 0, 0, 0
+                            size_hint: None, 1
                             width: project_dirs.width
-                            halign: 'left'
-                            valign: 'top'
-                            text_size: project_dirs.width-20, self.height/2
-                        ScrollView:
-                            id: project_scrollview
-                            canvas.before:
-                                Color:
-                                    rgba: 0.20, 0.20, 0.25, 1
-                                Rectangle:
-                                    pos: self.pos
-                                    size: self.size[0], self.size[1]
-                            size_hint: None, None
-                            width: 150
-                            height: file_icon_view.height - project_select.height
-                            BoxLayout:
-                                id: project_dirs
-                                orientation: 'vertical'
-                                size_hint_y: None
-                                height: self.minimum_height
-                    # files
-                    FileChooserIconView:
-                        id: file_icon_view
-                        rootpath: ''
-                        filters: ['*.wav', '*.mp3', '*.mp4', '*.mov', '*.jpg', '*.png', '*.ttf', '*.otf']
-                        on_selection: root.file_selected(self.selection)
+                            # directories
+                            Button:
+                                id: project_select
+                                on_press: root.project_selected()
+                                text: ''
+                                background_normal: app.resources_path+'project_select.png' if project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
+                                background_down: app.resources_path+'project_select.png' if project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
+                                size_hint: None, None
+                                height: 50
+                                width: project_dirs.width
+                                halign: 'left'
+                                valign: 'top'
+                                text_size: project_dirs.width-20, self.height/2
+                            ScrollView:
+                                id: project_scrollview
+                                canvas.before:
+                                    Color:
+                                        rgba: 0.20, 0.20, 0.25, 1
+                                    Rectangle:
+                                        pos: self.pos
+                                        size: self.size[0], self.size[1]
+                                size_hint: None, None
+                                width: 150
+                                height: file_icon_view.height - project_select.height
+                                BoxLayout:
+                                    id: project_dirs
+                                    orientation: 'vertical'
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                        # files
+                        FileChooserIconView:
+                            id: file_icon_view
+                            rootpath: ''
+                            filters: ['*.wav', '*.mp3', '*.mp4', '*.mov', '*.jpg', '*.png', '*.ttf', '*.otf']
+                            on_selection: root.file_selected(self.selection)
+                    # setting
+                    BoxLayout:
+                        id: setting_view
+                        orientation: 'horizontal'
+                        padding: 0, 0, 0, 0
             # video preview
             Button:
                 id: horizontal_splitter
