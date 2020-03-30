@@ -122,6 +122,12 @@
                         orientation: 'horizontal'
                         padding: 0, 0, 0, 0
                         ScrollView:
+                            canvas.before:
+                                Color:
+                                    rgba: 0.20, 0.20, 0.25, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size[0], self.size[1]
                             BoxLayout:
                                 orientation: 'vertical'
                                 padding: 0, 0, 0, 0
@@ -139,6 +145,12 @@
                         orientation: 'horizontal'
                         padding: 0, 0, 0, 0
                         ScrollView:
+                            canvas.before:
+                                Color:
+                                    rgba: 0.20, 0.20, 0.25, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size[0], self.size[1]
                             BoxLayout:
                                 orientation: 'vertical'
                                 padding: 0, 0, 0, 0
