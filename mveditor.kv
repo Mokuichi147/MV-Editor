@@ -59,7 +59,7 @@
                         id: output_button
                         group: 'mode'
                         text: 'Output'
-                        on_press: root.setting_button(self.state)
+                        on_press: root.output_button(self.state)
                         background_normal: app.resources_path+'mode.png'
                         background_down: app.resources_path+'mode_down.png'
                         border: 0, 0, 0, 0
@@ -121,11 +121,35 @@
                         id: setting_view
                         orientation: 'horizontal'
                         padding: 0, 0, 0, 0
+                        ScrollView:
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 0, 0, 0, 0
+                                Label:
+                                    text: 'setting key'
+                        ScrollView:
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 0, 0, 0, 0
+                                Label:
+                                    text: 'setting value'
                     # output
                     BoxLayout:
                         id: output_view
                         orientation: 'horizontal'
                         padding: 0, 0, 0, 0
+                        ScrollView:
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 0, 0, 0, 0
+                                Label:
+                                    text: 'output setting key'
+                        ScrollView:
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 0, 0, 0, 0
+                                Label:
+                                    text: 'output setting value'
             # video preview
             Button:
                 id: horizontal_splitter
