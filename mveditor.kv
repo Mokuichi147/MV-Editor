@@ -56,9 +56,10 @@
                         size: 150, 32
                         size_hint: None, None
                     ToggleButton:
+                        id: output_button
                         group: 'mode'
                         text: 'Output'
-                        on_press: print('Output')
+                        on_press: root.setting_button(self.state)
                         background_normal: app.resources_path+'mode.png'
                         background_down: app.resources_path+'mode_down.png'
                         border: 0, 0, 0, 0
@@ -118,6 +119,11 @@
                     # setting
                     BoxLayout:
                         id: setting_view
+                        orientation: 'horizontal'
+                        padding: 0, 0, 0, 0
+                    # output
+                    BoxLayout:
+                        id: output_view
                         orientation: 'horizontal'
                         padding: 0, 0, 0, 0
             # video preview

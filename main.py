@@ -63,6 +63,10 @@ class RootWidget(FloatLayout):
 
         self.load_file(self.app_dir_path + '/TestProject')
         self.load_movie_and_sound(self.project_path+'/Video/test.mp4')
+
+        self.visible_view('file_selection_view')
+        self.hidden_view('setting_view')
+        self.hidden_view('output_view')
     
     def load_movie_and_sound(self, movie_path):
         if self.playback_event != None:
@@ -166,6 +170,7 @@ class RootWidget(FloatLayout):
         if button_state == 'down':
             self.visible_view('file_selection_view')
             self.hidden_view('setting_view')
+            self.hidden_view('output_view')
             return
         self.ids['project_button'].state = 'down'
         _width = self.ids['project_scrollview'].width
@@ -176,8 +181,17 @@ class RootWidget(FloatLayout):
         if button_state == 'down':
             self.visible_view('setting_view')
             self.hidden_view('file_selection_view')
+            self.hidden_view('output_view')
             return
         self.ids['setting_button'].state = 'down'
+    
+    def output_button(self, button_state):
+        if button_state == 'down':
+            self.visible_view('output_view')
+            self.hidden_view('file_selection_view')
+            self.hidden_view('setting_view')
+            return
+        self.ids['output_button'].state = 'down'
     
     def project_selected(self):
         _project_path = askdirectory()
