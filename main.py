@@ -261,21 +261,23 @@ class RootWidget(FloatLayout):
     def button_moved(self, button_id):
         self.button_move = button_id
     
+    def resize_view(self, touch, parent_view, view, min_s, min_p, mode='width'):
+        _mode = 0 if mode == 'width' else 1
+        view_size = self.ids[parent_view].size[_mode] - sum(self.ids[parent_view].padding[_mode::2])
+        if view_size - touch.pos[_mode] < min_s:
+            return
+        elif touch.pos[_mode] < min_p:
+            return
+        self.ids[view].size_hint = [1, None] if _mode else [None, 1]
+        self.ids[view].size[_mode] = view_size - touch.pos[_mode]
+    
     def on_touch_move(self, touch):
         if not 'pos' in touch.profile:
             return
         elif self.button_move == 'vertical_splitter':
-            height = self.ids['vertical_splitter_lower'].size[1] + self.ids['vertical_splitter_upper'].size[1] + self.ids[self.button_move].size[1]
-            if height - touch.pos[1] < 205 or touch.pos[1] < 100:
-                return
-            self.ids['vertical_splitter_upper'].size_hint = [1, None]
-            self.ids['vertical_splitter_upper'].height = height - touch.pos[1]
+            self.resize_view(touch, 'root_view', 'vertical_splitter_upper', 205, 100, mode='height')
         elif self.button_move == 'horizontal_splitter':
-            width = self.ids['horizontal_splitter_left'].size[0] + self.ids['horizontal_splitter_right'].size[0] + self.ids[self.button_move].size[0]
-            if width - touch.pos[0] < 300 or touch.pos[0] < 5:
-                return
-            self.ids['horizontal_splitter_right'].size_hint = [None, 1]
-            self.ids['horizontal_splitter_right'].width = width - touch.pos[0]
+            self.resize_view(touch, 'vertical_splitter_upper', 'horizontal_splitter_right', 300, 5, mode='width')
     
     def on_touch_up(self, touch):
         if self.button_move != None:
