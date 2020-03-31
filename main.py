@@ -198,6 +198,13 @@ class RootWidget(FloatLayout):
         if _project_path == '':
             return
         self.load_file(_project_path)
+
+    def dir_selected(self, button, text, state):
+        if state == 'normal':
+            button.state = 'down'
+            return
+        _num = self.project_path_listdir.index(text)
+        self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[_num]
     
     def file_selected(self, file_path):
         if len(file_path) != 1:
@@ -205,6 +212,7 @@ class RootWidget(FloatLayout):
         if file_path[0].split('.')[-1].lower() in ['mp4', 'mov']:
             self.load_movie_and_sound(file_path[0])
     
+    ''' frame関連 '''
     def set_zero_frame(self):
         if self.playback_event != None:
             self.playback_stop()
@@ -231,6 +239,7 @@ class RootWidget(FloatLayout):
         self.pre_frame_count = self.frame_count
         _, self.frame = self.cap.read()
     
+    ''' プレビュー画面の再生 '''
     def playback_start_or_stop(self):
         if self.playback_event == None:
             self.playback_start()
@@ -258,6 +267,7 @@ class RootWidget(FloatLayout):
         self.ids['playback_button'].background_normal = 'resources/playback_button.png'
         self.ids['playback_button'].background_down = 'resources/playback_stop_button_down.png'
     
+    ''' SplitterをButtonで代用 '''
     def button_moved(self, button_id):
         self.button_move = button_id
     
@@ -282,14 +292,8 @@ class RootWidget(FloatLayout):
     def on_touch_up(self, touch):
         if self.button_move != None:
             self.button_move = None
-
-    def dir_selected(self, button, text, state):
-        if state == 'normal':
-            button.state = 'down'
-            return
-        _num = self.project_path_listdir.index(text)
-        self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[_num]
     
+    ''' モード切替時のviewの表示・非表示 '''
     def hidden_view(self, view_id):
         self.ids[view_id].size_hint = (None, None)
         self.ids[view_id].size = (0, 0)
@@ -297,6 +301,7 @@ class RootWidget(FloatLayout):
     def visible_view(self, view_id):
         self.ids[view_id].size_hint = (1, 1)
 
+    ''' キーボード '''
     def _key_closed(self):
         self._keyboard.unbind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         self._keyboard = None
@@ -314,6 +319,7 @@ class RootWidget(FloatLayout):
         elif keycode[1] == 'right' and self.playback_event == None:
             self.next_frame()
     
+    ''' ドラッグ&ドロップ '''
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
         self.load_file(file_path)
