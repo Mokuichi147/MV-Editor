@@ -68,6 +68,45 @@ class RootWidget(FloatLayout):
         self.hidden_view('setting_view')
         self.hidden_view('output_view')
     
+    def update(self, delta_time):
+        self.sa += 1/self.fps - delta_time
+        if self.sa > 0:
+            sleep(self.sa)
+        self.frame_count = self.ids['video_time_slider'].value + 1
+        _play_frame = round((time()-self.play_start_time)*self.fps)
+        if not _play_frame - 3 <= self.frame_count <= _play_frame + 3:
+            # 表示している画像と音声が±3フレームずれたとき
+            self.frame_count = _play_frame
+            self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
+            self.play_start_time = time() - self.frame_count / self.fps
+            self.sa = 0
+        if self.pre_frame_count != self.ids['video_time_slider'].value:
+            # スライダーのカーソル位置を移動したとき
+            self.frame_count = self.ids['video_time_slider'].value
+            self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
+            if self.sound != None and self.sound_event:
+                self.sound_play.stop()
+                self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
+            self.sa = 0
+            self.play_start_time = time() - self.ids['video_time_slider'].value/ self.fps
+        if self.frame_count > self.frame_max - 1:
+            # 最後まで再生したとき
+            self.playback_stop()
+            return
+        self.ids['video_time_slider'].value = self.frame_count
+        self.pre_frame_count = self.frame_count
+        _, self.frame = self.cap.read()
+    
+    def cursor_moved(self, value):
+        if self.playback_event == None:
+            self.frame = pic_frame(self.cap, int(value))
+            self.frame_count = int(value)
+            self.pre_frame_count = int(value)
+        self.image_texture = frame2texture(self.frame, self.texture_size)
+        _time_second = int(self.frame_count / self.fps)
+        self.ids['video_time_label'].text = f'{_time_second//60:>2}:{_time_second%60:0>2}'
+    
+    ''' ファイル読み込み '''
     def load_movie_and_sound(self, movie_path):
         if self.playback_event != None:
             self.playback_stop()
@@ -128,44 +167,7 @@ class RootWidget(FloatLayout):
             self.ids['project_dirs'].parent.width = 0
             self.ids['project_select'].text = ''
     
-    def cursor_moved(self, value):
-        if self.playback_event == None:
-            self.frame = pic_frame(self.cap, int(value))
-            self.frame_count = int(value)
-            self.pre_frame_count = int(value)
-        self.image_texture = frame2texture(self.frame, self.texture_size)
-        _time_second = int(self.frame_count / self.fps)
-        self.ids['video_time_label'].text = f'{_time_second//60:>2}:{_time_second%60:0>2}'
-    
-    def update(self, delta_time):
-        self.sa += 1/self.fps - delta_time
-        if self.sa > 0:
-            sleep(self.sa)
-        self.frame_count = self.ids['video_time_slider'].value + 1
-        _play_frame = round((time()-self.play_start_time)*self.fps)
-        if not _play_frame - 3 <= self.frame_count <= _play_frame + 3:
-            # 表示している画像と音声が±3フレームずれたとき
-            self.frame_count = _play_frame
-            self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
-            self.play_start_time = time() - self.frame_count / self.fps
-            self.sa = 0
-        if self.pre_frame_count != self.ids['video_time_slider'].value:
-            # スライダーのカーソル位置を移動したとき
-            self.frame_count = self.ids['video_time_slider'].value
-            self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
-            if self.sound != None and self.sound_event:
-                self.sound_play.stop()
-                self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
-            self.sa = 0
-            self.play_start_time = time() - self.ids['video_time_slider'].value/ self.fps
-        if self.frame_count > self.frame_max - 1:
-            # 最後まで再生したとき
-            self.playback_stop()
-            return
-        self.ids['video_time_slider'].value = self.frame_count
-        self.pre_frame_count = self.frame_count
-        _, self.frame = self.cap.read()
-    
+    ''' モード切替 '''
     def project_button(self, button_state):
         if button_state == 'down':
             self.visible_view('file_selection_view')
@@ -193,6 +195,7 @@ class RootWidget(FloatLayout):
             return
         self.ids['output_button'].state = 'down'
     
+    ''' Project View関連 '''
     def project_selected(self):
         _project_path = askdirectory()
         if _project_path == '':
