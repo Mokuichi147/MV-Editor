@@ -158,13 +158,13 @@ class RootWidget(FloatLayout):
                                 size_hint = (1,None),
                                 halign = 'left',
                                 valign = 'top',
-                                text_size = (130, 30-5),
+                                text_size = (180, 30-5),
                                 on_press = lambda x: self.dir_selected(x, x.text, x.state))
             if dir_count == 0:
                 btn.state = 'down'
             self.ids['project_dirs'].add_widget(btn)
         if len(self.project_path_listdir) > 0:
-            self.ids['project_dirs'].parent.width = 150
+            self.ids['project_dirs'].parent.width = 200
             self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
         else:
             self.ids['file_icon_view'].rootpath = self.project_path
@@ -186,7 +186,7 @@ class RootWidget(FloatLayout):
                                  size_hint = (1, None),
                                  halign = 'left',
                                  valign = 'top',
-                                 text_size = (self.ids['setting_left'].width*2, _group_height-10))
+                                 text_size = (self.ids['setting_left'].width-20, _group_height-10))
             self.ids['setting_view_left'].add_widget(group_label)
             group_label = Label(text = '',
                                  height = _group_height,
@@ -198,7 +198,7 @@ class RootWidget(FloatLayout):
                                  size_hint = (1, None),
                                  halign = 'left',
                                  valign = 'top',
-                                 text_size = (self.ids['setting_left'].width*2, _item_height-5))
+                                 text_size = (self.ids['setting_left'].width-20, _item_height-5))
                 self.ids['setting_view_left'].add_widget(text_la)
                 text_in = TextInput(text = str(self.settings[group][key]),
                                      height = _item_height,
@@ -234,7 +234,7 @@ class RootWidget(FloatLayout):
             return
         self.ids['project_button'].state = 'down'
         _width = self.ids['project_scrollview'].width
-        self.ids['project_scrollview'].width = 150 if _width == 0 else 0
+        self.ids['project_scrollview'].width = 200 if _width == 0 else 0
         self.ids['project_select'].text = '> ' + self.project_name if _width == 0 else ''
     
     def setting_button(self, button_state):
