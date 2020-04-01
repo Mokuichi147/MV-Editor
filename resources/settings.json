@@ -6,8 +6,7 @@
         "minimum_height": 480
     },
     "play_preview": {
-        "maximum_width": 1920,
-        "maximum_height": 1080,
+        "maximum_size": 1920,
         "maximum_fps": 30.0,
         "sound_ratio": 0.05
     },

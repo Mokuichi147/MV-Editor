@@ -1,0 +1,17 @@
+{
+    "_config": {
+        "config": "エディタ画面",
+        "play_preview": "プレビュー画面"
+    },
+    "config": {
+        "width": "起動時の横幅",
+        "height": "起動時の縦幅",
+        "minimum_width": "最小時の横幅",
+        "minimum_height": "最小時の縦幅"
+    },
+    "play_preview": {
+        "maximum_size": "最大解像度",
+        "maximum_fps": "最大フレームレート",
+        "sound_ratio": "音量"
+    }
+}

@@ -8,16 +8,16 @@ from pydub import AudioSegment
 from pydub.utils import ratio_to_db
 from utils.core import *
 dir_path = os.path.abspath(os.path.dirname(__file__))
-settings = load_json(dir_path+'/resources/settings.json')
+SETTINGS = load_json(dir_path+'/resources/settings.json')
 
 _root = Tk()
 _root.withdraw()
 
 from kivy.config import Config
-Config.set('graphics', 'width', settings['config']['width'])
-Config.set('graphics', 'height', settings['config']['height'])
-Config.set('graphics', 'minimum_width', settings['config']['minimum_width'])
-Config.set('graphics', 'minimum_height', settings['config']['minimum_height'])
+Config.set('graphics', 'width', SETTINGS['config']['width'])
+Config.set('graphics', 'height', SETTINGS['config']['height'])
+Config.set('graphics', 'minimum_width', SETTINGS['config']['minimum_width'])
+Config.set('graphics', 'minimum_height', SETTINGS['config']['minimum_height'])
 #Config.set('modules', 'ShowBorder', '')
 from kivy.app import App
 from kivy.clock import Clock
@@ -39,6 +39,7 @@ class RootWidget(FloatLayout):
     app_dir_path = dir_path
     # Setting関連
     setting_inputs = []
+    settings = SETTINGS
     # Project関連
     project_name = ''
     project_path = ''
@@ -129,7 +130,7 @@ class RootWidget(FloatLayout):
     def load_sound(self, path):
         try:
             self.sound = AudioSegment.from_file(path, format=path.split('.')[-1])
-            self.sound += ratio_to_db(settings['play_preview']['sound_ratio'])
+            self.sound += ratio_to_db(self.settings['play_preview']['sound_ratio'])
         except:
             self.sound = None
     
@@ -171,14 +172,15 @@ class RootWidget(FloatLayout):
             self.ids['project_select'].text = ''
     
     def load_setting(self):
-        settings = load_json(self.app_dir_path+'/resources/settings.json')
+        self.settings = load_json(self.app_dir_path+'/resources/settings.json')
+        lang = load_json(self.app_dir_path+'/resources/lang_ja.json')
         _group_height = 50
         _item_height = 30
         self.setting_inputs.clear()
-        for group in settings:
+        for group in self.settings:
             if group == 'pre_project':
                 return
-            group_label = Label(text = group,
+            group_label = Label(text = lang['_config'][group],
                                  font_size = 25,
                                  height = _group_height,
                                  size_hint = (1, None),
@@ -190,15 +192,15 @@ class RootWidget(FloatLayout):
                                  height = _group_height,
                                  size_hint = (1, None))
             self.ids['setting_view_right'].add_widget(group_label)
-            for key in settings[group]:
-                text_la = Label(text = key,
+            for key in self.settings[group]:
+                text_la = Label(text = lang[group][key],
                                  height = _item_height,
                                  size_hint = (1, None),
                                  halign = 'left',
                                  valign = 'top',
-                                 text_size = (self.ids['setting_left'].width*2-40, _item_height-5))
+                                 text_size = (self.ids['setting_left'].width*2, _item_height-5))
                 self.ids['setting_view_left'].add_widget(text_la)
-                text_in = TextInput(text = str(settings[group][key]),
+                text_in = TextInput(text = str(self.settings[group][key]),
                                      height = _item_height,
                                      size_hint = (1, None),
                                      background_normal = self.app_dir_path+'/resources/alpha.png',
@@ -210,18 +212,18 @@ class RootWidget(FloatLayout):
     
     def write_setting(self):
         _path = self.app_dir_path+'/resources/settings.json'
-        settings = load_json(_path)
+        self.settings = load_json(_path)
         _count = 0
-        for group in settings:
+        for group in self.settings:
             if group == 'pre_project':
                 continue
-            for key in settings[group]:
+            for key in self.settings[group]:
                 if key == 'sound_ratio' or key == 'maximum_fps':
-                    settings[group][key] = float(self.setting_inputs[_count].text)
+                    self.settings[group][key] = float(self.setting_inputs[_count].text)
                 else:
-                    settings[group][key] = int(self.setting_inputs[_count].text)
+                    self.settings[group][key] = int(self.setting_inputs[_count].text)
                 _count += 1
-        write_json(_path, settings)
+        write_json(_path, self.settings)
     
     ''' モード切替 '''
     def project_button(self, button_state):
