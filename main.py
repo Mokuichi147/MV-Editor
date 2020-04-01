@@ -37,6 +37,8 @@ LabelBase.register(DEFAULT_FONT, dir_path+'/Fonts/NotoSansJP-Medium.otf')
 class RootWidget(FloatLayout):
     # Path関連
     app_dir_path = dir_path
+    # Setting関連
+    setting_inputs = []
     # Project関連
     project_name = ''
     project_path = ''
@@ -172,6 +174,7 @@ class RootWidget(FloatLayout):
         settings = load_json(self.app_dir_path+'/resources/settings.json')
         _group_height = 50
         _item_height = 30
+        self.setting_inputs.clear()
         for group in settings:
             if group == 'pre_project':
                 return
@@ -198,10 +201,27 @@ class RootWidget(FloatLayout):
                 text_in = TextInput(text = str(settings[group][key]),
                                      height = _item_height,
                                      size_hint = (1, None),
+                                     background_normal = self.app_dir_path+'/resources/alpha.png',
                                      background_color = (0.15, 0.15, 0.15, 1),
                                      foreground_color = (1, 1, 1, 1),
                                      cursor_color = (0.50, 0.50, 0.50, 1))
+                self.setting_inputs.append(text_in)
                 self.ids['setting_view_right'].add_widget(text_in)
+    
+    def write_setting(self):
+        _path = self.app_dir_path+'/resources/settings.json'
+        settings = load_json(_path)
+        _count = 0
+        for group in settings:
+            if group == 'pre_project':
+                continue
+            for key in settings[group]:
+                if key == 'sound_ratio' or key == 'maximum_fps':
+                    settings[group][key] = float(self.setting_inputs[_count].text)
+                else:
+                    settings[group][key] = int(self.setting_inputs[_count].text)
+                _count += 1
+        write_json(_path, settings)
     
     ''' モード切替 '''
     def project_button(self, button_state):
@@ -222,6 +242,11 @@ class RootWidget(FloatLayout):
             self.hidden_view('output_view')
             return
         self.ids['setting_button'].state = 'down'
+    
+    def setting_state(self, button_state):
+        if button_state == 'down':
+            return
+        self.write_setting()
     
     def output_button(self, button_state):
         if button_state == 'down':
