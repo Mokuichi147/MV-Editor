@@ -216,7 +216,7 @@ if __name__=='__main__':
     listdir(color=sub_color, line_width=11, name='listdir_down.png')
 
     mode()
-    mode(color=sub_color, line_width=100, name='mode_down.png')
+    mode(color=main_color, line_width=size*2, name='mode_down.png')
 
     project_button()
     project_button_clear()
