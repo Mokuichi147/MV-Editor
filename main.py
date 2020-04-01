@@ -171,17 +171,37 @@ class RootWidget(FloatLayout):
     
     def load_setting(self):
         settings = load_json(self.app_dir_path+'/resources/settings.json')
+        _group_height = 50
+        _item_height = 30
         for group in settings:
-            print(f'[{group}]')
+            if group == 'pre_project':
+                return
+            group_label = Label(
+                text = group,
+                font_size = 25,
+                height = _group_height,
+                size_hint = (1, None),
+                halign = 'left',
+                valign = 'top',
+                text_size = (self.ids['setting_left'].width * 2, _group_height-10))
+            self.ids['setting_view_left'].add_widget(group_label)
+            group_label = Label(
+                text = '',
+                height = _group_height,
+                size_hint = (1, None))
+            self.ids['setting_view_right'].add_widget(group_label)
             for key in settings[group]:
                 text_la = Label(
                     text = key,
-                    height = 30,
-                    size_hint = (1, None))
+                    height = _item_height,
+                    size_hint = (1, None),
+                    halign = 'left',
+                    valign = 'top',
+                    text_size = (self.ids['setting_left'].width * 2-40, _item_height-5))
                 self.ids['setting_view_left'].add_widget(text_la)
                 text_in = TextInput(
                     text = str(settings[group][key]),
-                    height = 30,
+                    height = _item_height,
                     size_hint = (1, None))
                 self.ids['setting_view_right'].add_widget(text_in)
     
