@@ -224,6 +224,8 @@ class RootWidget(FloatLayout):
                     self.settings[group][key] = int(self.setting_inputs[_count].text)
                 _count += 1
         write_json(_path, self.settings)
+        self._keyboard = Window.request_keyboard(self._key_closed, self)
+        self._keyboard.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
     
     ''' モード切替 '''
     def project_button(self, button_state):
