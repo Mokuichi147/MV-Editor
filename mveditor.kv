@@ -8,7 +8,7 @@
     BoxLayout:
         id: root_view
         orientation: 'vertical'
-        padding: 5
+        padding: 0
         # upper half
         BoxLayout:
             id: vertical_splitter_upper
@@ -278,9 +278,9 @@
             padding: 0, 0, 0, 0
             orientation: 'vertical'
             Label:
-                text: 'time'
+                text: 'time' if vertical_splitter_lower.height != 0 else ''
                 size_hint: 1, None
-                height: 50
+                height: 50 if vertical_splitter_lower.height != 0 else 0
                 canvas.before:
                     Color:
                         rgba: 0.30, 0.30, 0.40, 1
