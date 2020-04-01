@@ -211,6 +211,7 @@ if __name__=='__main__':
     fullscreen_preview(color=sub_color, name='fullscreen_preview_button_down.png')
 
     splitter()
+    splitter(color=sub_color, name='splitter_down.png')
 
     listdir()
     listdir(color=sub_color, line_width=11, name='listdir_down.png')
