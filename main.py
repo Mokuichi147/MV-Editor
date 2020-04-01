@@ -147,17 +147,16 @@ class RootWidget(FloatLayout):
         self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
         self.ids['project_dirs'].clear_widgets()
         for dir_count in range(len(self.project_path_listdir)):
-            btn = ToggleButton(
-                text = self.project_path_listdir[dir_count],
-                group = 'listdir',
-                background_normal = 'resources/listdir.png',
-                background_down = 'resources/listdir_down.png',
-                height = 30,
-                size_hint = (1,None),
-                halign = 'left',
-                valign = 'top',
-                text_size = (130, 30-5),
-                on_press = lambda x: self.dir_selected(x, x.text, x.state))
+            btn = ToggleButton(text = self.project_path_listdir[dir_count],
+                                group = 'listdir',
+                                background_normal = 'resources/listdir.png',
+                                background_down = 'resources/listdir_down.png',
+                                height = 30,
+                                size_hint = (1,None),
+                                halign = 'left',
+                                valign = 'top',
+                                text_size = (130, 30-5),
+                                on_press = lambda x: self.dir_selected(x, x.text, x.state))
             if dir_count == 0:
                 btn.state = 'down'
             self.ids['project_dirs'].add_widget(btn)
@@ -176,33 +175,32 @@ class RootWidget(FloatLayout):
         for group in settings:
             if group == 'pre_project':
                 return
-            group_label = Label(
-                text = group,
-                font_size = 25,
-                height = _group_height,
-                size_hint = (1, None),
-                halign = 'left',
-                valign = 'top',
-                text_size = (self.ids['setting_left'].width * 2, _group_height-10))
+            group_label = Label(text = group,
+                                 font_size = 25,
+                                 height = _group_height,
+                                 size_hint = (1, None),
+                                 halign = 'left',
+                                 valign = 'top',
+                                 text_size = (self.ids['setting_left'].width*2, _group_height-10))
             self.ids['setting_view_left'].add_widget(group_label)
-            group_label = Label(
-                text = '',
-                height = _group_height,
-                size_hint = (1, None))
+            group_label = Label(text = '',
+                                 height = _group_height,
+                                 size_hint = (1, None))
             self.ids['setting_view_right'].add_widget(group_label)
             for key in settings[group]:
-                text_la = Label(
-                    text = key,
-                    height = _item_height,
-                    size_hint = (1, None),
-                    halign = 'left',
-                    valign = 'top',
-                    text_size = (self.ids['setting_left'].width * 2-40, _item_height-5))
+                text_la = Label(text = key,
+                                 height = _item_height,
+                                 size_hint = (1, None),
+                                 halign = 'left',
+                                 valign = 'top',
+                                 text_size = (self.ids['setting_left'].width*2-40, _item_height-5))
                 self.ids['setting_view_left'].add_widget(text_la)
-                text_in = TextInput(
-                    text = str(settings[group][key]),
-                    height = _item_height,
-                    size_hint = (1, None))
+                text_in = TextInput(text = str(settings[group][key]),
+                                     height = _item_height,
+                                     size_hint = (1, None),
+                                     background_color = (0.15, 0.15, 0.15, 1),
+                                     foreground_color = (1, 1, 1, 1),
+                                     cursor_color = (0.50, 0.50, 0.50, 1))
                 self.ids['setting_view_right'].add_widget(text_in)
     
     ''' モード切替 '''
