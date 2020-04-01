@@ -345,7 +345,7 @@ class RootWidget(FloatLayout):
         self.ids[view].size_hint = [1, None] if _mode else [None, 1]
         if view_size - touch.pos[_mode] < min_s:
             if view_size - touch.pos[_mode] < min_s - 150:
-                self.ids[view].size[_mode] = -5
+                self.ids[view].size[_mode] = 0
                 return
             self.ids[view].size[_mode] = min_s
             return
