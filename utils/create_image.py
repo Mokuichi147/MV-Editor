@@ -220,3 +220,5 @@ if __name__=='__main__':
 
     project_button()
     project_button_clear()
+
+    project_button_clear(name='alpha.png')
