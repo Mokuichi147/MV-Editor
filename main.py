@@ -6,8 +6,6 @@ from tkinter.filedialog import askdirectory
 
 from pydub import AudioSegment
 from pydub.utils import ratio_to_db
-from simpleaudio import play_buffer
-
 from utils.core import *
 dir_path = os.path.abspath(os.path.dirname(__file__))
 settings = load_json(dir_path+'/resources/settings.json')
@@ -27,8 +25,10 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
 from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.togglebutton import ToggleButton
 
 version = '0.0.1'
 LabelBase.register(DEFAULT_FONT, dir_path+'/Fonts/NotoSansJP-Medium.otf')
@@ -57,6 +57,8 @@ class RootWidget(FloatLayout):
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
+        self.load_setting()
+
         self._keyboard = Window.request_keyboard(self._key_closed, self)
         self._keyboard.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         Window.bind(on_dropfile=self._on_file_drop)
@@ -166,6 +168,22 @@ class RootWidget(FloatLayout):
             self.ids['file_icon_view'].rootpath = self.project_path
             self.ids['project_dirs'].parent.width = 0
             self.ids['project_select'].text = ''
+    
+    def load_setting(self):
+        settings = load_json(self.app_dir_path+'/resources/settings.json')
+        for group in settings:
+            print(f'[{group}]')
+            for key in settings[group]:
+                text_la = Label(
+                    text = key,
+                    height = 30,
+                    size_hint = (1, None))
+                self.ids['setting_view_left'].add_widget(text_la)
+                text_in = TextInput(
+                    text = str(settings[group][key]),
+                    height = 30,
+                    size_hint = (1, None))
+                self.ids['setting_view_right'].add_widget(text_in)
     
     ''' モード切替 '''
     def project_button(self, button_state):

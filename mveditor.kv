@@ -123,6 +123,9 @@
                         orientation: 'horizontal'
                         padding: 0, 0, 0, 0
                         ScrollView:
+                            id: setting_left
+                            do_scroll_y: True
+                            scroll_y: setting_right.scroll_y
                             size_hint: 0.6, 1
                             canvas.before:
                                 Color:
@@ -131,16 +134,21 @@
                                     pos: self.pos
                                     size: self.size[0], self.size[1]
                             BoxLayout:
+                                id: setting_view_left
                                 orientation: 'vertical'
                                 padding: 0, 0, 0, 0
-                                Label:
-                                    text: 'setting key'
+                                size_hint_y: None
+                                height: self.minimum_height
                         ScrollView:
+                            id: setting_right
+                            do_scroll_y: True
+                            scroll_y: setting_left.scroll_y
                             BoxLayout:
+                                id: setting_view_right
                                 orientation: 'vertical'
                                 padding: 0, 0, 0, 0
-                                Label:
-                                    text: 'setting value'
+                                size_hint_y: None
+                                height: self.minimum_height
                     # output
                     BoxLayout:
                         id: output_view
@@ -157,12 +165,16 @@
                             BoxLayout:
                                 orientation: 'vertical'
                                 padding: 0, 0, 0, 0
+                                size_hint_y: None
+                                height: self.minimum_height
                                 Label:
                                     text: 'output setting key'
                         ScrollView:
                             BoxLayout:
                                 orientation: 'vertical'
                                 padding: 0, 0, 0, 0
+                                size_hint_y: None
+                                height: self.minimum_height
                                 Label:
                                     text: 'output setting value'
             # video preview
