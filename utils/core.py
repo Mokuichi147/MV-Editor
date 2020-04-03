@@ -16,24 +16,39 @@ class ProjectData:
         self.sound = False
         self.fps = 0
         self.maximum_frame = 0
-        self.size = '0x0'
-        self.output_fmt = 'mp4'
+        self.width = 0
+        self.height = 0
+        self.output_fmt = ''
+        self.content = []
     
     def create(self, path):
         if os.path.isfile(path + '/project.json'):
             return
-        _dict = self.create_dict()
-        write_json(path + '/project.json', _dict)
+        _data = self.__create_data()
+        write_json(path + '/project.json', _data)
         
-    def create_dict(self):
-        _dict = {}
-        _dict['video'] = self.video
-        _dict['sound'] = self.sound
-        _dict['fps'] = self.fps
-        _dict['maximum_frame'] = self.maximum_frame
-        _dict['size'] = self.size
-        _dict['output_fmt'] = self.output_fmt
-        return _dict
+    def __create_data(self):
+        _data = {}
+        _data['video'] = self.video
+        _data['sound'] = self.sound
+        _data['fps'] = self.fps
+        _data['maximum_frame'] = self.maximum_frame
+        _data['width'] = self.width
+        _data['height'] = self.height
+        _data['output_fmt'] = self.output_fmt
+        _data['content'] = self.__create_list_data(self.content)
+        return _data
+    
+    def __create_list_data(self, list_data):
+        _list = []
+        for _count, _content in enumerate(list_data):
+            _list.append({})
+            for _key in _content.keys():
+                if type(_content[_key]) is list:
+                    _list[_count][_key] = self.__create_list_data(_content[_key])
+                else:
+                    _list[_count][_key] = _content[_key]
+        return _list
 
 
 def async_func(function, *args):
