@@ -1,11 +1,39 @@
+import os
+import json
+from time import time
+from threading import Thread
+
 import cv2
 import numpy as np
 from PIL import Image
-from time import time
-import json
-from threading import Thread
 from simpleaudio import play_buffer
 from kivy.graphics.texture import Texture
+
+
+class ProjectData:
+    def __init__(self):
+        self.video = False
+        self.sound = False
+        self.fps = 0
+        self.maximum_frame = 0
+        self.size = '0x0'
+        self.output_fmt = 'mp4'
+    
+    def create(self, path):
+        if os.path.isfile(path + '/project.json'):
+            return
+        _dict = self.create_dict()
+        write_json(path + '/project.json', _dict)
+        
+    def create_dict(self):
+        _dict = {}
+        _dict['video'] = self.video
+        _dict['sound'] = self.sound
+        _dict['fps'] = self.fps
+        _dict['maximum_frame'] = self.maximum_frame
+        _dict['size'] = self.size
+        _dict['output_fmt'] = self.output_fmt
+        return _dict
 
 
 def async_func(function, *args):
