@@ -7,7 +7,6 @@ from tkinter.filedialog import askdirectory
 from pydub import AudioSegment
 from pydub.utils import ratio_to_db
 from utils.core import *
-dir_path = os.path.abspath(os.path.dirname(__file__))
 SETTINGS = load_json(dir_path+'/resources/settings.json')
 
 _root = Tk()
@@ -145,6 +144,8 @@ class RootWidget(FloatLayout):
             self.project_name = self.project_path
         self.ids['project_select'].text = '> ' + self.project_name
         Window.set_title(f'MV Editor v{version} - {self.project_name}')
+
+        self.project = ProjectData(self.project_path)
 
         _files = os.listdir(self.project_path)
         self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]

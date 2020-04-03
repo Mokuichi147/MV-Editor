@@ -1,5 +1,6 @@
-import os
 import json
+import os
+import sys
 from time import time
 from threading import Thread
 
@@ -10,20 +11,26 @@ from simpleaudio import play_buffer
 from kivy.graphics.texture import Texture
 
 
+separator = '/'
+if sys.platform == 'win32':
+    separator = '\\'
+
+dir_path = os.path.abspath(os.path.dirname(__file__))
+dir_path = dir_path.split(separator)[:-1]
+dir_path = separator.join(dir_path)
+resources_path = dir_path + separator + 'resources'
+
+
 class ProjectData:
-    def __init__(self):
-        self.video = False
-        self.sound = False
-        self.fps = 0
-        self.maximum_frame = 0
-        self.width = 0
-        self.height = 0
-        self.output_fmt = ''
-        self.content = []
+    def __init__(self, path):
+        if os.path.isfile(path + '/project.json'):
+            self.set_data(path + '/project.json')
+            return
+        print(resources_path + '/project.json')
+        self.set_data(resources_path + '/project.json')
+        self.create(path)
     
     def create(self, path):
-        if os.path.isfile(path + '/project.json'):
-            return
         _data = self.__create_data()
         write_json(path + '/project.json', _data)
         
@@ -49,6 +56,17 @@ class ProjectData:
                 else:
                     _list[_count][_key] = _content[_key]
         return _list
+    
+    def set_data(self, path):
+        _data = load_json(path)
+        self.video = _data['video']
+        self.sound = _data['sound']
+        self.fps = _data['fps']
+        self.maximum_frame = _data['maximum_frame']
+        self.width = _data['width']
+        self.height = _data['height']
+        self.output_fmt = _data['output_fmt']
+        self.content = _data['content']
 
 
 def async_func(function, *args):
