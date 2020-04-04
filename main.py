@@ -167,13 +167,12 @@ class RootWidget(FloatLayout):
             if dir_count == 0:
                 btn.state = 'down'
             self.ids['project_dirs'].add_widget(btn)
+
+        self.ids['project_dirs'].parent.width = 200
         if len(self.project_path_listdir) > 0:
-            self.ids['project_dirs'].parent.width = 200
             self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
         else:
             self.ids['file_icon_view'].rootpath = self.project_path
-            self.ids['project_dirs'].parent.width = 0
-            self.ids['project_select'].text = ''
     
     def load_setting(self):
         self.settings = load_json(self.app_dir_path+'/resources/settings.json')
