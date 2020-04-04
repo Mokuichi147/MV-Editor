@@ -43,6 +43,7 @@ class ProjectData:
         self.set_data(resources_path + '/project.json')
         _data = self.__create_data()
         write_json(self.project_json, _data)
+        os.makedirs(self.project_path+'/Font', exist_ok=True)
         os.makedirs(self.project_path+'/Image', exist_ok=True)
         os.makedirs(self.project_path+'/Sound', exist_ok=True)
         os.makedirs(self.project_path+'/Video', exist_ok=True)
@@ -104,6 +105,12 @@ def load_movie(path):
     max_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     fps = cap.get(cv2.CAP_PROP_FPS)
     return cap, (width,height), max_count, fps
+
+def path2name(path):
+    _name = path.split('/')[-1]
+    if _name == '':
+        _name = path
+    return _name
 
 def pic_frame(cap, frame_count):
     cap.set(cv2.CAP_PROP_POS_FRAMES, frame_count)

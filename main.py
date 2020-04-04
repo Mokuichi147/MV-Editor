@@ -139,9 +139,7 @@ class RootWidget(FloatLayout):
             return
         self.project_path = file_path
         # title等の変更
-        self.project_name = self.project_path.split('/')[-1]
-        if self.project_name == '':
-            self.project_name = self.project_path
+        self.project_name = path2name(self.project_path)
         self.ids['project_select'].text = '> ' + self.project_name
         Window.set_title(f'MV Editor v{version} - {self.project_name}')
 
@@ -420,7 +418,7 @@ class RootWidget(FloatLayout):
         self.load_file(file_path)
 
 class MVEditorApp(App):
-    title = f'MV Editor v{version}'
+    title = f"MV Editor v{version} - {path2name(SETTINGS['pre_project']['path'])}"
     app_dir_path = dir_path
     resources_path = app_dir_path + '/resources/'
 
