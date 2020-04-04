@@ -39,10 +39,13 @@ class ProjectData:
         self.set_data(self.project_json)
     
     def create(self):
+        self.activate = True
         self.set_data(resources_path + '/project.json')
         _data = self.__create_data()
         write_json(self.project_json, _data)
-        self.activate = True
+        os.makedirs(self.project_path+'/Image', exist_ok=True)
+        os.makedirs(self.project_path+'/Sound', exist_ok=True)
+        os.makedirs(self.project_path+'/Video', exist_ok=True)
         
     def __create_data(self):
         _data = {}

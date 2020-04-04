@@ -83,7 +83,7 @@
                             padding: 0, 0, 0, 0
                             size_hint: None, 1
                             width: project_dirs.width
-                            # directories
+                            # file chooser
                             Button:
                                 id: project_select
                                 on_press: root.project_selected()
@@ -96,6 +96,20 @@
                                 halign: 'left'
                                 valign: 'top'
                                 text_size: project_dirs.width-20, self.height/2
+                            # create project
+                            Button:
+                                id: project_create
+                                on_press: root.project_create_button()
+                                text: ''
+                                background_normal: app.resources_path+'project_select.png' if self.text != '' and project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
+                                background_down: app.resources_path+'project_select.png' if self.text != '' and project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
+                                size_hint: None, None
+                                height: 50 if self.text != '' else 0
+                                width: project_dirs.width if self.text != '' and project_dirs.width != 0 else 0
+                                halign: 'left'
+                                valign: 'top'
+                                text_size: project_dirs.width-20, self.height/2
+                            # directories
                             ScrollView:
                                 id: project_scrollview
                                 canvas.before:
@@ -106,7 +120,7 @@
                                         size: self.size[0], self.size[1]
                                 size_hint: None, None
                                 width: 150
-                                height: file_icon_view.height - project_select.height
+                                height: file_icon_view.height - project_select.height - project_create.height if project_create.height != 0 else file_icon_view.height - project_select.height
                                 BoxLayout:
                                     id: project_dirs
                                     orientation: 'vertical'

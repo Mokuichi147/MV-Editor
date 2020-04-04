@@ -146,6 +146,7 @@ class RootWidget(FloatLayout):
         Window.set_title(f'MV Editor v{version} - {self.project_name}')
 
         self.project = ProjectData(self.project_path)
+        self.ids['project_create'].text = '' if self.project.activate else 'プロジェクト作成'
         if self.project.activate:
             self.project.update()
 
@@ -195,6 +196,7 @@ class RootWidget(FloatLayout):
                                  height = _group_height,
                                  size_hint = (1, None))
             self.ids['setting_view_right'].add_widget(group_label)
+
             for key in self.settings[group]:
                 text_la = Label(text = lang[group][key],
                                  height = _item_height,
@@ -212,7 +214,16 @@ class RootWidget(FloatLayout):
                                      cursor_color = (0.50, 0.50, 0.50, 1))
                 self.setting_inputs.append(text_in)
                 self.ids['setting_view_right'].add_widget(text_in)
-    
+            
+            space_label = Label(text = '',
+                                 height = _item_height,
+                                 size_hint = (1, None))
+            self.ids['setting_view_left'].add_widget(space_label)
+            space_label = Label(text = '',
+                                 height = _item_height,
+                                 size_hint = (1, None))
+            self.ids['setting_view_right'].add_widget(space_label)
+
     def write_setting(self):
         _path = self.app_dir_path+'/resources/settings.json'
         self.settings = load_json(_path)
@@ -241,6 +252,10 @@ class RootWidget(FloatLayout):
         _width = self.ids['project_scrollview'].width
         self.ids['project_scrollview'].width = 200 if _width == 0 else 0
         self.ids['project_select'].text = '> ' + self.project_name if _width == 0 else ''
+    
+    def project_create_button(self):
+        self.project.create()
+        self.load_file(self.project.project_path)
     
     def setting_button(self, button_state):
         if button_state == 'down':
@@ -401,6 +416,8 @@ class RootWidget(FloatLayout):
     ''' ドラッグ&ドロップ '''
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
+        if '\\' in file_path:
+            file_path = '/'.join(file_path.split('\\'))
         self.load_file(file_path)
 
 class MVEditorApp(App):
