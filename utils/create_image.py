@@ -189,7 +189,7 @@ def project_button_clear(size2d=(size,size), color=(0,0,0,0), path=resources_pat
     img.save(path + name)
 
 
-if __name__=='__main__':
+def create_all():
     cursor()
 
     playback()
@@ -223,3 +223,7 @@ if __name__=='__main__':
     project_button_clear()
 
     project_button_clear(name='alpha.png')
+
+
+if __name__=='__main__':
+    create_all()
