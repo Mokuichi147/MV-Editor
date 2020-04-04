@@ -106,7 +106,7 @@ class RootWidget(FloatLayout):
             self.frame = pic_frame(self.cap, int(value))
             self.frame_count = int(value)
             self.pre_frame_count = int(value)
-        self.image_texture = frame2texture(self.frame, self.texture_size)
+        self.image_texture = frame2texture(self.frame, self.texture_size, self.settings['play_preview']['maximum_size'])
         _time_second = int(self.frame_count / self.fps)
         self.ids['video_time_label'].text = f'{_time_second//60:>2}:{_time_second%60:0>2}'
     
@@ -121,7 +121,7 @@ class RootWidget(FloatLayout):
         self.ids['video_time_slider'].value = 0
         self.ids['video_time_label'].text = '0:00'
         self.frame = pic_frame(self.cap, 0)
-        self.image_texture = frame2texture(self.frame, self.texture_size)
+        self.image_texture = frame2texture(self.frame, self.texture_size, self.settings['play_preview']['maximum_size'])
         self.sa = 0
         self.frame_count = 0
         async_func(self.load_sound, movie_path)

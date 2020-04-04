@@ -152,11 +152,11 @@ def frame2texture_pil(frame):
     return pil_image2texture(pil_image)
 
 ''' time: 0.007~0.013s '''
-def frame2texture(frame, size):
-    if size[0] > 1920 and size[1] > 1080:
-        # time: 0.003~0.004s
-        frame = cv2.resize(frame, (1920,1080))
-        size = (1920,1080)
+def frame2texture(frame, size, max_size):
+    if size[0] > max_size or size[1] > max_size:
+        scale = max_size / size[0] if size[0] > size[1] else max_size / size[1]
+        frame = cv2.resize(frame, dsize=None, fx=scale, fy=scale)
+        size = (int(size[0]*scale), int(size[1]*scale))
     # time: 0.001s
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     # time: 0s
