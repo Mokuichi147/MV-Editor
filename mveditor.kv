@@ -101,8 +101,8 @@
                                 id: project_create
                                 on_press: root.project_create_button()
                                 text: ''
-                                background_normal: app.resources_path+'project_select.png' if self.text != '' and project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
-                                background_down: app.resources_path+'project_select.png' if self.text != '' and project_dirs.width != 0 else app.resources_path+'project_select_clear.png'
+                                background_normal: app.resources_path+'project_create.png' if self.text != '' and project_dirs.width != 0 else app.resources_path+'project_create_clear.png'
+                                background_down: app.resources_path+'project_create.png' if self.text != '' and project_dirs.width != 0 else app.resources_path+'project_create_clear.png'
                                 size_hint: None, None
                                 height: 50 if self.text != '' else 0
                                 width: project_dirs.width if self.text != '' and project_dirs.width != 0 else 0

@@ -16,8 +16,9 @@ if not os.path.isdir(resources_path):
 resources_path += separator
 
 size = 256
-main_color = (145,140,255, 255)
-sub_color  = ( 90, 90,255, 255)
+main_color   = (145,140,255, 255)
+sub_color    = ( 90, 90,255, 255)
+accent_color = ( 50,180,200, 255)
 background_accent_color     = ( 76, 76,102, 255)
 background_accent_sub_color = ( 51, 51, 63, 255)
 background_main_color = ( 28, 28, 28, 255)
@@ -221,6 +222,8 @@ def create_all():
 
     project_button()
     project_button_clear()
+    project_button(color=accent_color, name='project_create.png')
+    project_button_clear(name='project_create_clear.png')
 
     project_button_clear(name='alpha.png')
 
