@@ -23,16 +23,26 @@ resources_path = dir_path + separator + 'resources'
 
 class ProjectData:
     def __init__(self, path):
-        if os.path.isfile(path + '/project.json'):
-            self.set_data(path + '/project.json')
-            return
-        print(resources_path + '/project.json')
-        self.set_data(resources_path + '/project.json')
-        self.create(path)
+        self.project_path = path
+        self.project_json = self.project_path + '/project.json'
+        self.activate()
+
+    def activate(self):
+        if os.path.isfile(self.project_json):
+            self.activate = True
+            return True
+        else:
+            self.activate = False
+            return False
+
+    def update(self):
+        self.set_data(self.project_json)
     
-    def create(self, path):
+    def create(self):
+        self.set_data(resources_path + '/project.json')
         _data = self.__create_data()
-        write_json(path + '/project.json', _data)
+        write_json(self.project_json, _data)
+        self.activate = True
         
     def __create_data(self):
         _data = {}

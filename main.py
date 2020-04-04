@@ -146,6 +146,8 @@ class RootWidget(FloatLayout):
         Window.set_title(f'MV Editor v{version} - {self.project_name}')
 
         self.project = ProjectData(self.project_path)
+        if self.project.activate:
+            self.project.update()
 
         _files = os.listdir(self.project_path)
         self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
