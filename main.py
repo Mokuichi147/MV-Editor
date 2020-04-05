@@ -78,12 +78,16 @@ class RootWidget(FloatLayout):
             sleep(self.sa)
         self.frame_count = self.ids['video_time_slider'].value + 1
         _play_frame = round((time()-self.play_start_time)*self.fps)
-        if not _play_frame - 3 <= self.frame_count <= _play_frame + 3:
-            # 表示している画像と音声が±3フレームずれたとき
+        if _play_frame > self.frame_count + 10:
             self.frame_count = _play_frame
             self.cap.set(cv2.CAP_PROP_POS_FRAMES, self.frame_count)
             self.play_start_time = time() - self.frame_count / self.fps
             self.sa = 0
+        else:
+            for i in range(max(_play_frame - int(self.frame_count), 0)):
+                _, _ = self.cap.read()
+                self.sa = 0
+            self.frame_count = _play_frame
         if self.pre_frame_count != self.ids['video_time_slider'].value:
             # スライダーのカーソル位置を移動したとき
             self.frame_count = self.ids['video_time_slider'].value
