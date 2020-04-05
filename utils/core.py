@@ -51,7 +51,7 @@ class ProjectData:
     def frame_count_data(self, frame_count, dtype='all'):
         _data = []
         for _content in range(self.content):
-            if _content['full_time'] and (dtype='all' or _content['type'] == dtype):
+            if _content['full_time'] and (dtype=='all' or _content['type']==dtype):
                 _data.append(_content)
         return _data
         
