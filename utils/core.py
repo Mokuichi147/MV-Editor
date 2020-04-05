@@ -47,6 +47,13 @@ class ProjectData:
         os.makedirs(self.project_path+'/Image', exist_ok=True)
         os.makedirs(self.project_path+'/Sound', exist_ok=True)
         os.makedirs(self.project_path+'/Video', exist_ok=True)
+    
+    def frame_count_data(self, frame_count, dtype='all'):
+        _data = []
+        for _content in range(self.content):
+            if _content['full_time'] and (dtype='all' or _content['type'] == dtype):
+                _data.append(_content)
+        return _data
         
     def __create_data(self):
         _data = {}
@@ -81,6 +88,10 @@ class ProjectData:
         self.height = _data['height']
         self.output_fmt = _data['output_fmt']
         self.content = _data['content']
+        self.fonts = [i for i in self.content if i['type'] == 'fonts']
+        self.images = [i for i in self.content if i['type'] == 'images']
+        self.sounds = [i for i in self.content if i['type'] == 'sound']
+        self.videos = [i for i in self.content if i['type'] == 'video']
 
 
 def async_func(function, *args):
