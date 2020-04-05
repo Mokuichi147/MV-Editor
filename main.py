@@ -65,8 +65,9 @@ class RootWidget(FloatLayout):
         self._keyboard.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         Window.bind(on_dropfile=self._on_file_drop)
 
-        self.load_file(self.app_dir_path + '/TestProject')
-        self.load_movie_and_sound(self.project_path+'/Video/test.mp4')
+        self.load_file(self.settings['pre_project']['path'])
+        if self.project.video:
+            self.load_movie_and_sound(self.project.project_path + self.project.videos[0]['path'])
 
         self.visible_view('file_selection_view')
         self.hidden_view('setting_view')
