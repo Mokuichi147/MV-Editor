@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-from time import time
+from time import time as T
 from threading import Thread
 
 import cv2
@@ -92,6 +92,19 @@ class ProjectData:
         self.images = [i for i in self.content if i['type'] == 'images']
         self.sounds = [i for i in self.content if i['type'] == 'sound']
         self.videos = [i for i in self.content if i['type'] == 'video']
+    
+    def add_image(self, path, animation_val=None, time=None, size=None, pos=(0,0), angle=0):
+        _data = {'type': 'image', 'path': path}
+        _data['animation'] = False if animation_val==None else True
+        _data['animation_val'] = animation_val
+        _data['full_time'] = True if time==None else False
+        _data['time'] = time
+        _data['full_size'] = True if size==None else False
+        _data['size'] = size
+        _data['pos_x'] = pos[0]
+        _data['pos_y'] = pos[1]
+        _data['angle'] = angle
+        self.content.append(_data)
 
 
 def async_func(function, *args):
