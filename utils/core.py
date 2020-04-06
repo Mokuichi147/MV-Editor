@@ -93,12 +93,22 @@ class ProjectData:
         self.sounds = [i for i in self.content if i['type'] == 'sound']
         self.videos = [i for i in self.content if i['type'] == 'video']
     
-    def add_image(self, path, animation_val=None, time=None, size=None, pos=(0,0), angle=0):
+    def check_content_index(self, frame_count):
+        _content_index = []
+        for i, _content_list in enumerate(self.content):
+            for j, _content in enumerate(_content_list):
+                _sf = _content['start_frame']
+                _ef = _sf + _content['frame'][1] - _content['frame'][0]
+                if _sf < frame_count < _ef:
+                    _content_index.append([i, j])
+        return _content_index
+    
+    def add_image(self, path, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         _data = {'type': 'image', 'path': path}
         _data['animation'] = False if animation_val==None else True
         _data['animation_val'] = animation_val
-        _data['full_time'] = True if time==None else False
-        _data['time'] = time
+        _data['start_frame'] = start_frame
+        _data['frame'] = frame
         _data['full_size'] = True if size==None else False
         _data['size'] = size
         _data['pos_x'] = pos[0]
