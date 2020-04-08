@@ -114,7 +114,8 @@ class ProjectData:
         _data['pos_x'] = pos[0]
         _data['pos_y'] = pos[1]
         _data['angle'] = angle
-        self.content.append(_data)
+        if len(self.content) == 0:
+            self.content.append([_data])
 
 
 def async_func(function, *args):
