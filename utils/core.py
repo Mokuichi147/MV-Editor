@@ -88,10 +88,15 @@ class ProjectData:
         self.height = _data['height']
         self.output_fmt = _data['output_fmt']
         self.content = _data['content']
-        self.fonts = [i for i in self.content if i['type'] == 'fonts']
-        self.images = [i for i in self.content if i['type'] == 'images']
-        self.sounds = [i for i in self.content if i['type'] == 'sound']
-        self.videos = [i for i in self.content if i['type'] == 'video']
+        self.fonts  = []
+        self.images = []
+        self.sounds = []
+        self.videos = []
+        for _content in self.content:
+            self.fonts  += [i for i in _content if i['type'] == 'font']
+            self.images += [i for i in _content if i['type'] == 'image']
+            self.sounds += [i for i in _content if i['type'] == 'sound']
+            self.videos += [i for i in _content if i['type'] == 'video']
     
     def check_content_index(self, frame_count):
         _content_index = []
