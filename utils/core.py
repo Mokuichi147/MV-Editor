@@ -98,15 +98,34 @@ class ProjectData:
             self.sounds += [i for i in _content if i['type'] == 'sound']
             self.videos += [i for i in _content if i['type'] == 'video']
     
+    def se_frame(self, content):
+        _start_frame = content['start_frame']
+        _end_frame = _start_frame + content['frame'][1] - content['frame'][0]
+        return _start_frame, _end_frame
+    
     def check_content_index(self, frame_count):
         _content_index = []
         for i, _content_list in enumerate(self.content):
             for j, _content in enumerate(_content_list):
-                _sf = _content['start_frame']
-                _ef = _sf + _content['frame'][1] - _content['frame'][0]
+                _sf, _ef = self.se_frame(_content['start_frame'])
                 if _sf < frame_count < _ef:
                     _content_index.append([i, j])
         return _content_index
+    
+    def check_content_block(self, content_index, frame=(0,0)):
+        for _content in self.content[content_index]:
+            _sf, _ef = self.se_frame(_content['start_frame'])
+            if not (_ef < frame[0] or frame[1] < _sf):
+                return False
+        return True
+    
+    def content_index(self, data):
+        _frame = self.se_frame(data)
+        _content_count = len(self.content)
+        for i in range(_content_count):
+            if self.check_content_block(i, _frame):
+                return i
+        return _content_count
     
     def add_image(self, path, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         _data = {'type': 'image', 'path': path}
@@ -121,6 +140,11 @@ class ProjectData:
         _data['angle'] = angle
         if len(self.content) == 0:
             self.content.append([_data])
+        num = self.content_index(_data)
+        if len(self.content) == num:
+            self.content.append([_data])
+        else:
+            self.content[num].append(_data)
 
 
 def async_func(function, *args):
