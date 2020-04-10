@@ -56,7 +56,7 @@ class RootWidget(FloatLayout):
     sound_event = False
     spacebar_down = False
     # Splitter関連
-    button_move = None
+    mouce_down_object = None
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
@@ -366,7 +366,7 @@ class RootWidget(FloatLayout):
     
     ''' SplitterをButtonで代用 '''
     def button_moved(self, button_id):
-        self.button_move = button_id
+        self.mouce_down_object = button_id
     
     def resize_view(self, touch, parent_view, view, min_s, min_p, mode='width'):
         _mode = 0 if mode == 'width' else 1
@@ -389,14 +389,14 @@ class RootWidget(FloatLayout):
     def on_touch_move(self, touch):
         if not 'pos' in touch.profile:
             return
-        elif self.button_move == 'vertical_splitter':
+        elif self.mouce_down_object == 'vertical_splitter':
             self.resize_view(touch, 'root_view', 'vertical_splitter_upper', 205, 100, mode='height')
-        elif self.button_move == 'horizontal_splitter':
+        elif self.mouce_down_object == 'horizontal_splitter':
             self.resize_view(touch, 'vertical_splitter_upper', 'horizontal_splitter_right', 300, 200, mode='width')
     
     def on_touch_up(self, touch):
-        if self.button_move != None:
-            self.button_move = None
+        if self.mouce_down_object != None:
+            self.mouce_down_object = None
     
     ''' モード切替時のviewの表示・非表示 '''
     def hidden_view(self, view_id):
