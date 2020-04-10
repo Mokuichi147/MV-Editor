@@ -71,7 +71,6 @@ class ProjectData:
         return _data
     
     def __create_list_data(self, list_data):
-        print('list_data', list_data)
         _list = []
         for _count, _content in enumerate(list_data):
             if type(_content) is list:
