@@ -98,7 +98,7 @@ class RootWidget(FloatLayout):
                 self.sound_play.stop()
                 self.sound_play = play_sound(self.sound, self.frame_count/self.fps)
             self.sa = 0
-            self.play_start_time = time() - self.ids['video_time_slider'].value/ self.fps
+            self.play_start_time = time() - self.ids['video_time_slider'].value/self.fps
 
         if self.frame_count > self.frame_max - 1:
             # 最後まで再生したとき
@@ -144,19 +144,19 @@ class RootWidget(FloatLayout):
         if not os.path.isdir(file_path):
             self.load_movie_and_sound(file_path)
             return
-        self.project_path = file_path
-        # title等の変更
-        self.project_name = path2name(self.project_path)
-        self.ids['project_select'].text = '> ' + self.project_name
-        Window.set_title(f'MV Editor v{version} - {self.project_name}')
 
-        self.project = ProjectData(self.project_path)
+        self.project = ProjectData(file_path)
         self.ids['project_create'].text = '' if self.project.activate else 'プロジェクト作成'
         if self.project.activate:
             self.project.update()
+        
+        # title等の変更
+        self.project_name = path2name(self.project.project_path)
+        self.ids['project_select'].text = '> ' + self.project_name
+        Window.set_title(f'MV Editor v{version} - {self.project_name}')
 
-        _files = os.listdir(self.project_path)
-        self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project_path, f))]
+        _files = os.listdir(self.project.project_path)
+        self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project.project_path, f))]
         self.ids['project_dirs'].clear_widgets()
         for dir_count in range(len(self.project_path_listdir)):
             btn = ToggleButton(text = self.project_path_listdir[dir_count],
@@ -175,9 +175,9 @@ class RootWidget(FloatLayout):
 
         self.ids['project_dirs'].parent.width = 200
         if len(self.project_path_listdir) > 0:
-            self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[0]
+            self.ids['file_icon_view'].rootpath = self.project.project_path + '/' + self.project_path_listdir[0]
         else:
-            self.ids['file_icon_view'].rootpath = self.project_path
+            self.ids['file_icon_view'].rootpath = self.project.project_path
     
     def load_setting(self):
         self.settings = load_json(self.app_dir_path+'/resources/settings.json')
@@ -294,13 +294,16 @@ class RootWidget(FloatLayout):
             button.state = 'down'
             return
         _num = self.project_path_listdir.index(text)
-        self.ids['file_icon_view'].rootpath = self.project_path + '/' + self.project_path_listdir[_num]
+        self.ids['file_icon_view'].rootpath = self.project.project_path + '/' + self.project_path_listdir[_num]
     
     def file_selected(self, file_path):
         if len(file_path) != 1:
             return
-        if file_path[0].split('.')[-1].lower() in ['mp4', 'mov']:
-            self.load_movie_and_sound(file_path[0])
+        file_path = slash_path(file_path[0])
+        if file_path.split('.')[-1].lower() in ['mp4', 'mov']:
+            self.project.add_video(file_path, sound=False)
+            self.project.save()
+            #self.load_movie_and_sound(file_path[0])
     
     ''' frame関連 '''
     def set_zero_frame(self):
@@ -420,8 +423,7 @@ class RootWidget(FloatLayout):
     ''' ドラッグ&ドロップ '''
     def _on_file_drop(self, window, file_path):
         file_path = file_path.decode('utf-8')
-        if '\\' in file_path:
-            file_path = '/'.join(file_path.split('\\'))
+        file_path = slash_path(file_path)
         self.load_file(file_path)
 
 class MVEditorApp(App):
