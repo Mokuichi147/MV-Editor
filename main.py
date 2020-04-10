@@ -56,7 +56,8 @@ class RootWidget(FloatLayout):
     sound_event = False
     spacebar_down = False
     # Splitter関連
-    mouce_down_object = None
+    mouce_down_object_type = None
+    mouce_down_object_name = None
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
@@ -365,8 +366,9 @@ class RootWidget(FloatLayout):
         self.ids['playback_button'].background_down = 'resources/playback_stop_button_down.png'
     
     ''' SplitterをButtonで代用 '''
-    def button_moved(self, button_id):
-        self.mouce_down_object = button_id
+    def object_moved(self, object_type, object_name=None):
+        self.mouce_down_object_type = object_type
+        self.mouce_down_object_name = object_name
     
     def resize_view(self, touch, parent_view, view, min_s, min_p, mode='width'):
         _mode = 0 if mode == 'width' else 1
@@ -389,14 +391,19 @@ class RootWidget(FloatLayout):
     def on_touch_move(self, touch):
         if not 'pos' in touch.profile:
             return
-        elif self.mouce_down_object == 'vertical_splitter':
+        elif self.mouce_down_object_type == 'vertical_splitter':
             self.resize_view(touch, 'root_view', 'vertical_splitter_upper', 205, 100, mode='height')
-        elif self.mouce_down_object == 'horizontal_splitter':
+        elif self.mouce_down_object_type == 'horizontal_splitter':
             self.resize_view(touch, 'vertical_splitter_upper', 'horizontal_splitter_right', 300, 200, mode='width')
+        elif self.mouce_down_object_type == 'file':
+            pass
     
     def on_touch_up(self, touch):
-        if self.mouce_down_object != None:
-            self.mouce_down_object = None
+        if self.mouce_down_object_type == 'file':
+            print(slash_path(self.mouce_down_object_name[0]))
+        if self.mouce_down_object_type != None:
+            self.mouce_down_object_type = None
+            self.mouce_down_object_name = None
     
     ''' モード切替時のviewの表示・非表示 '''
     def hidden_view(self, view_id):
