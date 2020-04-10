@@ -1,5 +1,6 @@
 import cv2
 import os
+import re
 from time import sleep, time
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
@@ -296,12 +297,15 @@ class RootWidget(FloatLayout):
         _num = self.project_path_listdir.index(text)
         self.ids['file_icon_view'].rootpath = self.project.project_path + '/' + self.project_path_listdir[_num]
     
-    def file_selected(self, file_path):
-        if len(file_path) != 1:
+    def file_selected(self, abs_file_path):
+        if len(abs_file_path) != 1:
             return
-        file_path = slash_path(file_path[0])
-        if file_path.split('.')[-1].lower() in ['mp4', 'mov']:
-            self.project.add_video(file_path, sound=False)
+        abs_file_path = slash_path(abs_file_path[0])
+        if abs_file_path.split('.')[-1].lower() in ['mp4', 'mov']:
+            if re.match(self.project.project_path, abs_file_path):
+                file_path = abs_file_path[len(self.project.project_path):]
+            _, size, max_frame, _ = load_movie(abs_file_path)
+            self.project.add_video(file_path, sound=False, frame=(0,max_frame))
             self.project.save()
             #self.load_movie_and_sound(file_path[0])
     
