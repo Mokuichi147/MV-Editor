@@ -177,9 +177,9 @@ class RootWidget(FloatLayout):
 
         self.ids['project_dirs'].parent.width = 200
         if len(self.project_path_listdir) > 0:
-            self.ids['file_icon_view'].rootpath = self.project.project_path + '/' + self.project_path_listdir[0]
+            self.load_files(self.project.project_path + '/' + self.project_path_listdir[0])
         else:
-            self.ids['file_icon_view'].rootpath = self.project.project_path
+            self.load_files(self.project.project_path)
     
     def load_setting(self):
         self.settings = load_json(self.app_dir_path+'/resources/settings.json')
@@ -296,7 +296,7 @@ class RootWidget(FloatLayout):
             button.state = 'down'
             return
         _num = self.project_path_listdir.index(text)
-        self.ids['file_icon_view'].rootpath = self.project.project_path + '/' + self.project_path_listdir[_num]
+        self.load_files(self.project.project_path + '/' + self.project_path_listdir[_num])
     
     def file_selected(self, abs_file_path):
         if len(abs_file_path) != 1:
@@ -404,6 +404,23 @@ class RootWidget(FloatLayout):
         if self.mouce_down_object_type != None:
             self.mouce_down_object_type = None
             self.mouce_down_object_name = None
+
+    ''' FileChooserIconViewを置き換える '''
+    def load_files(self, path):
+        _files = os.listdir(path)
+        self.file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
+        self.ids['file_stack'].clear_widgets()
+        for _count, _name in enumerate(self.file_listdir):
+            btn = ToggleButton(text = _name,
+                                group = 'stack_file',
+                                height = 128,
+                                width = 128,
+                                size_hint = (None, None),
+                                halign = 'left',
+                                valign = 'top',
+                                text_size = (64, 64),
+                                on_press = lambda x: print(x, x.text, x.state))
+            self.ids['file_stack'].add_widget(btn)
     
     ''' モード切替時のviewの表示・非表示 '''
     def hidden_view(self, view_id):

@@ -127,12 +127,14 @@
                                     size_hint_y: None
                                     height: self.minimum_height
                         # files
-                        FileChooserIconView:
+                        ScrollView:
                             id: file_icon_view
-                            rootpath: ''
-                            filters: ['*.wav', '*.mp3', '*.mp4', '*.mov', '*.jpg', '*.png', '*.ttf', '*.otf']
-                            on_submit: root.file_selected(self.selection)
-                            on_selection: root.object_moved('file', self.selection)
+                            StackLayout:
+                                id: file_stack
+                                padding: 10
+                                spacing: 10
+                                size_hint: 1, None
+                                height: self.minimum_height
                     # setting
                     BoxLayout:
                         id: setting_view
