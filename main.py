@@ -411,14 +411,17 @@ class RootWidget(FloatLayout):
         self.file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
         self.ids['file_stack'].clear_widgets()
         for _count, _name in enumerate(self.file_listdir):
+            print(path + '/' + _name)
+            _audio, _video = check_video(path + '/' + _name)
+            print(_audio, _video)
             btn = ToggleButton(text = _name,
                                 group = 'stack_file',
                                 height = 128,
                                 width = 128,
                                 size_hint = (None, None),
-                                halign = 'left',
+                                halign = 'center',
                                 valign = 'top',
-                                text_size = (64, 64),
+                                text_size = (128, 64),
                                 on_press = lambda x: print(x, x.text, x.state))
             self.ids['file_stack'].add_widget(btn)
     

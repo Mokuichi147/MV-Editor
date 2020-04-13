@@ -5,6 +5,7 @@ from time import time as T
 from threading import Thread
 
 import cv2
+import ffmpeg
 import numpy as np
 from PIL import Image
 from simpleaudio import play_buffer
@@ -191,6 +192,20 @@ def load_json(path):
 def write_json(path, data):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
+
+def check_video(path):
+    _audio = False
+    _video = False
+    try:
+        _video_data = ffmpeg.probe(path)
+    except:
+        return _audio, _video
+    for stream in _video_data['streams']:
+        if stream['codec_type'] == 'audio':
+            _audio = True
+        elif stream['codec_type'] == 'video':
+            _video = True
+    return _audio, _video
 
 def load_movie(path):
     cap = cv2.VideoCapture(path)
