@@ -8,7 +8,7 @@ MacOSでの動作も確認済み
 
 事前にインストールしておく必要のあるもの
 
-* FFmpeg (mp4等を読み込む場合)
+* FFmpeg
 
 必要なライブラリ
 
@@ -17,6 +17,7 @@ MacOSでの動作も確認済み
 * simpleaudio
 * kivy
 * opencv-python
+* ffmpeg-python
 * pillow
 
 
@@ -32,6 +33,7 @@ pip install pydub
 pip install simpleaudio
 pip install kivy
 pip install opencv-python
+pip install ffmpeg-python
 pip install pillow
 ```
 
