@@ -13,14 +13,20 @@ from simpleaudio import play_buffer
 from kivy.graphics.texture import Texture
 
 
-separator = '/'
-if sys.platform == 'win32':
-    separator = '\\'
+def slash_path(path):
+    '''
+    \が入っているパスを/にする
+    '''
+    if '\\' in path:
+        return '/'.join(path.split('\\'))
+    return path
+
 
 dir_path = os.path.abspath(os.path.dirname(__file__))
-dir_path = dir_path.split(separator)[:-1]
-dir_path = separator.join(dir_path)
-resources_path = dir_path + separator + 'resources'
+dir_path = slash_path(dir_path)
+dir_path = dir_path.split('/')[:-1]
+dir_path = '/'.join(dir_path)
+resources_path = dir_path + '/' + 'resources'
 
 
 class ProjectData:
@@ -51,6 +57,12 @@ class ProjectData:
         '''
         _data = self.__create_data()
         write_json(self.project_json, _data)
+    
+    def update(self):
+        '''
+        project.jsonを読み込む
+        '''
+        self.__set_data(self.project_json)
     
     def relative_path(self, path):
         '''
@@ -207,14 +219,6 @@ def async_func(function, *args):
     _th = Thread(target=function, args=args)
     _th.daemon = True
     _th.start()
-
-def slash_path(path):
-    '''
-    \が入っているパスを/にする
-    '''
-    if '\\' in path:
-        return '/'.join(path.split('\\'))
-    return path
 
 def load_json(path):
     '''
