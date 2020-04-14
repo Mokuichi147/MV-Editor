@@ -12,6 +12,6 @@
     "play_preview": {
         "maximum_size": "最大解像度",
         "maximum_fps": "最大フレームレート",
-        "sound_ratio": "音量"
+        "audio_ratio": "音量"
     }
 }

@@ -48,7 +48,7 @@ class ProjectData:
         self.save()
         os.makedirs(self.project_path+'/Font', exist_ok=True)
         os.makedirs(self.project_path+'/Image', exist_ok=True)
-        os.makedirs(self.project_path+'/Sound', exist_ok=True)
+        os.makedirs(self.project_path+'/Audio', exist_ok=True)
         os.makedirs(self.project_path+'/Video', exist_ok=True)
     
     def save(self):
@@ -91,7 +91,7 @@ class ProjectData:
     def __create_data(self):
         _data = {}
         _data['video'] = self.video
-        _data['sound'] = self.sound
+        _data['audio'] = self.audio
         _data['fps'] = self.fps
         _data['maximum_frame'] = self.maximum_frame
         _data['width'] = self.width
@@ -120,7 +120,7 @@ class ProjectData:
     def __set_data(self, path):
         _data = load_json(path)
         self.video = _data['video']
-        self.sound = _data['sound']
+        self.audio = _data['audio']
         self.fps = _data['fps']
         self.maximum_frame = _data['maximum_frame']
         self.width = _data['width']
@@ -130,12 +130,12 @@ class ProjectData:
         self.dirs = _data['dirs']
         self.fonts  = []
         self.images = []
-        self.sounds = []
+        self.audios = []
         self.videos = []
         for _content in self.content:
             self.fonts  += [i for i in _content if i['type'] == 'font']
             self.images += [i for i in _content if i['type'] == 'image']
-            self.sounds += [i for i in _content if i['type'] == 'sound']
+            self.audios += [i for i in _content if i['type'] == 'audio']
             self.videos += [i for i in _content if i['type'] == 'video']
     
     def __se_frame(self, content):
@@ -188,13 +188,13 @@ class ProjectData:
         else:
             self.content[num].append(_data)
     
-    def add_video(self, path, video=True, sound=True, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
+    def add_video(self, path, video=True, audio=True, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         '''
         コンテンツに動画を追加する
         '''
         _data = {'type': 'video', 'path': path}
         _data['video_iamge'] = video
-        _data['video_sound'] = sound
+        _data['video_audio'] = audio
         _data['animation'] = False if animation_val==None else True
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
@@ -270,7 +270,7 @@ def check_video(path):
             _video = True
     return _audio, _video
 
-def load_movie(path):
+def load_video(path):
     cap = cv2.VideoCapture(path)
     if not cap.isOpened():
         return
@@ -344,7 +344,7 @@ def frame2texture(frame, size, max_size):
     texture.flip_vertical()
     return texture
 
-def play_sound(audio_segment, audio_time):
+def play_audio(audio_segment, audio_time):
     return play_buffer(
         audio_segment[audio_time*1000:].raw_data,
         num_channels = audio_segment.channels,

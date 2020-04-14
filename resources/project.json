@@ -1,6 +1,6 @@
 {
     "video": false,
-    "sound": false,
+    "audio": false,
     "fps": 0.0,
     "maximum_frame": 0,
     "width": 0,
