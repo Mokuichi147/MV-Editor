@@ -148,9 +148,11 @@ class RootWidget(FloatLayout):
             return
 
         self.project = ProjectData(file_path)
-        self.ids['project_create'].text = '' if self.project.activate else 'プロジェクト作成'
         if self.project.activate:
+            self.ids['project_create'].text = ''
             self.project.update()
+        else:
+            self.ids['project_create'].text = 'プロジェクト作成'
         
         # title等の変更
         self.project_name = path2name(self.project.project_path)
