@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 from time import time as T
 from threading import Thread
@@ -59,11 +60,20 @@ class ProjectData:
                 _data.append(_content)
         return _data
     
+    def relative_path(self, path):
+        if re.match(self.project_path, path):
+            return path[len(self.project_path):]
+        return path
+    
     def load_dir(self, path):
+        _files = os.listdir(path)
         _file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
-        for _count, _name in enumerate(_file_listdir):
+        for _name in _file_listdir:
+            _name = self.relative_path(path + '/' + _name)
+            if _name in self.dirs:
+                continue
             self.dirs[_name] = {}
-            self.dirs[_name]['type']  = 'video'
+            self.dirs[_name]['type']  = check_type(path + '/' + _name)
             _audio, _video = check_video(path)
             self.dirs[_name]['video'] = _video
             self.dirs[_name]['audio'] = _audio
@@ -203,6 +213,22 @@ def load_json(path):
 def write_json(path, data):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
+
+def check_type(path):
+    try:
+        file_format = path.split('.')[-1].lower()
+    except:
+        return
+    if file_format in ['mp4', 'mov', 'avi', 'mkv', 'flv', 'mpeg', 'mpg']:
+        return 'video'
+    elif file_format in ['mp3', 'wav', 'aac', 'flac', 'm4a']:
+        return 'audio'
+    elif file_format in ['jpg', 'jpeg', 'png']:
+        return 'image'
+    elif file_format in ['ttf', 'otf']:
+        return 'font'
+    else:
+        return
 
 def check_video(path):
     _audio = False

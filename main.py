@@ -302,9 +302,8 @@ class RootWidget(FloatLayout):
         if len(abs_file_path) != 1:
             return
         abs_file_path = slash_path(abs_file_path[0])
-        if abs_file_path.split('.')[-1].lower() in ['mp4', 'mov']:
-            if re.match(self.project.project_path, abs_file_path):
-                file_path = abs_file_path[len(self.project.project_path):]
+        if check_type(abs_file_path) == 'video':
+            file_path = self.project.relative_path(abs_file_path)
             _, size, max_frame, _ = load_movie(abs_file_path)
             self.project.add_video(file_path, sound=False, frame=(0,max_frame))
             self.project.save()
@@ -407,13 +406,15 @@ class RootWidget(FloatLayout):
 
     ''' FileChooserIconViewを置き換える '''
     def load_files(self, path):
+        self.project.load_dir(path)
+        self.project.save()
         _files = os.listdir(path)
         self.file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
         self.ids['file_stack'].clear_widgets()
         for _count, _name in enumerate(self.file_listdir):
-            print(path + '/' + _name)
-            _audio, _video = check_video(path + '/' + _name)
-            print(_audio, _video)
+            _path = self.project.relative_path(path + '/' + _name)
+            _audio = self.project.dirs[_path]['audio']
+            _video = self.project.dirs[_path]['video']
             btn = ToggleButton(text = _name,
                                 group = 'stack_file',
                                 height = 128,
