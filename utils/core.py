@@ -27,22 +27,18 @@ class ProjectData:
     def __init__(self, path):
         self.project_path = path
         self.project_json = self.project_path + '/project.json'
-        self.activate()
-
-    def activate(self):
+        
         if os.path.isfile(self.project_json):
             self.activate = True
-            return True
         else:
             self.activate = False
-            return False
-
-    def update(self):
-        self.set_data(self.project_json)
     
     def create(self):
+        '''
+        プロジェクトのデータを保存するためのjsonとディレクトリを作成する
+        '''
         self.activate = True
-        self.set_data(resources_path + '/project.json')
+        self.__set_data(resources_path + '/project.json')
         self.save()
         os.makedirs(self.project_path+'/Font', exist_ok=True)
         os.makedirs(self.project_path+'/Image', exist_ok=True)
@@ -50,22 +46,24 @@ class ProjectData:
         os.makedirs(self.project_path+'/Video', exist_ok=True)
     
     def save(self):
+        '''
+        project.jsonを上書き保存する
+        '''
         _data = self.__create_data()
         write_json(self.project_json, _data)
     
-    def frame_count_data(self, frame_count, dtype='all'):
-        _data = []
-        for _content in range(self.content):
-            if _content['full_time'] and (dtype=='all' or _content['type']==dtype):
-                _data.append(_content)
-        return _data
-    
     def relative_path(self, path):
+        '''
+        プロジェクトディレクトリに対する相対パスを返す
+        '''
         if re.match(self.project_path, path):
             return path[len(self.project_path):]
         return path
     
     def load_dir(self, path):
+        '''
+        ディレクトリ内のファイルを読み込む時に高速化するためのデータを作成する
+        '''
         _files = os.listdir(path)
         _file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
         for _name in _file_listdir:
@@ -107,7 +105,7 @@ class ProjectData:
                         _list[_count][_key] = _content[_key]
         return _list
     
-    def set_data(self, path):
+    def __set_data(self, path):
         _data = load_json(path)
         self.video = _data['video']
         self.sound = _data['sound']
@@ -133,7 +131,7 @@ class ProjectData:
         _end_frame = _start_frame + content['frame'][1] - content['frame'][0]
         return _start_frame, _end_frame
     
-    def check_content_index(self, frame_count):
+    def __check_content_index(self, frame_count):
         _content_index = []
         for i, _content_list in enumerate(self.content):
             for j, _content in enumerate(_content_list):
@@ -149,7 +147,7 @@ class ProjectData:
                 return False
         return True
     
-    def content_index(self, data):
+    def __content_index(self, data):
         _frame = self.__se_frame(data)
         for i, contents in enumerate(self.content):
             if self.__check_content_block(contents, _frame):
@@ -157,6 +155,9 @@ class ProjectData:
         return len(self.content)
     
     def add_image(self, path, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
+        '''
+        コンテンツに画像を追加する
+        '''
         _data = {'type': 'image', 'path': path}
         _data['animation'] = False if animation_val==None else True
         _data['animation_val'] = animation_val
@@ -169,13 +170,16 @@ class ProjectData:
         _data['angle'] = angle
         if len(self.content) == 0:
             self.content.append([_data])
-        num = self.content_index(_data)
+        num = self.__content_index(_data)
         if len(self.content) == num:
             self.content.append([_data])
         else:
             self.content[num].append(_data)
     
     def add_video(self, path, video=True, sound=True, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
+        '''
+        コンテンツに動画を追加する
+        '''
         _data = {'type': 'video', 'path': path}
         _data['video_iamge'] = video
         _data['video_sound'] = sound
@@ -190,31 +194,46 @@ class ProjectData:
         _data['angle'] = angle
         if len(self.content) == 0:
             self.content.append([_data])
-        num = self.content_index(_data)
+        num = self.__content_index(_data)
         if len(self.content) == num:
             self.content.append([_data])
         else:
             self.content[num].append(_data)
 
 def async_func(function, *args):
+    '''
+    関数を別スレッドで実行する
+    '''
     _th = Thread(target=function, args=args)
     _th.daemon = True
     _th.start()
 
 def slash_path(path):
+    '''
+    \が入っているパスを/にする
+    '''
     if '\\' in path:
         return '/'.join(path.split('\\'))
     return path
 
 def load_json(path):
+    '''
+    jsonを読み込む
+    '''
     with open(path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def write_json(path, data):
+    '''
+    jsonを書き込む
+    '''
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
 
 def check_type(path):
+    '''
+    拡張子からコンテンツのタイプを返す
+    '''
     try:
         file_format = path.split('.')[-1].lower()
     except:
@@ -231,6 +250,9 @@ def check_type(path):
         return
 
 def check_video(path):
+    '''
+    動画と音声のデータがあるかを返す
+    '''
     _audio = False
     _video = False
     try:
