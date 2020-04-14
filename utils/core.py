@@ -58,6 +58,15 @@ class ProjectData:
             if _content['full_time'] and (dtype=='all' or _content['type']==dtype):
                 _data.append(_content)
         return _data
+    
+    def load_dir(self, path):
+        _file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
+        for _count, _name in enumerate(_file_listdir):
+            self.dirs[_name] = {}
+            self.dirs[_name]['type']  = 'video'
+            _audio, _video = check_video(path)
+            self.dirs[_name]['video'] = _video
+            self.dirs[_name]['audio'] = _audio
         
     def __create_data(self):
         _data = {}
@@ -69,6 +78,7 @@ class ProjectData:
         _data['height'] = self.height
         _data['output_fmt'] = self.output_fmt
         _data['content'] = self.__create_list_data(self.content)
+        _data['dirs'] = self.dirs
         return _data
     
     def __create_list_data(self, list_data):
@@ -97,6 +107,7 @@ class ProjectData:
         self.height = _data['height']
         self.output_fmt = _data['output_fmt']
         self.content = _data['content']
+        self.dirs = _data['dirs']
         self.fonts  = []
         self.images = []
         self.sounds = []
