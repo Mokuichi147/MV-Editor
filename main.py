@@ -149,17 +149,20 @@ class RootWidget(FloatLayout):
             self.load_video_and_audio(file_path)
             return
 
+        # title等の変更
+        self.project_name = path2name(file_path)
+        self.ids['project_select'].text = '> ' + self.project_name
+        Window.set_title(f'MV Editor v{version} - {self.project_name}')
+
         self.project = ProjectData(file_path)
         if self.project.activate:
             self.ids['project_create'].text = ''
             self.project.update()
         else:
             self.ids['project_create'].text = 'プロジェクト作成'
-        
-        # title等の変更
-        self.project_name = path2name(self.project.project_path)
-        self.ids['project_select'].text = '> ' + self.project_name
-        Window.set_title(f'MV Editor v{version} - {self.project_name}')
+            self.ids['project_dirs'].clear_widgets()
+            self.ids['file_stack'].clear_widgets()
+            return
 
         _files = os.listdir(self.project.project_path)
         self.project_path_listdir = [f for f in _files if os.path.isdir(os.path.join(self.project.project_path, f))]

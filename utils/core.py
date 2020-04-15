@@ -24,8 +24,7 @@ def slash_path(path):
     return path
 
 
-if not os.path.exists(gettempdir()+'/mv-editor'):
-    os.mkdir(gettempdir()+'/mv-editor')
+os.makedirs(gettempdir()+'/mv-editor', exist_ok=True)
 temp_dir_path = slash_path(gettempdir()) + '/mv-editor'
 
 dir_path = os.path.abspath(os.path.dirname(__file__))
@@ -53,11 +52,11 @@ class ProjectData:
         self.__set_data(resources_path + '/project.json')
         self.uuid = str(uuid4())
         self.save()
-        os.makedir(temp_dir_path + '/' + self.uuid)
-        os.makedir(self.project_path+'/Font', exist_ok=True)
-        os.makedir(self.project_path+'/Image', exist_ok=True)
-        os.makedir(self.project_path+'/Audio', exist_ok=True)
-        os.makedir(self.project_path+'/Video', exist_ok=True)
+        os.makedirs(temp_dir_path + '/' + self.uuid, exist_ok=True)
+        os.makedirs(self.project_path+'/Font', exist_ok=True)
+        os.makedirs(self.project_path+'/Image', exist_ok=True)
+        os.makedirs(self.project_path+'/Audio', exist_ok=True)
+        os.makedirs(self.project_path+'/Video', exist_ok=True)
     
     def save(self):
         '''
