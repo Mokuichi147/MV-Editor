@@ -5,6 +5,7 @@ import sys
 from tempfile import gettempdir
 from time import time as T
 from threading import Thread
+from uuid import uuid4
 
 import cv2
 import ffmpeg
@@ -50,11 +51,13 @@ class ProjectData:
         '''
         self.activate = True
         self.__set_data(resources_path + '/project.json')
+        self.uuid = str(uuid4())
         self.save()
-        os.makedirs(self.project_path+'/Font', exist_ok=True)
-        os.makedirs(self.project_path+'/Image', exist_ok=True)
-        os.makedirs(self.project_path+'/Audio', exist_ok=True)
-        os.makedirs(self.project_path+'/Video', exist_ok=True)
+        os.makedir(temp_dir_path + '/' + self.uuid)
+        os.makedir(self.project_path+'/Font', exist_ok=True)
+        os.makedir(self.project_path+'/Image', exist_ok=True)
+        os.makedir(self.project_path+'/Audio', exist_ok=True)
+        os.makedir(self.project_path+'/Video', exist_ok=True)
     
     def save(self):
         '''
@@ -77,6 +80,31 @@ class ProjectData:
             return path[len(self.project_path):]
         return path
     
+    def content_image_path(self, relative_path, size2d=(256,256), color=(0,0,0,0)):
+        content_type = check_type(self.project_path + '/' + relative_path)
+        if content_type == 'font':
+            return resources_path + '/font.png'
+        elif content_type == 'audio':
+            return resources_path + '/audio.png'
+        elif content_type == 'video':
+            cap = cv2.VideoCapture(self.project_path + '/' + relative_path)
+            _, frame = cap.read()
+            pil_image = frame2pil_image(frame, alpha=True)
+        else:
+            pil_image = Image.open(self.project_path + '/' + relative_path).convert('RGBA')
+        img = Image.new('RGBA', size2d, color)
+        text_space = size2d[1]//3
+        pil_image.thumbnail((size2d[0], size2d[1]-text_space))
+        width = (size2d[0] - pil_image.size[0]) // 2
+        height = (size2d[1] - text_space - pil_image.size[1]) // 2
+        img.paste(pil_image, (width, height))
+        if '/' in relative_path:
+            relative_path = '_'.join(relative_path.split('/'))
+        if '.' in relative_path:
+            relative_path = '_'.join(relative_path.split('.'))
+        img.save(f'{temp_dir_path}/{self.uuid}/{relative_path}.png')
+        return f'{temp_dir_path}/{self.uuid}/{relative_path}.png'
+    
     def load_dir(self, path):
         '''
         ディレクトリ内のファイルを読み込む時に高速化するためのデータを作成する
@@ -92,9 +120,11 @@ class ProjectData:
             _audio, _video = check_video(path)
             self.dirs[_name]['video'] = _video
             self.dirs[_name]['audio'] = _audio
+            self.dirs[_name]['image_path'] = self.content_image_path(_name)
         
     def __create_data(self):
         _data = {}
+        _data['uuid'] = self.uuid
         _data['video'] = self.video
         _data['audio'] = self.audio
         _data['fps'] = self.fps
@@ -124,6 +154,7 @@ class ProjectData:
     
     def __set_data(self, path):
         _data = load_json(path)
+        self.uuid = _data['uuid']
         self.video = _data['video']
         self.audio = _data['audio']
         self.fps = _data['fps']
@@ -359,25 +390,3 @@ def play_audio(audio_segment, audio_time):
         bytes_per_sample = audio_segment.sample_width,
         sample_rate = audio_segment.frame_rate
         )
-
-def get_content_image_path(project_path, relative_path, size2d=(256,256), color=(0,0,0,0)):
-    content_type = check_type(project_path + '/' + relative_path)
-    if content_type == 'font':
-        return resources_path + '/font.png'
-    elif content_type == 'audio':
-        return resources_path + '/audio.png'
-    elif content_type == 'video':
-        cap = cv2.VideoCapture(project_path + '/' + relative_path)
-        _, frame = cap.read()
-        pil_image = frame2pil_image(frame, alpha=True)
-    else:
-        pil_image = Image.open(project_path + '/' + relative_path).convert('RGBA')
-    img = Image.new('RGBA', size2d, color)
-    pil_image.thumbnail(size2d)
-    img.paste(pil_image)
-    if '/' in relative_path:
-        relative_path = '_'.join(relative_path.split('/'))
-    if '.' in relative_path:
-        relative_path = '_'.join(relative_path.split('.'))
-    img.save(temp_dir_path + '/' + relative_path + '.png')
-    return temp_dir_path + '/' + relative_path + '.png'

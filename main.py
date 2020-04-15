@@ -40,6 +40,8 @@ class RootWidget(FloatLayout):
     # Setting関連
     setting_inputs = []
     settings = SETTINGS
+    # FileChooser関連
+    pre_button = None
     # Project関連
     project_name = ''
     project_path = ''
@@ -286,6 +288,15 @@ class RootWidget(FloatLayout):
             return
         self.ids['output_button'].state = 'down'
     
+    def content_selected(self, button, button_state):
+        if button_state == 'down':
+            if self.pre_button != None:
+                self.pre_button.background_color = (1,1,1,1)
+            button.background_color = (1,1,1,0.5)
+        else:
+            button.background_color = (1,1,1,1)
+        self.pre_button = button
+    
     ''' Project View関連 '''
     def project_selected(self):
         _project_path = askdirectory()
@@ -418,18 +429,19 @@ class RootWidget(FloatLayout):
             _audio = self.project.dirs[_path]['audio']
             _video = self.project.dirs[_path]['video']
             _type  = self.project.dirs[_path]['type']
-            image_path = get_content_image_path(self.project.project_path, _path)
+            image_path = self.project.dirs[_path]['image_path']
             btn = ToggleButton(text = _name,
                                 group = 'stack_file',
                                 height = 128,
                                 width = 128,
                                 background_normal = image_path,
+                                background_down = image_path,
                                 border = (0,0,0,0),
                                 size_hint = (None, None),
                                 halign = 'center',
                                 valign = 'bottom',
                                 text_size = (128, 128),
-                                on_press = lambda x: print(x, x.text, x.state))
+                                on_press = lambda x: self.content_selected(x, x.state))
             self.ids['file_stack'].add_widget(btn)
     
     ''' モード切替時のviewの表示・非表示 '''
