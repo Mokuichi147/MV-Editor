@@ -189,6 +189,32 @@ def project_button_clear(size2d=(size,size), color=(0,0,0,0), path=resources_pat
     img = Image.new('RGBA', size2d, color)
     img.save(path + name)
 
+def font(size2d=(size,size), color=sub_color, bg_color=(0,0,0,0), path=resources_path, name='font.png'):
+    size = size2d[0]
+    half = size / 2
+    quarter = size / 4
+    triangle_width = quarter * math.sqrt(3)
+    triangle_width_space = (size-triangle_width) / 2
+    img = Image.new('RGBA', size2d, bg_color)
+    draw = ImageDraw.Draw(img)
+    draw.polygon([
+        half, quarter,
+        quarter, half+quarter,
+        quarter+size/20, half+quarter,
+        half+size/20, quarter
+        ], fill = color)
+    draw.polygon([
+        half, quarter,
+        half+quarter-size/10, half+quarter,
+        half+quarter, half+quarter,
+        half+size/10, quarter
+        ], fill = color)
+    draw.line([
+        half-size/10, half,
+        half+quarter-size/10, half
+        ], fill = color, width = size//20)
+    img.save(path + name)
+
 
 def create_all():
     cursor()
@@ -226,6 +252,8 @@ def create_all():
     project_button_clear(name='project_create_clear.png')
 
     project_button_clear(name='alpha.png')
+
+    font()
 
 
 if __name__=='__main__':
