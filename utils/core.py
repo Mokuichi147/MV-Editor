@@ -2,6 +2,7 @@ import json
 import os
 import re
 import sys
+from tempfile import gettempdir
 from time import time as T
 from threading import Thread
 
@@ -21,6 +22,10 @@ def slash_path(path):
         return '/'.join(path.split('\\'))
     return path
 
+
+if not os.path.exists(gettempdir()+'/mv-editor'):
+    os.mkdir(gettempdir()+'/mv-editor')
+temp_dir_path = slash_path(gettempdir()) + '/mv-editor'
 
 dir_path = os.path.abspath(os.path.dirname(__file__))
 dir_path = slash_path(dir_path)
@@ -302,9 +307,12 @@ def pil_image2image(pil_image):
     elif np_array.shape[2] == 4:
         return np_array[:, :, [2,1,0,3]]
 
-def frame2pil_image(frame):
+def frame2pil_image(frame, alpha=False):
     # time: 0.001s
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    if alpha:
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+    else:
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     # time: 0.003s
     pil_image = Image.fromarray(frame)
     return pil_image
@@ -351,3 +359,25 @@ def play_audio(audio_segment, audio_time):
         bytes_per_sample = audio_segment.sample_width,
         sample_rate = audio_segment.frame_rate
         )
+
+def get_content_image_path(project_path, relative_path, size2d=(256,256), color=(0,0,0,0)):
+    content_type = check_type(project_path + '/' + relative_path)
+    if content_type == 'font':
+        return resources_path + '/font.png'
+    elif content_type == 'audio':
+        return resources_path + '/audio.png'
+    elif content_type == 'video':
+        cap = cv2.VideoCapture(project_path + '/' + relative_path)
+        _, frame = cap.read()
+        pil_image = frame2pil_image(frame, alpha=True)
+    else:
+        pil_image = Image.open(project_path + '/' + relative_path).convert('RGBA')
+    img = Image.new('RGBA', size2d, color)
+    pil_image.thumbnail(size2d)
+    img.paste(pil_image)
+    if '/' in relative_path:
+        relative_path = '_'.join(relative_path.split('/'))
+    if '.' in relative_path:
+        relative_path = '_'.join(relative_path.split('.'))
+    img.save(temp_dir_path + '/' + relative_path + '.png')
+    return temp_dir_path + '/' + relative_path + '.png'
