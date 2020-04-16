@@ -193,8 +193,6 @@ def font(size2d=(size,size), color=sub_color, bg_color=(0,0,0,0), path=resources
     size = size2d[0]
     half = size / 2
     quarter = size / 4
-    triangle_width = quarter * math.sqrt(3)
-    triangle_width_space = (size-triangle_width) / 2
     img = Image.new('RGBA', size2d, bg_color)
     draw = ImageDraw.Draw(img)
     draw.polygon([
