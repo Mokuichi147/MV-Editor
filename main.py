@@ -25,6 +25,7 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
 from kivy.properties import StringProperty, ObjectProperty
+from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -296,6 +297,7 @@ class RootWidget(FloatLayout):
             if self.pre_button != None:
                 self.pre_button.background_color = (1,1,1,1)
             button.background_color = (1,1,1,0.5)
+            button.state = 'down'
         else:
             button.background_color = (1,1,1,1)
         self.pre_button = button
@@ -433,20 +435,19 @@ class RootWidget(FloatLayout):
             _video = self.project.dirs[_path]['video']
             _type  = self.project.dirs[_path]['type']
             image_path = self.project.dirs[_path]['image_path']
-            btn = ToggleButton(text = _name,
-                                group = 'stack_file',
-                                height = 128,
-                                width = 128,
-                                background_normal = image_path,
-                                background_down = image_path,
-                                border = (0,0,0,0),
-                                size_hint = (None, None),
-                                halign = 'center',
-                                valign = 'bottom',
-                                text_size = (128, 128),
-                                shorten_from = 'center',
-                                shorten = True,
-                                on_press = lambda x: self.content_selected(x, x.state))
+            btn = Button(text = _name,
+                          height = 128,
+                          width = 128,
+                          background_normal = image_path,
+                          background_down = image_path,
+                          border = (0,0,0,0),
+                          size_hint = (None, None),
+                          halign = 'center',
+                          valign = 'bottom',
+                          text_size = (128, 128),
+                          shorten_from = 'center',
+                          shorten = True,
+                          on_press = lambda x: self.content_selected(x, x.state))
             self.ids['file_stack'].add_widget(btn)
     
     ''' モード切替時のviewの表示・非表示 '''
