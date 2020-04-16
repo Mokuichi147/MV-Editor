@@ -213,6 +213,14 @@ def font(size2d=(size,size), color=sub_color, bg_color=(0,0,0,0), path=resources
         half-size/10, half,
         half+quarter-size/10, half
         ], fill = color, width = size//20)
+    draw.line([
+        quarter-size//20, half+quarter,
+        quarter+size/8, half+quarter
+        ], fill = color, width = size//20)
+    draw.line([
+        half+quarter-size/6, half+quarter,
+        half+quarter+size/20, half+quarter
+        ], fill = color, width = size//20)
     img.save(path + name)
 
 
