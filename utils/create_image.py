@@ -221,6 +221,36 @@ def font(size2d=(size,size), color=sub_color, bg_color=(0,0,0,0), path=resources
         ], fill = color, width = size//20)
     img.save(path + name)
 
+def audio(size2d=(size,size), color=sub_color, bg_color=(0,0,0,0), path=resources_path, name='audio.png'):
+    size = size2d[0]
+    half = size / 2
+    quarter = size / 4
+    img = Image.new('RGBA', size2d, bg_color)
+    draw = ImageDraw.Draw(img)
+    draw.ellipse([
+        quarter, half+quarter-size/8,
+        quarter+size/5, half+quarter
+        ], fill = color)
+    draw.ellipse([
+        half+quarter-size/5, half+quarter-size/16*3,
+        half+quarter, half+quarter-size/16*1
+        ], fill = color)
+    draw.line([
+        quarter+size/5-size/50, quarter+size/10,
+        quarter+size/5-size/50, half+quarter-size/16
+        ], fill = color, width = size//25)
+    draw.line([
+        half+quarter-size//50, quarter+size/40,
+        half+quarter-size//50, half+quarter-size/16*2
+        ], fill = color, width = size//25)
+    draw.polygon([
+        quarter+size/5-size/30, quarter+size/10,
+        quarter+size/5-size/30, quarter+size/5,
+        half+quarter, quarter+size/10,
+        half+quarter, quarter
+        ], fill = color)
+    img.save(path + name)
+
 
 def create_all():
     cursor()
@@ -260,6 +290,7 @@ def create_all():
     project_button_clear(name='alpha.png')
 
     font()
+    audio()
 
 
 if __name__=='__main__':
