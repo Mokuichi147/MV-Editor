@@ -79,7 +79,7 @@ class ProjectData:
             return path[len(self.project_path):]
         return path
     
-    def content_image_path(self, relative_path, size2d=(256,256), color=(0,0,0,0)):
+    def content_image_path(self, relative_path, text_height=37, size2d=(256,256), color=(0,0,0,0)):
         content_type = check_type(self.project_path + '/' + relative_path)
         if content_type == 'font':
             return resources_path + '/font.png'
@@ -91,12 +91,13 @@ class ProjectData:
             pil_image = frame2pil_image(frame, alpha=True)
         else:
             pil_image = Image.open(self.project_path + '/' + relative_path).convert('RGBA')
+
         img = Image.new('RGBA', size2d, color)
-        text_space = size2d[1]//3
-        pil_image.thumbnail((size2d[0], size2d[1]-text_space))
+        pil_image.thumbnail((size2d[0], size2d[1]-text_height))
         width = (size2d[0] - pil_image.size[0]) // 2
-        height = (size2d[1] - text_space - pil_image.size[1]) // 2
+        height = (size2d[1] - text_height - pil_image.size[1]) // 2
         img.paste(pil_image, (width, height))
+
         if '/' in relative_path:
             relative_path = '_'.join(relative_path.split('/'))
         if '.' in relative_path:

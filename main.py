@@ -444,6 +444,8 @@ class RootWidget(FloatLayout):
                                 halign = 'center',
                                 valign = 'bottom',
                                 text_size = (128, 128),
+                                shorten_from = 'center',
+                                shorten = True,
                                 on_press = lambda x: self.content_selected(x, x.state))
             self.ids['file_stack'].add_widget(btn)
     
