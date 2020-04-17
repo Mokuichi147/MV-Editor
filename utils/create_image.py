@@ -251,6 +251,27 @@ def audio(size2d=(size,size), color=sub_color, bg_color=(0,0,0,0), path=resource
         ], fill = color)
     img.save(path + name)
 
+def video_frame(size2d=(size,int(size/16*9)), color=(0,0,0,255), bg_color=(0,0,0,0), path=resources_path, name='video_frame.png'):
+    (width, height) = size2d
+    height -= width//30
+    img = Image.new('RGBA', size2d, bg_color)
+    draw = ImageDraw.Draw(img)
+    for i in range(2):
+        draw.line([
+            width/6*5*i, 0,
+            width/6*5*i+width/6, 0
+            ], fill = color, width = width//30)
+        draw.line([
+            width/6*5*i, size2d[1],
+            width/6*5*i+width/6, size2d[1]
+            ], fill = color, width = width//30)
+        for j in range(5):
+            draw.rectangle([
+                width/6*5*i, height/5*j+width//30/2,
+                width/6*5*i+width/6, height/5*j+height/5+width//30/2
+                ], width = width//30, outline = color)
+    img.save(path + name)
+
 
 def create_all():
     cursor()
@@ -291,6 +312,7 @@ def create_all():
 
     font()
     audio()
+    video_frame()
 
 
 if __name__=='__main__':
