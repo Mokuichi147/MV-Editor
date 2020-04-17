@@ -43,6 +43,7 @@ class RootWidget(FloatLayout):
     settings = SETTINGS
     # FileChooser関連
     pre_button = None
+    file_stack = {}
     # Project関連
     project_name = ''
     project_path = ''
@@ -298,6 +299,7 @@ class RootWidget(FloatLayout):
                 self.pre_button.background_color = (1,1,1,1)
             button.background_color = (1,1,1,0.5)
             button.state = 'down'
+            print(self.file_stack[button.text])
         else:
             button.background_color = (1,1,1,1)
         self.pre_button = button
@@ -429,6 +431,7 @@ class RootWidget(FloatLayout):
         _files = os.listdir(path)
         self.file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
         self.ids['file_stack'].clear_widgets()
+        self.file_stack.clear()
         for _count, _name in enumerate(self.file_listdir):
             _path = self.project.relative_path(path + '/' + _name)
             _audio = self.project.dirs[_path]['audio']
@@ -448,6 +451,7 @@ class RootWidget(FloatLayout):
                           shorten_from = 'center',
                           shorten = True,
                           on_press = lambda x: self.content_selected(x, x.state))
+            self.file_stack[_name] = _type
             self.ids['file_stack'].add_widget(btn)
     
     ''' モード切替時のviewの表示・非表示 '''
