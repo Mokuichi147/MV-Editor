@@ -299,7 +299,13 @@ class RootWidget(FloatLayout):
                 self.pre_button.background_color = (1,1,1,1)
             button.background_color = (1,1,1,0.5)
             button.state = 'down'
-            print(self.file_stack[button.text])
+            file_relative_path = self.file_stack[button.text]
+            file_info = self.project.dirs[file_relative_path]
+            if file_info['type'] == 'video':
+                _audio = file_info['audio']
+                _video = file_info['video']
+                self.project.add_video(file_relative_path, video=_video, audio=_audio, start_frame=self.frame_count+1)
+                self.project.save()
         else:
             button.background_color = (1,1,1,1)
         self.pre_button = button
@@ -451,7 +457,7 @@ class RootWidget(FloatLayout):
                           shorten_from = 'center',
                           shorten = True,
                           on_press = lambda x: self.content_selected(x, x.state))
-            self.file_stack[_name] = _type
+            self.file_stack[_name] = _path
             self.ids['file_stack'].add_widget(btn)
     
     ''' モード切替時のviewの表示・非表示 '''
