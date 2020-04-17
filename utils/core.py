@@ -89,6 +89,10 @@ class ProjectData:
             cap = cv2.VideoCapture(self.project_path + '/' + relative_path)
             _, frame = cap.read()
             pil_image = frame2pil_image(frame, alpha=True)
+            if pil_image.size[0]/16 == pil_image.size[1]/9:
+                pil_image.thumbnail(size2d)
+                video_frame = Image.open(resources_path + '/video_frame.png')
+                pil_image.paste(video_frame, (0,0), video_frame.split()[3])
         else:
             pil_image = Image.open(self.project_path + '/' + relative_path).convert('RGBA')
 
