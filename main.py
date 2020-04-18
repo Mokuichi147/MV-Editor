@@ -293,12 +293,8 @@ class RootWidget(FloatLayout):
             return
         self.ids['output_button'].state = 'down'
     
-    def content_selected(self, button, button_state):
-        if button_state == 'down':
-            if self.pre_button != None:
-                self.pre_button.background_color = (1,1,1,1)
-            button.background_color = (1,1,1,0.5)
-            button.state = 'down'
+    def content_selected(self, button):
+        if self.pre_button == button:
             file_relative_path = self.file_stack[button.text]
             file_info = self.project.dirs[file_relative_path]
             if file_info['type'] == 'video':
@@ -306,8 +302,10 @@ class RootWidget(FloatLayout):
                 _video = file_info['video']
                 self.project.add_video(file_relative_path, video=_video, audio=_audio, start_frame=self.frame_count+1)
                 self.project.save()
+        elif self.pre_button != None:
+            self.pre_button.background_color = (1,1,1,1)
         else:
-            button.background_color = (1,1,1,1)
+            button.background_color = (1,1,1,0.5)
         self.pre_button = button
     
     ''' Project View関連 '''
@@ -323,17 +321,6 @@ class RootWidget(FloatLayout):
             return
         _num = self.project_path_listdir.index(text)
         self.load_files(self.project.project_path + '/' + self.project_path_listdir[_num])
-    
-    def file_selected(self, abs_file_path):
-        if len(abs_file_path) != 1:
-            return
-        abs_file_path = slash_path(abs_file_path[0])
-        if check_type(abs_file_path) == 'video':
-            file_path = self.project.relative_path(abs_file_path)
-            _, size, max_frame, _ = load_video(abs_file_path)
-            self.project.add_video(file_path, audio=False, frame=(0,max_frame))
-            self.project.save()
-            #self.load_video_and_audio(file_path[0])
     
     ''' frame関連 '''
     def set_zero_frame(self):
@@ -456,7 +443,7 @@ class RootWidget(FloatLayout):
                           text_size = (128, 128),
                           shorten_from = 'center',
                           shorten = True,
-                          on_press = lambda x: self.content_selected(x, x.state))
+                          on_press = lambda x: self.content_selected(x))
             self.file_stack[_name] = _path
             self.ids['file_stack'].add_widget(btn)
     
