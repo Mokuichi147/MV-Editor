@@ -126,6 +126,12 @@ class ProjectData:
             self.dirs[_name]['audio'] = _audio
             self.dirs[_name]['image_path'] = self.content_image_path(_name)
         
+    def __update_project_max_frame(self):
+        for contents in self.content:
+            _max_frame = contents[-1]['start_frame'] + contents[-1]['frame'][1] - contents[-1]['frame'][0]
+            if _max_frame > self.maximum_frame:
+                self.maximum_frame = _max_frame
+        
     def __create_data(self):
         _data = {}
         _data['uuid'] = self.uuid
@@ -227,6 +233,7 @@ class ProjectData:
             self.content.append([_data])
         else:
             self.content[num].append(_data)
+        self.__update_project_max_frame()
     
     def add_video(self, path, video=True, audio=True, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         '''
@@ -251,6 +258,7 @@ class ProjectData:
             self.content.append([_data])
         else:
             self.content[num].append(_data)
+        self.__update_project_max_frame()
 
 def async_func(function, *args):
     '''
