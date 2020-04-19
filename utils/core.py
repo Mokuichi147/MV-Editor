@@ -212,6 +212,16 @@ class ProjectData:
                 return i
         return len(self.content)
     
+    def __add_content(self, data):
+        if len(self.content) == 0:
+            self.content.append([data])
+        _num = self.__content_index(data)
+        if len(self.content) == _num:
+            self.content.append([data])
+        else:
+            self.content[_num].append(data)
+        self.__update_project_max_frame()
+    
     def add_image(self, path, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         '''
         コンテンツに画像を追加する
@@ -226,14 +236,8 @@ class ProjectData:
         _data['pos_x'] = pos[0]
         _data['pos_y'] = pos[1]
         _data['angle'] = angle
-        if len(self.content) == 0:
-            self.content.append([_data])
-        num = self.__content_index(_data)
-        if len(self.content) == num:
-            self.content.append([_data])
-        else:
-            self.content[num].append(_data)
-        self.__update_project_max_frame()
+
+        self.__add_content(_data)
     
     def add_video(self, path, video=True, audio=True, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         '''
@@ -251,14 +255,8 @@ class ProjectData:
         _data['pos_x'] = pos[0]
         _data['pos_y'] = pos[1]
         _data['angle'] = angle
-        if len(self.content) == 0:
-            self.content.append([_data])
-        num = self.__content_index(_data)
-        if len(self.content) == num:
-            self.content.append([_data])
-        else:
-            self.content[num].append(_data)
-        self.__update_project_max_frame()
+        
+        self.__add_content(_data)
 
 def async_func(function, *args):
     '''
