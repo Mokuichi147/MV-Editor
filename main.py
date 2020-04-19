@@ -304,6 +304,7 @@ class RootWidget(FloatLayout):
                 self.project.save()
         elif self.pre_button != None:
             self.pre_button.background_color = (1,1,1,1)
+            button.background_color = (1,1,1,0.5)
         else:
             button.background_color = (1,1,1,0.5)
         self.pre_button = button
