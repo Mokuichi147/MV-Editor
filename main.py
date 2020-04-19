@@ -300,8 +300,13 @@ class RootWidget(FloatLayout):
             if file_info['type'] == 'video':
                 _audio = file_info['audio']
                 _video = file_info['video']
-                self.project.add_video(file_relative_path, video=_video, audio=_audio, start_frame=self.frame_count+1)
-                self.project.save()
+                _, _, max_count, _ = load_video(self.project.project_path + '/' + file_relative_path)
+                self.project.add_video(file_relative_path,
+                                        video = _video,
+                                        audio = _audio,
+                                        start_frame = self.frame_count + 1,
+                                        frame = (0, max_count))
+            self.project.save()
         elif self.pre_button != None:
             self.pre_button.background_color = (1,1,1,1)
             button.background_color = (1,1,1,0.5)
