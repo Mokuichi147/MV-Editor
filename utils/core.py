@@ -35,6 +35,23 @@ resources_path = dir_path + '/' + 'resources'
 
 
 class ProjectData:
+    '''
+    動画編集用のプロジェクトデータの作成、読み込み、変更、書き込み等を行う
+
+    Parameters
+    ----------
+    path : str
+        プロジェクトディレクトリの(バックスラッシュを含まない)絶対パス
+
+    Attributes
+    ----------
+    activate : bool
+        現在のディレクトリにプロジェクトファイルが存在するか
+    project_path : str
+        プロジェクトディレクトリの(バックスラッシュを含まない)絶対パス
+    project_json : str
+        プロジェクトファイルの(バックスラッシュを含まない)絶対パス
+    '''
     def __init__(self, path):
         self.project_path = path
         self.project_json = self.project_path + '/project.json'
@@ -74,12 +91,44 @@ class ProjectData:
     def relative_path(self, path):
         '''
         プロジェクトディレクトリに対する相対パスを返す
+
+        Parameters
+        ----------
+        path : str
+            (バックスラッシュを含まない)絶対パス
+        
+        Returns
+        ----------
+        path : str
+            プロジェクトディレクトリに対する相対パス
         '''
         if re.match(self.project_path, path):
             return path[len(self.project_path):]
         return path
     
-    def content_image_path(self, relative_path, text_height=37, size2d=(256,256), color=(0,0,0,0)):
+    def load_dir(self, path):
+        '''
+        ディレクトリ内のファイルを読み込む時に高速化するためのデータを作成する
+
+        Parameters
+        ----------
+        path : str
+            ディレクトリの(バックスラッシュを含まない)絶対パス
+        '''
+        _files = os.listdir(path)
+        _file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
+        for _name in _file_listdir:
+            _name = self.relative_path(path + '/' + _name)
+            if _name in self.dirs:
+                continue
+            self.dirs[_name] = {}
+            self.dirs[_name]['type']  = check_type(path + '/' + _name)
+            _audio, _video = check_video(path)
+            self.dirs[_name]['video'] = _video
+            self.dirs[_name]['audio'] = _audio
+            self.dirs[_name]['image_path'] = self.__content_image_path(_name)
+    
+    def __content_image_path(self, relative_path, text_height=37, size2d=(256,256), color=(0,0,0,0)):
         content_type = check_type(self.project_path + '/' + relative_path)
         if content_type == 'font':
             return resources_path + '/font.png'
@@ -108,23 +157,6 @@ class ProjectData:
             relative_path = '_'.join(relative_path.split('.'))
         img.save(f'{temp_dir_path}/{self.uuid}/{relative_path}.png')
         return f'{temp_dir_path}/{self.uuid}/{relative_path}.png'
-    
-    def load_dir(self, path):
-        '''
-        ディレクトリ内のファイルを読み込む時に高速化するためのデータを作成する
-        '''
-        _files = os.listdir(path)
-        _file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
-        for _name in _file_listdir:
-            _name = self.relative_path(path + '/' + _name)
-            if _name in self.dirs:
-                continue
-            self.dirs[_name] = {}
-            self.dirs[_name]['type']  = check_type(path + '/' + _name)
-            _audio, _video = check_video(path)
-            self.dirs[_name]['video'] = _video
-            self.dirs[_name]['audio'] = _audio
-            self.dirs[_name]['image_path'] = self.content_image_path(_name)
         
     def __update_project_max_frame(self):
         for contents in self.content:
@@ -225,6 +257,23 @@ class ProjectData:
     def add_image(self, path, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         '''
         コンテンツに画像を追加する
+
+        Parameters
+        ----------
+        path : str
+            画像の(バックスラッシュを含まない)相対パス
+        animation_val : <未定>
+            <未定>
+        start_frame : int
+            再生開始時間
+        frame : (int, int)
+            再生するフレームの範囲
+        size : (int, int)
+            リサイズする大きさ
+        pos : (int, int)
+            配置する場所
+        angle : int
+            配置する角度
         '''
         _data = {'type': 'image', 'path': path}
         _data['animation'] = False if animation_val==None else True
@@ -242,6 +291,27 @@ class ProjectData:
     def add_video(self, path, video=True, audio=True, animation_val=None, start_frame=0, frame=(0,0), size=None, pos=(0,0), angle=0):
         '''
         コンテンツに動画を追加する
+
+        Parameters
+        ----------
+        path : str
+            動画の(バックスラッシュを含まない)相対パス
+        video : bool
+            映像の有無
+        audio : bool
+            音声の有無
+        animation_val : <未定>
+            <未定>
+        start_frame : int
+            再生開始時間
+        frame : (int, int)
+            再生するフレームの範囲
+        size : (int, int)
+            リサイズする大きさ
+        pos : (int, int)
+            配置する場所
+        angle : int
+            配置する角度
         '''
         _data = {'type': 'video', 'path': path}
         _data['video_iamge'] = video
