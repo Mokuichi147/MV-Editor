@@ -331,6 +331,13 @@ class ProjectData:
 def async_func(function, *args):
     '''
     関数を別スレッドで実行する
+
+    Parameters
+    ----------
+    function : function
+        実行したい関数
+    *args : taple
+        実行したい関数の引数
     '''
     _th = Thread(target=function, args=args)
     _th.daemon = True
@@ -339,6 +346,16 @@ def async_func(function, *args):
 def load_json(path):
     '''
     jsonを読み込む
+
+    Parameters
+    ----------
+    path : str
+        jsonファイルの(バックスラッシュを含まない)絶対パス
+
+    Returns
+    ----------
+    < 0 > : dir or list
+        jsonの内容
     '''
     with open(path, 'r', encoding='utf-8') as f:
         return json.load(f)
@@ -346,6 +363,11 @@ def load_json(path):
 def write_json(path, data):
     '''
     jsonを書き込む
+
+    Parameters
+    ----------
+    path : str
+        jsonファイルの(バックスラッシュを含まない)絶対パス
     '''
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
@@ -353,6 +375,16 @@ def write_json(path, data):
 def check_type(path):
     '''
     拡張子からコンテンツのタイプを返す
+
+    Parameters
+    ----------
+    path : str
+        拡張子を含むファイルのパス
+    
+    Returns
+    ----------
+    < 0 > : str or None
+        コンテンツの種類。不明な場合はNoneを返す
     '''
     try:
         file_format = path.split('.')[-1].lower()
@@ -372,6 +404,18 @@ def check_type(path):
 def check_video(path):
     '''
     動画と音声のデータがあるかを返す
+
+    Parameters
+    ----------
+    path : str
+        動画か音声の(バックスラッシュを含まない)絶対パス
+
+    Returns
+    ----------
+    _audio : bool
+        音声の有無
+    _video : bool
+        動画の有無
     '''
     _audio = False
     _video = False
