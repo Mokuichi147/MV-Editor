@@ -276,11 +276,11 @@ class ProjectData:
             配置する角度
         '''
         _data = {'type': 'image', 'path': path}
-        _data['animation'] = False if animation_val==None else True
+        _data['animation'] = animation_val != None
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
         _data['frame'] = frame
-        _data['full_size'] = True if size==None else False
+        _data['full_size'] = size == None
         _data['size'] = size
         _data['pos_x'] = pos[0]
         _data['pos_y'] = pos[1]
@@ -316,11 +316,11 @@ class ProjectData:
         _data = {'type': 'video', 'path': path}
         _data['video_iamge'] = video
         _data['video_audio'] = audio
-        _data['animation'] = False if animation_val==None else True
+        _data['animation'] = animation_val != None
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
         _data['frame'] = frame
-        _data['full_size'] = True if size==None else False
+        _data['full_size'] = size == None
         _data['size'] = size
         _data['pos_x'] = pos[0]
         _data['pos_y'] = pos[1]
@@ -346,7 +346,7 @@ class ProjectData:
             再生音量
         '''
         _data = {'type': 'audio', 'path': path}
-        _data['animation'] = False if animation_val==None else True
+        _data['animation'] = animation_val != None
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
         _data['frame'] = frame
