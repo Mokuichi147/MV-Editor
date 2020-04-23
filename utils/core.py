@@ -327,6 +327,32 @@ class ProjectData:
         _data['angle'] = angle
         
         self.__add_content(_data)
+    
+    def add_audio(self, path, animation_val=None, start_frame=0, frame=(0,0), ratio=1):
+        '''
+        コンテンツに音声を追加する
+
+        Parameters
+        ----------
+        path : str
+            音声の(バックスラッシュを含まない)相対パス
+        animation_val : <未定>
+            <未定>
+        start_frame : int
+            再生開始時間
+        frame : (int, int)
+            再生するフレームの範囲
+        ratio : int or float
+            再生音量
+        '''
+        _data = {'type': 'audio', 'path': path}
+        _data['animation'] = False if animation_val==None else True
+        _data['animation_val'] = animation_val
+        _data['start_frame'] = start_frame
+        _data['frame'] = frame
+        _data['ratio'] = ratio
+
+        self.__add_content(_data)
 
 def async_func(function, *args):
     '''

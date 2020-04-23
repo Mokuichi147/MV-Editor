@@ -306,6 +306,9 @@ class RootWidget(FloatLayout):
                                         audio = _audio,
                                         start_frame = self.frame_count + 1,
                                         frame = (0, max_count))
+            elif file_info['type'] == 'audio':
+                self.project.add_audio(file_relative_path,
+                                        start_frame = self.frame_count + 1)
             self.project.save()
         elif self.pre_button != None:
             self.pre_button.background_color = (1,1,1,1)
