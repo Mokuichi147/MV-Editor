@@ -275,7 +275,7 @@ class ProjectData:
         angle : int
             配置する角度
         '''
-        _data = {'type': 'image', 'path': path}
+        _data = {'uuid': str(uuid4()), 'type': 'image', 'path': path}
         _data['animation'] = animation_val != None
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
@@ -313,7 +313,7 @@ class ProjectData:
         angle : int
             配置する角度
         '''
-        _data = {'type': 'video', 'path': path}
+        _data = {'uuid': str(uuid4()), 'type': 'video', 'path': path}
         _data['video_iamge'] = video
         _data['video_audio'] = audio
         _data['animation'] = animation_val != None
@@ -345,7 +345,7 @@ class ProjectData:
         ratio : int or float
             再生音量
         '''
-        _data = {'type': 'audio', 'path': path}
+        _data = {'uuid': str(uuid4()), 'type': 'audio', 'path': path}
         _data['animation'] = animation_val != None
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
