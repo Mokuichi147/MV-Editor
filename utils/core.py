@@ -122,14 +122,15 @@ class ProjectData:
             if _name in self.dirs:
                 continue
             self.dirs[_name] = {}
-            self.dirs[_name]['uuid'] = str(uuid4())
+            _uuid = str(uuid4())
+            self.dirs[_name]['uuid'] = _uuid
             self.dirs[_name]['type'] = check_type(path + '/' + _name)
             _audio, _video = check_video(path)
             self.dirs[_name]['video'] = _video
             self.dirs[_name]['audio'] = _audio
-            self.dirs[_name]['image_path'] = self.__content_image_path(_name)
+            self.dirs[_name]['image_path'] = self.__content_image_path(_name, _uuid)
     
-    def __content_image_path(self, relative_path, text_height=37, size2d=(256,256), color=(0,0,0,0)):
+    def __content_image_path(self, relative_path, save_name, text_height=37, size2d=(256,256), color=(0,0,0,0)):
         content_type = check_type(self.project_path + '/' + relative_path)
         if content_type == 'font':
             return resources_path + '/font.png'
@@ -152,14 +153,9 @@ class ProjectData:
         height = (size2d[1] - text_height - pil_image.size[1]) // 2
         img.paste(pil_image, (width, height))
 
-        if '/' in relative_path:
-            relative_path = '_'.join(relative_path.split('/'))
-        if '.' in relative_path:
-            relative_path = '_'.join(relative_path.split('.'))
-
         os.makedirs(f'{temp_dir_path}/{self.uuid}', exist_ok=True)
-        img.save(f'{temp_dir_path}/{self.uuid}/{relative_path}.png')
-        return f'{temp_dir_path}/{self.uuid}/{relative_path}.png'
+        img.save(f'{temp_dir_path}/{self.uuid}/{save_name}.png')
+        return f'{temp_dir_path}/{self.uuid}/{save_name}.png'
         
     def __update_project_max_frame(self):
         for contents in self.content:
