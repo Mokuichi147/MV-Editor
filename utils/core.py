@@ -122,7 +122,8 @@ class ProjectData:
             if _name in self.dirs:
                 continue
             self.dirs[_name] = {}
-            self.dirs[_name]['type']  = check_type(path + '/' + _name)
+            self.dirs[_name]['uuid'] = str(uuid4())
+            self.dirs[_name]['type'] = check_type(path + '/' + _name)
             _audio, _video = check_video(path)
             self.dirs[_name]['video'] = _video
             self.dirs[_name]['audio'] = _audio
@@ -155,6 +156,8 @@ class ProjectData:
             relative_path = '_'.join(relative_path.split('/'))
         if '.' in relative_path:
             relative_path = '_'.join(relative_path.split('.'))
+
+        os.makedirs(f'{temp_dir_path}/{self.uuid}', exist_ok=True)
         img.save(f'{temp_dir_path}/{self.uuid}/{relative_path}.png')
         return f'{temp_dir_path}/{self.uuid}/{relative_path}.png'
         
