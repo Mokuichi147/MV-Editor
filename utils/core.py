@@ -274,7 +274,11 @@ class ProjectData:
         angle : int
             配置する角度
         '''
-        _data = {'uuid': str(uuid4()), 'type': 'image', 'path': path}
+        if path in self.dirs:
+            _uuid = self.dirs[path]['uuid']
+        else:
+            _uuid = str(uuid4())
+        _data = {'uuid': _uuid, 'type': 'image', 'path': path}
         _data['animation'] = animation_val != None
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
@@ -312,7 +316,11 @@ class ProjectData:
         angle : int
             配置する角度
         '''
-        _data = {'uuid': str(uuid4()), 'type': 'video', 'path': path}
+        if path in self.dirs:
+            _uuid = self.dirs[path]['uuid']
+        else:
+            _uuid = str(uuid4())
+        _data = {'uuid': _uuid, 'type': 'video', 'path': path}
         _data['video_iamge'] = video
         _data['video_audio'] = audio
         _data['animation'] = animation_val != None
@@ -344,7 +352,11 @@ class ProjectData:
         ratio : int or float
             再生音量
         '''
-        _data = {'uuid': str(uuid4()), 'type': 'audio', 'path': path}
+        if path in self.dirs:
+            _uuid = self.dirs[path]['uuid']
+        else:
+            _uuid = str(uuid4())
+        _data = {'uuid': _uuid, 'type': 'audio', 'path': path}
         _data['animation'] = animation_val != None
         _data['animation_val'] = animation_val
         _data['start_frame'] = start_frame
