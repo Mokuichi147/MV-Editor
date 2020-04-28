@@ -59,6 +59,8 @@ class RootWidget(FloatLayout):
     audio = None
     audio_event = False
     spacebar_down = False
+    # Content View関連
+    content_time_texture = ObjectProperty(None)
     # Splitter関連
     mouce_down_object_type = None
     mouce_down_object_name = None
