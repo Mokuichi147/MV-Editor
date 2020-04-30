@@ -1,3 +1,7 @@
 TestProject/*
 utils/__pycache__/*
-Fonts/*
+fonts/*
+
+__pycache__/*
+build/*
+dist/*
