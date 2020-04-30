@@ -24,6 +24,7 @@ from kivy.clock import Clock
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.core.window import Window
 from kivy.graphics.texture import Texture
+from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
@@ -32,7 +33,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 version = '0.0.1'
-LabelBase.register(DEFAULT_FONT, dir_path+'/Fonts/NotoSansJP-Medium.otf')
+LabelBase.register(DEFAULT_FONT, dir_path+'/fonts/NotoSansJP-Medium.otf')
+Builder.load_file(resources_path + '/mveditor.kv')
 
 
 class RootWidget(FloatLayout):
