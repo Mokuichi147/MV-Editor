@@ -34,12 +34,13 @@ from kivy.uix.togglebutton import ToggleButton
 
 version = '0.0.1'
 LabelBase.register(DEFAULT_FONT, dir_path+'/fonts/NotoSansJP-Medium.otf')
-Builder.load_file(resources_path + '/mveditor.kv')
+Builder.load_file(resources_path + 'mveditor.kv')
 
 
 class RootWidget(FloatLayout):
     # Path関連
     app_dir_path = dir_path
+    app_resources_path = resources_path
     # Setting関連
     setting_inputs = []
     settings = SETTINGS
@@ -176,8 +177,8 @@ class RootWidget(FloatLayout):
         for dir_count, dir_path in enumerate(self.project_path_listdir):
             btn = ToggleButton(text = dir_path,
                                 group = 'listdir',
-                                background_normal = 'resources/listdir.png',
-                                background_down = 'resources/listdir_down.png',
+                                background_normal = self.app_resources_path + 'listdir.png',
+                                background_down = self.app_resources_path + 'listdir_down.png',
                                 height = 30,
                                 size_hint = (1,None),
                                 halign = 'left',
@@ -195,8 +196,8 @@ class RootWidget(FloatLayout):
             self.load_files(self.project.project_path)
     
     def load_setting(self):
-        self.settings = load_json(self.app_dir_path+'/resources/settings.json')
-        lang = load_json(self.app_dir_path+'/resources/lang_ja.json')
+        self.settings = load_json(self.app_resources_path + '/settings.json')
+        lang = load_json(self.app_resources_path + '/lang_ja.json')
         _group_height = 50
         _item_height = 30
         self.setting_inputs.clear()
@@ -227,7 +228,7 @@ class RootWidget(FloatLayout):
                 text_in = TextInput(text = str(self.settings[group][key]),
                                      height = _item_height,
                                      size_hint = (1, None),
-                                     background_normal = self.app_dir_path+'/resources/alpha.png',
+                                     background_normal = self.app_resources_path + 'alpha.png',
                                      background_color = (0.15, 0.15, 0.15, 1),
                                      foreground_color = (1, 1, 1, 1),
                                      cursor_color = (0.50, 0.50, 0.50, 1))
@@ -244,7 +245,7 @@ class RootWidget(FloatLayout):
             self.ids['setting_view_right'].add_widget(space_label)
 
     def write_setting(self):
-        _path = self.app_dir_path+'/resources/settings.json'
+        _path = self.app_resources_path + 'settings.json'
         self.settings = load_json(_path)
         _count = 0
         for group in self.settings:
@@ -494,8 +495,7 @@ class RootWidget(FloatLayout):
 
 class MVEditorApp(App):
     title = f"MV Editor v{version} - {path2name(SETTINGS['pre_project']['path'])}"
-    app_dir_path = dir_path
-    resources_path = app_dir_path + '/resources/'
+    resources_path = resources_path
 
     def build(self):
         return RootWidget()

@@ -31,7 +31,7 @@ dir_path = os.path.abspath(os.path.dirname(__file__))
 dir_path = slash_path(dir_path)
 dir_path = dir_path.split('/')[:-1]
 dir_path = '/'.join(dir_path)
-resources_path = dir_path + '/' + 'resources'
+resources_path = dir_path + '/resources/'
 
 
 class ProjectData:
@@ -66,7 +66,7 @@ class ProjectData:
         プロジェクトのデータを保存するためのjsonとディレクトリを作成する
         '''
         self.activate = True
-        self.__set_data(resources_path + '/project.json')
+        self.__set_data(resources_path + 'project.json')
         self.uuid = str(uuid4())
         self.save()
         os.makedirs(temp_dir_path + '/' + self.uuid, exist_ok=True)
@@ -133,16 +133,16 @@ class ProjectData:
     def __content_image_path(self, relative_path, save_name, text_height=37, size2d=(256,256), color=(0,0,0,0)):
         content_type = check_type(self.project_path + '/' + relative_path)
         if content_type == 'font':
-            return resources_path + '/font.png'
+            return resources_path + 'font.png'
         elif content_type == 'audio':
-            return resources_path + '/audio.png'
+            return resources_path + 'audio.png'
         elif content_type == 'video':
             cap = cv2.VideoCapture(self.project_path + '/' + relative_path)
             _, frame = cap.read()
             pil_image = frame2pil_image(frame, alpha=True)
             if pil_image.size[0]/16 == pil_image.size[1]/9:
                 pil_image.thumbnail(size2d)
-                video_frame = Image.open(resources_path + '/video_frame.png')
+                video_frame = Image.open(resources_path + 'video_frame.png')
                 pil_image.paste(video_frame, (0,0), video_frame.split()[3])
         else:
             pil_image = Image.open(self.project_path + '/' + relative_path).convert('RGBA')
