@@ -196,8 +196,8 @@ class RootWidget(FloatLayout):
             self.load_files(self.project.project_path)
     
     def load_setting(self):
-        self.settings = load_json(self.app_resources_path + '/settings.json')
-        lang = load_json(self.app_resources_path + '/lang_ja.json')
+        self.settings = load_json(self.app_resources_path + 'settings.json')
+        lang = load_json(self.app_resources_path + 'lang_ja.json')
         _group_height = 50
         _item_height = 30
         self.setting_inputs.clear()
