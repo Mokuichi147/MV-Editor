@@ -19,9 +19,7 @@ def slash_path(path):
     '''
     \が入っているパスを/にする
     '''
-    if '\\' in path:
-        return '/'.join(path.split('\\'))
-    return path
+    return re.sub(r'\\', '/', path)
 
 
 os.makedirs(gettempdir()+'/mv-editor', exist_ok=True)
