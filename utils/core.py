@@ -115,15 +115,15 @@ class ProjectData:
         '''
         _files = os.listdir(path)
         _file_listdir = [f for f in _files if os.path.isfile(os.path.join(path, f))]
-        for _name in _file_listdir:
-            _name = self.relative_path(path + '/' + _name)
+        for _filename in _file_listdir:
+            _name = self.relative_path(path + '/' + _filename)
             if _name in self.dirs:
                 continue
             self.dirs[_name] = {}
             _uuid = str(uuid4())
             self.dirs[_name]['uuid'] = _uuid
-            self.dirs[_name]['type'] = check_type(path + '/' + _name)
-            _audio, _video = check_video(path)
+            self.dirs[_name]['type'] = check_type(path + '/' + _filename)
+            _audio, _video = check_video(path + '/' + _filename)
             self.dirs[_name]['video'] = _video
             self.dirs[_name]['audio'] = _audio
             self.dirs[_name]['image_path'] = self.__content_image_path(_name, _uuid)
@@ -457,6 +457,7 @@ def check_video(path):
     try:
         _video_data = ffmpeg.probe(path)
     except:
+        print(path)
         return _audio, _video
     for stream in _video_data['streams']:
         if stream['codec_type'] == 'audio':
