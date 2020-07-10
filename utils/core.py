@@ -59,7 +59,7 @@ class ProjectData:
         else:
             self.activate = False
     
-    def create(self):
+    def create(self, mkdirs=True):
         '''
         プロジェクトのデータを保存するためのjsonとディレクトリを作成する
         '''
@@ -68,10 +68,11 @@ class ProjectData:
         self.uuid = str(uuid4())
         self.save()
         os.makedirs(temp_dir_path + '/' + self.uuid, exist_ok=True)
-        os.makedirs(self.project_path+'/Font', exist_ok=True)
-        os.makedirs(self.project_path+'/Image', exist_ok=True)
-        os.makedirs(self.project_path+'/Audio', exist_ok=True)
-        os.makedirs(self.project_path+'/Video', exist_ok=True)
+        if mkdirs:
+            os.makedirs(self.project_path+'/Font', exist_ok=True)
+            os.makedirs(self.project_path+'/Image', exist_ok=True)
+            os.makedirs(self.project_path+'/Audio', exist_ok=True)
+            os.makedirs(self.project_path+'/Video', exist_ok=True)
     
     def save(self):
         '''
