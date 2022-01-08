@@ -33,7 +33,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.togglebutton import ToggleButton
 
 version = '0.0.1'
-LabelBase.register(DEFAULT_FONT, dir_path+'/fonts/NotoSansJP-Medium.otf')
+LabelBase.register(DEFAULT_FONT, dir_path+'/resources/fonts/NotoSansJP-Medium.otf')
 Builder.load_file(resources_path + 'mveditor.kv')
 
 
@@ -77,8 +77,9 @@ class RootWidget(FloatLayout):
         Window.bind(on_dropfile=self._on_file_drop)
 
         self.load_file(self.settings['pre_project']['path'])
-        if self.project.video:
-            self.load_video_and_audio(self.project.project_path + self.project.videos[0]['path'])
+        if self.project.activate:
+            if self.project.video:
+                self.load_video_and_audio(self.project.project_path + self.project.videos[0]['path'])
 
         self.visible_view('file_selection_view')
         self.hidden_view('setting_view')

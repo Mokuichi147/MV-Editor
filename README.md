@@ -1,54 +1,97 @@
 # MV-Editor
 
-Windows10のPCで動画編集をするためのソフト  
-MacOSでの動作も確認済み
+Software for video editing.  
+<br>
 
 
 ## Requirement
 
-事前にインストールしておく必要のあるもの
-
-* FFmpeg
-
-必要なライブラリ
-
-* numpy
-* pydub
-* simpleaudio
-* kivy
-* opencv-python
-* ffmpeg-python
-* pillow
+* [FFmpeg](https://ffmpeg.org/)  
+<br>
 
 
 ## Installation
 
-FFmpegは[公式ページ](https://ffmpeg.org/)から
-
-Python 3.6 以上推奨
-
-```bash
-pip install numpy
-pip install pydub
-pip install simpleaudio
-pip install kivy
-pip install opencv-python
-pip install ffmpeg-python
-pip install pillow
 ```
+pip install --upgrade pip
+pip install --upgrade setuptools
+pip install --upgrade poetry
+poetry install
+```
+<details>
+<summary>When an error occurs on Linux</summary>
+
+```
+sudo apt install git gcc make zlib1g-dev libffi-dev libbz2-dev libssl-dev libreadline-dev libsqlite3-dev tk-dev python3-tk python3-distutils python3-pip ffmpeg
+```
+</details>
+<details>
+<summary>When an error occurs on Windows</summary>
+
+- If you get an error when installing simpleaudio
+    1. Install or update [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/ja/visual-cpp-build-tools/)
+    1. Reboot the computer
+</details>
+<br>
 
 
 ## Usage
 
-```bash
-git clone https://github.com/Mokuichi147/MV-Editor.git
-cd MV-Editor
-mkdir TestProject
-# TestProjectに動画等を移す
-python main.py
+Linux or MacOS    
 ```
+mkdir TestProject
+poetry run python main.py
+```
+
+Windows 10 or 11
+```
+mkdir TestProject
+poetry run python.exe main.py
+```
+<br>
+
+
+## Build
+
+```
+poetry run pyinstaller main.spec
+```
+<br>
 
 
 ## Note
 
-まだ動画の再生しか出来ない
+- [x] Play the video
+- [ ] Edit the video  
+<br>
+
+
+## License
+
+Licensed under either of
+
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+
+at your option.  
+<br>
+
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
+
+
+### Redistribution
+
+<details>
+<summary>NotoSansJP</summary>
+
+[SIL OPEN FONT LICENSE Version 1.1](resources/fonts/OFL.txt)
+```
+├── resources  
+│   ├── fonts  
+│   │   ├── NotoSansJP-Medium.otf  
+│   │   └── OFL.txt
+```
+</details>
