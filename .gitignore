@@ -1,7 +1,20 @@
-TestProject/*
-utils/__pycache__/*
-fonts/*
+# This
+/TestProject/
+/fonts/
 
-__pycache__/*
-build/*
-dist/*
+
+# Python
+/**/__pycache__/
+
+# Pyinstaller
+/build/
+/dist/
+
+# Poetry
+/poetry.lock
+
+# VSCode
+/.python-version
+
+# MacOS
+/**/.DS_Store
